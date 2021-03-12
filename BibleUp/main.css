@@ -1,0 +1,15 @@
+#test-panel {
+	margin-top: 20px;
+	color: #2D2F3D;
+	padding: 0 20px;
+	font-family: "Source Sans Pro", sans-serif;
+}
+
+#test-panel h3 {
+	text-align: center;
+	font-weight: 700;
+}
+
+a {
+	color: red;
+}

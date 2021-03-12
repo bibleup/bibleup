@@ -1,0 +1,107 @@
+//import link styles
+@import "./link.css";
+
+
+
+#bu-popup {
+	font-family: -apple-system, BlinkMacSystemFont,'segoe UI' Roboto, 'Helvetica Neue', sans-serif !important;
+	position: absolute;
+	top: 0;
+	transform: translate(0, 0px);
+}
+
+.bu-popup-hide {
+	//display: none !important;
+	visibility: hidden;
+}
+
+.flex {
+	.col {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+	
+	.row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+}
+
+
+
+
+/* CLASSIC POPUP
+   BIBLEUP 📖💡
+*/
+
+#bu-popup.classic {
+	font-size: 15px;
+	@bg-color: #ffffff;
+	width: 400px;
+	max-width: 100%;
+	height: auto;
+	margin: 0 auto;
+	background: @bg-color;
+	border-radius: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	box-shadow: 0px 0px 3px 0.7px #a6a6a6;
+	
+	p {
+		margin: 0;
+	}
+	
+	div {
+		padding: 10px;
+	}
+
+	.header {
+		background: darken(@bg-color, 10%);
+		font-weight: bold;
+		//box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
+		//border-bottom: 1px solid darken(@bg-color, 50%);
+		.flex > .row;
+		.version {
+			background: #f2f2f2;
+			padding: 2px 10px;
+			border-radius: 10%;
+			font-weight: normal;
+		}
+	}
+
+	.content {
+		min-height: 60px;
+		max-height: 130px;
+		overflow-x: auto;
+		//box-shadow: 0px 0px 10px 0px #bfbfbf;
+		font-size: 14px;
+		
+		ol {
+			padding: 0 20px;
+			margin: 0;
+		}
+		
+		li {
+			padding: 0 5px;
+
+			margin: 0;
+			&:not(:last-child) {
+				padding-bottom: 10px;
+			}
+		}
+	}
+
+	.footer {
+		//background: darken(@bg-color, 10%);
+		font-weight: bold;
+		text-align: right;
+		color: #8c8c8c;
+		//box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
+	}
+	
+
+}
+
