@@ -209,10 +209,11 @@ export class BibleUp {
 				e.preventDefault();
 				e.stopPropagation();
 			});
-			e.addEventListener('mouseenter', this.clickb.bind(this));
-			['click', ''].forEach(
-				event => {document.documentElement.addEventListener(event, this.closePopup.bind(this), true)}
-				);
+			
+		e.addEventListener('mouseenter', this.clickb.bind(this));
+		['click', ''].forEach(
+			event => {document.documentElement.addEventListener(event, this.closePopup.bind(this), true)}
+			);
 		}, this);
 	}
 	
