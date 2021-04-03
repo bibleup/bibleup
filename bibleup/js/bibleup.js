@@ -325,7 +325,7 @@ closePopup(e) {
 	
 	let targetId = e.target.id;
 	if (targetId != 'bu-popup') {
-		alert(targetId);
+		//alert(targetId);
 		//e.stopPropagation;
 	}
 
