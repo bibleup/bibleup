@@ -14,6 +14,13 @@ class GetScripture {
 	private $book;
 	private $chapter;
 	private $verse;
+	private $version;
+	private $bookId;
+	private $chapterId;
+	private $verseId;
+	private $refId;
+	private $refId2;
+	private $verseRange;
 	
 	function __construct($bibleRef) {
 		$this->book = $bibleRef->book;
@@ -31,7 +38,8 @@ class GetScripture {
 		$this->bookId;
 		$this->chapterId;
 		$this->verseId;
-		$this->refId; $this->refId2;
+		$this->refId; 
+		$this->refId2;
 	}
 	
 	
