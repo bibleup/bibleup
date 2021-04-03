@@ -14,7 +14,6 @@ bibleup.create();
 let extLink = document.querySelector('#ext-link');
 extLink.addEventListener('click', e => {
 	e.preventDefault();
-	alert(e.target.outerHTML);
 })
 
 
@@ -28,7 +27,7 @@ extLink.addEventListener('click', e => {
 
 
 bu.addEventListener('click', () => {
-	alert(testPanel.innerHTML);
+	//alert(testPanel.innerHTML);
 })
 
 

@@ -199,22 +199,23 @@ export class BibleUp {
 	
 	
 	
-	setStage($element, $options) {
-		constructPopup($options);
-		let e = document.querySelectorAll('.bu-link');
+	setStage(element, options) {
+		constructPopup(options);
+		let bulink = document.querySelectorAll('.bu-link');
 		let popup = document.getElementById('bu-popup');
 		
-		e.forEach(function(e) {
-			e.addEventListener('click', e => {
-				e.preventDefault();
-				e.stopPropagation();
+		bulink.forEach(link => {
+			link.addEventListener('click', evt => {
+				evt.preventDefault();
+				evt.stopPropagation();
 			});
 			
-		e.addEventListener('mouseenter', this.clickb.bind(this));
-		['click', ''].forEach(
-			event => {document.documentElement.addEventListener(event, this.closePopup.bind(this), true)}
-			);
-		}, this);
+			link.addEventListener('mouseenter', this.clickb.bind(this));
+		});
+		
+		['mouseenter', ''].forEach(event => {
+				document.documentElement.addEventListener(event, this.closePopup.bind(this), true)
+			});
 	}
 	
 	
@@ -321,11 +322,14 @@ openPopup() {
 
 
 closePopup(e) {
-	alert(e.target.className);
-	let popup = document.getElementById('bu-popup');
-	popup.classList.add('bu-popup-hide');
-	e.stopImmediatePropagation();
 	
+	let targetId = e.target.id;
+	if (targetId == 'bu-popup') {
+		alert(targetId);
+		//e.stopPropagation;
+	}
+
+	//e.stopImmediatePropagation();
 	
 	/*let mouseFrom = e.relatedTarget;
 	let curr = e.currentTarget;
