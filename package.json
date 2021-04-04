@@ -25,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/Bibleup/bibleup.js/issues"
   },
-  "homepage": "https://github.com/Bibleup/bibleup.js#readme"
+  "homepage": "https://github.com/Bibleup/bibleup.js#readme",
+  "devDependencies": {
+    "snowpack": "^3.2.2"
+  }
 }
