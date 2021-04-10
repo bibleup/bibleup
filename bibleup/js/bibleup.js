@@ -266,7 +266,7 @@ positionPopup(e) {
 	} else {
 		let offsetBy = popWidth - remainingSpace;
 		let adjust = rectLeft - offsetBy
-		popup.style.left = `${adjust - 100 + 'px'}`;
+		popup.style.left = `${adjust + 'px'}`;
 	}
 	
 	
