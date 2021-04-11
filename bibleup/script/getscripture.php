@@ -128,6 +128,7 @@ class GetScripture {
 	
 	
 	private function getText($conn) {
+		$text = null;
 		$version = "t_".strtolower($this->version);
 		$refId = $this->refId;
 		$refId2 = $this->refId2;
