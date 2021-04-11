@@ -211,11 +211,15 @@ export class BibleUp {
 			});
 			
 			link.addEventListener('mouseenter', this.clickb.bind(this));
+			
+			link.addEventListener('mouseleave', this.closePopup.bind(this))
 		});
 		
-		['mouseenter', ''].forEach(event => {
+		
+		
+		/*['mouseenter', ''].forEach(event => {
 				document.documentElement.addEventListener(event, this.closePopup.bind(this), true)
-			});
+			});*/
 	}
 	
 	
@@ -236,7 +240,8 @@ async clickb(e) {
 
 positionPopup(e) {
 	let height = window.innerHeight;
-	let width = window.innerWidth;
+	let width = document.documentElement.clientWidth;
+	//alert ('window width: '+window.innerWidth + ' document width: '+document.documentElement.clientWidth);
 	let popup = document.getElementById('bu-popup')
 	let popWidth = popup.offsetWidth; //360px
 	let popHeight = popup.offsetHeight; //149
@@ -317,18 +322,21 @@ updatePopupData(res) {
 openPopup() {
 	let popup = document.getElementById('bu-popup');
 	if (popup.classList.contains('bu-popup-hide')) {
-		popup.classList.remove('bu-popup-hide');}
+		popup.classList.remove('bu-popup-hide');
+	}
 }
 
 
 closePopup(e) {
-	
-	let targetId = e.target.id;
+	let popup = document.getElementById('bu-popup');
+		popup.classList.add('bu-popup-hide');
+		
+	/*let targetId = e.target.id;
 	if (targetId != 'bu-popup') {
-		//alert(targetId);
-		//e.stopPropagation;
-	}
-
+		alert(targetId);
+		e.stopPropagation;
+	} */
+	
 	//e.stopImmediatePropagation();
 	
 	/*let mouseFrom = e.relatedTarget;
