@@ -215,7 +215,7 @@ export class BibleUp {
 			link.addEventListener('mouseleave', this.closePopup.bind(this))
 		});
 		
-		popup.addEventListener('mouseleave', this.closePopup.bind(this))
+		/* popup.addEventListener('mouseleave', this.closePopup.bind(this)) */
 		
 		/*['mouseenter', ''].forEach(event => {
 				document.documentElement.addEventListener(event, this.closePopup.bind(this), true)
@@ -328,12 +328,20 @@ openPopup() {
 
 
 closePopup(e) {
+	setTimeout(() => {
+	let x = e.clientX, y = e.clientY;
+	let elementMouseOver = document.elementFromPoint(x, y);
+	alert(elementMouseOver.innerHTML);
+	}, 5000)
+	/* setTimeout(() => {
 	let popup = document.getElementById('bu-popup');
 	let mouseFrom = e.relatedTarget;
+
 	if (popup.contains(mouseFrom) == false && mouseFrom.classList.contains('bu-link') == false) {
 		popup.classList.add('bu-popup-hide');
 	}
-	
+
+}, 3000) */
 	//alert(popup.contains(mouseFrom))
 	
 	/*let curr = e.currentTarget;
