@@ -56,7 +56,7 @@ function wikiStyle() {
 	  <p id="close">&#x2715</p>
 	 </div> 
 	 
-	 <div class = "content" >
+	 <div class = "content">
 	 	<ol class='text'>
 	   <li>Loading..</li>
 	  </ol> 
