@@ -7,7 +7,7 @@ let bu = document.querySelector('#bu');
 let section2 = document.querySelector('#section2');
 
 
-let bibleup = new BibleUp(testPanel, {linkStyle: 'classic', popup: 'inline'});
+let bibleup = new BibleUp(testPanel, {linkStyle: 'classic', popup: 'wik'});
 bibleup.create();
 
 

@@ -24,6 +24,7 @@ export class BibleUp {
 		}
 		
 		this.regex = this.scriptureRegex(bible_abbr);
+		this.mouseOnPopup = false; //if mouse is on popup
 	}
 	
 	
@@ -201,6 +202,7 @@ export class BibleUp {
 	
 	setStage(element, options) {
 		constructPopup(options);
+		
 		let bulink = document.querySelectorAll('.bu-link');
 		let popup = document.getElementById('bu-popup');
 		
@@ -215,7 +217,14 @@ export class BibleUp {
 			link.addEventListener('mouseleave', this.closePopup.bind(this))
 		});
 		
-		/* popup.addEventListener('mouseleave', this.closePopup.bind(this)) */
+		popup.addEventListener('mouseenter', () => {
+			this.mouseOnPopup = true;
+		});
+		
+		popup.addEventListener('mouseleave', (e) => {
+			this.mouseOnPopup = false;
+			this.closePopup(e);
+		});
 		
 		/*['mouseenter', ''].forEach(event => {
 				document.documentElement.addEventListener(event, this.closePopup.bind(this), true)
@@ -328,11 +337,18 @@ openPopup() {
 
 
 closePopup(e) {
+	
 	setTimeout(() => {
-	let x = e.clientX, y = e.clientY;
-	let elementMouseOver = document.elementFromPoint(x, y);
-	alert(elementMouseOver.innerHTML);
-	}, 5000)
+		if (!this.mouseOnPopup) {
+			let mouseFrom = e.relatedTarget;
+			if (mouseFrom.classList.contains('bu-link') == false) {
+				let popup = document.getElementById('bu-popup');
+				popup.classList.add('bu-popup-hide');
+				this.mouseOnPopup = false;
+			}
+		}
+	}, 400)
+	
 	/* setTimeout(() => {
 	let popup = document.getElementById('bu-popup');
 	let mouseFrom = e.relatedTarget;
@@ -351,7 +367,10 @@ closePopup(e) {
 	
 	
 	
+	enterPopup(e) {
 	
+	
+	}
 	
 	
 	
