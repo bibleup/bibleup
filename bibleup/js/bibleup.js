@@ -1,5 +1,5 @@
 import {bible_abbr} from './key_abbreviations_english.js'
-import {constructPopup} from './construct_popup.js'
+import ConstructPopup from './construct_popup.js'
 import fetchData from './fetch_data.js'
 
 console.log("BibleUP 📖💡");
@@ -25,6 +25,7 @@ export class BibleUp {
 		
 		this.regex = this.scriptureRegex(bible_abbr);
 		this.mouseOnPopup = false; //if mouse is on popup
+		this.popupTimer;
 	}
 	
 	
@@ -201,7 +202,10 @@ export class BibleUp {
 	
 	
 	setStage(element, options) {
-		constructPopup(options);
+		let build = ConstructPopup.build(options);
+		if (build == false) {
+			this.error("BibleUp was unable to construct popup. Check to see if 'popup' option is correct");
+		}
 		
 		let bulink = document.querySelectorAll('.bu-link');
 		let popup = document.getElementById('bu-popup');
@@ -233,6 +237,9 @@ export class BibleUp {
 	
 	
 async clickb(e) {
+	//clear all popupTimer;
+	this.clearTime();
+	
 	let bibleRef = e.currentTarget.getAttribute('bu-data');
 	bibleRef = JSON.parse(bibleRef);
 	
@@ -338,7 +345,7 @@ openPopup() {
 
 closePopup(e) {
 	
-	setTimeout(() => {
+	this.popupTimer = setTimeout(() => {
 		if (!this.mouseOnPopup) {
 			let mouseFrom = e.relatedTarget;
 			if (mouseFrom.classList.contains('bu-link') == false) {
@@ -347,29 +354,14 @@ closePopup(e) {
 				this.mouseOnPopup = false;
 			}
 		}
-	}, 400)
-	
-	/* setTimeout(() => {
-	let popup = document.getElementById('bu-popup');
-	let mouseFrom = e.relatedTarget;
-
-	if (popup.contains(mouseFrom) == false && mouseFrom.classList.contains('bu-link') == false) {
-		popup.classList.add('bu-popup-hide');
-	}
-
-}, 3000) */
-	//alert(popup.contains(mouseFrom))
-	
-	/*let curr = e.currentTarget;
-	let t = e.target;
-	alert(mouseFrom.parentElement.className);*/
+	}, 500)
 }
 	
 	
 	
-	enterPopup(e) {
-	
-	
+	clearTimer() {
+		if (this.popupTimer) 
+		clearTimeout(this.popupTimer);
 	}
 	
 	
@@ -415,7 +407,8 @@ closePopup(e) {
 	
 	
 	error(msg) {
-		console.warn(msg);
-		return;
+		//console.log(msg);
+		//return false;
+		throw new Error(msg);
 	}
 }
