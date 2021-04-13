@@ -23,6 +23,9 @@ export function constructPopup(options) {
 			popup.innerHTML = wikiStyle();
 			document.body.appendChild(popup);
 	 	break;
+	 	
+	 	default:
+	 		return false;
 	}
 }
 	
