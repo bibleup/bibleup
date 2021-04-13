@@ -238,7 +238,7 @@ export class BibleUp {
 	
 async clickb(e) {
 	//clear all popupTimer;
-	this.clearTime();
+	this.clearTimer();
 	
 	let bibleRef = e.currentTarget.getAttribute('bu-data');
 	bibleRef = JSON.parse(bibleRef);
