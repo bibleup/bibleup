@@ -3,14 +3,14 @@ export default class ConstructPopup {
 	static build(options) {
 		const popup = document.createElement('div');
 		popup.setAttribute('id', 'bu-popup');
-		/*let popup = options.popup;
-		let dark = options.dark*/
+		let popupStyle = options.popup;
+		let darkTheme = options.darkTheme;
 		
-		switch (options.popup) {
+		switch (popupStyle) {
 			case 'inline':
 				popup.classList.add('classic', 'bu-popup-hide');
-				if (options.dark) {
-					popup.classList.add('dark');
+				if (darkTheme) {
+					popup.classList.add('darkTheme');
 				}
 				popup.innerHTML = this.inline();
 				document.body.appendChild(popup);
@@ -18,11 +18,11 @@ export default class ConstructPopup {
 		
 				//wiki-style
 			case 'wiki':
-				popup.classList.add('wiki-style', 'bu-popup-hide');
-				if (options.dark) {
-					popup.classList.add('dark');
+				popup.classList.add('wiki', 'bu-popup-hide');
+				if (darkTheme) {
+					popup.classList.add('darkTheme');
 				}
-				popup.innerHTML = this.wikiStyle();
+				popup.innerHTML = this.wiki();
 				document.body.appendChild(popup);
 				break;
 		
@@ -58,7 +58,7 @@ export default class ConstructPopup {
 	 <div class="header">
 	  <p class='ref'></p>
 	  <span class='version'></span>
-	  <p id="close">&#x2715</p>
+	  <p class="close">&#x2715</p>
 	 </div> 
 	 
 	 <div class = "content">
