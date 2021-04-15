@@ -13,7 +13,7 @@ export class BibleUp {
 			version: 'kjv', 
 			linkStyle: 'classic',
 			popup: 'inline',
-			dark: false,
+			darkTheme: false,
 			bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A']
 		}
 		
@@ -171,7 +171,6 @@ export class BibleUp {
 		* returns <cite[data-*]>john 3:16</cite>
 		*/
 	setLinkStyle(match, p1, p2, p3, p4, p5, p6) {
-		
 		let linkStyle = this.options.linkStyle;
 		let full_match = {
 			'book':undefined,
@@ -230,6 +229,11 @@ export class BibleUp {
 			this.closePopup(e);
 		});
 		
+		let closeBtn = document.querySelector('#bu-popup .close') || false;
+		if (closeBtn) {
+			closeBtn.addEventListener('click', this.exitPopup.bind(this))
+		}
+		
 		/*['mouseenter', ''].forEach(event => {
 				document.documentElement.addEventListener(event, this.closePopup.bind(this), true)
 			});*/
@@ -239,7 +243,6 @@ export class BibleUp {
 async clickb(e) {
 	//clear all popupTimer;
 	this.clearTimer();
-	
 	let bibleRef = e.currentTarget.getAttribute('bu-data');
 	bibleRef = JSON.parse(bibleRef);
 	
@@ -257,10 +260,9 @@ async clickb(e) {
 positionPopup(e) {
 	let height = window.innerHeight;
 	let width = document.documentElement.clientWidth;
-	//alert ('window width: '+window.innerWidth + ' document width: '+document.documentElement.clientWidth);
 	let popup = document.getElementById('bu-popup')
-	let popWidth = popup.offsetWidth; //360px
-	let popHeight = popup.offsetHeight; //149
+	let popWidth = popup.offsetWidth;
+	let popHeight = popup.offsetHeight;
 	
 	//link element rect
 	let rect = e.target.getBoundingClientRect();
@@ -275,12 +277,10 @@ positionPopup(e) {
 	let realTop = window.scrollY+rectTop;
 	let realBottom = window.pageYOffset+rectBottom;
 	let realLeft = window.scrollX+rectLeft;
-	
 	popup.style.top = `${realTop + 25 +'px'}`
 	
 	//Adjust popup to left or right of click
 	let remainingSpace = width - rectLeft
-	
 	if (remainingSpace > popWidth) {
 		//enough space
 		popup.style.left = `${rectLeft + 'px'}`;
@@ -290,13 +290,9 @@ positionPopup(e) {
 		popup.style.left = `${adjust + 'px'}`;
 	}
 	
-	
 	//adjust popup to bottom or top of link according to space remaining
 	let remainingSpace_bottom = height - rectBottom;
-
 	if (!(remainingSpace_bottom > popHeight + 100)) {
-		//alert('real Bottom ' + realBottom);
-		//alert('remainingSpace_bottom ' + remainingSpace_bottom);
 		let offsetBy = popHeight - remainingSpace_bottom;
 		let adjust = realBottom - offsetBy;
 		let popTop = height - popHeight;
@@ -304,7 +300,6 @@ positionPopup(e) {
 		popup.style.top = `${ad2 - 25 +'px'}`
 	}
 }
-
 
 
 
@@ -321,7 +316,6 @@ updatePopupData(res) {
 	//update
 	popupRef.textContent = res.ref;
 	popupVersion.textContent = res.version.toUpperCase();
-	//alert(Array.isArray(res.text));
 	popupText.setAttribute('start', res.verse);
 	if (res.text == null) {
 		popupText.textContent = 'This bible reference cannot be loaded.';
@@ -344,7 +338,6 @@ openPopup() {
 
 
 closePopup(e) {
-	
 	this.popupTimer = setTimeout(() => {
 		if (!this.mouseOnPopup) {
 			let mouseFrom = e.relatedTarget;
@@ -358,7 +351,13 @@ closePopup(e) {
 }
 	
 	
+exitPopup() {
+	let popup = document.getElementById('bu-popup');
+	popup.classList.add('bu-popup-hide');
+	this.mouseOnPopup = false;
+}
 	
+
 	clearTimer() {
 		if (this.popupTimer) 
 		clearTimeout(this.popupTimer);
@@ -380,26 +379,6 @@ closePopup(e) {
 	
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	
