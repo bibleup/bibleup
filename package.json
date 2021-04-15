@@ -1,11 +1,13 @@
 {
   "name": "bibleup",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A tool for converting bible references on a webpage to a link with an accessible popup",
   "main": "bibleup/js/bibleup.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "snowpack build"
+    "build": "snowpack build",
+    "start": "snowpack dev",
+    "init": "snowpack init"
   },
   "repository": {
     "type": "git",
