@@ -1,12 +1,11 @@
-import {bible_abbr} from './key_abbreviations_english.js'
+import bible_abbr from './key_abbreviations_english.js'
 import ConstructPopup from './construct_popup.js'
 import fetchData from './fetch_data.js'
-
 console.log("BibleUP 📖💡");
 
 
 
-export class BibleUp {
+export default class BibleUp {
 	constructor(element, options) {
 		this.element = element;
 		this.defaultOptions = {
