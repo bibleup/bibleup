@@ -1,11 +1,7 @@
-import { BibleUp } from './bibleup/js/bibleup.js'
-
+import BibleUp from './bibleup/js/bibleup.js'
 if (eruda) eruda.init();
 
 let testPanel = document.querySelector('#test-panel');
-let bu = document.querySelector('#bu');
-let section2 = document.querySelector('#section2');
-
 
 let bibleup = new BibleUp(testPanel, {linkStyle: 'style2', popup: 'inline', darkTheme: true});
 bibleup.create();
@@ -22,12 +18,5 @@ extLink.addEventListener('click', e => {
 
 
 
-
-
-
-
-bu.addEventListener('click', () => {
-	//alert(testPanel.innerHTML);
-})
 
 
