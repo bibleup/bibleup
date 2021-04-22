@@ -29,7 +29,12 @@ a {
 	height: 150px;
 	overflow-x: auto;
 	overflow-y: hidden;
-	background: red;
 	white-space: nowrap;
-	width: 300px;
+	width: 100%;
+}
+
+#bu-link-all.bu-link.myStyle {
+	text-decoration: none;
+	color: red;
+	text-decoration: underline;
 }

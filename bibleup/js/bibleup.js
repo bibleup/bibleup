@@ -305,7 +305,7 @@ closePopup(e) {
 				this.mouseOnPopup = false;
 			}
 		}
-	}, 500)
+	}, 50)
 }
 	
 	
