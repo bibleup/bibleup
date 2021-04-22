@@ -2,8 +2,9 @@ import BibleUp from './bibleup/js/bibleup.js'
 if (eruda) eruda.init();
 
 let testPanel = document.querySelector('#test-panel');
+let body = document.querySelector('body')
 
-let bibleup = new BibleUp(testPanel, {linkStyle: 'style2', popup: 'inline', darkTheme: true});
+let bibleup = new BibleUp(body, {linkStyle: 'classic', popup: 'classic', darkTheme: 'u'});
 bibleup.create();
 
 

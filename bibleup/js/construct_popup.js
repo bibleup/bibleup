@@ -7,32 +7,42 @@ export default class ConstructPopup {
 		let darkTheme = options.darkTheme;
 		
 		switch (popupStyle) {
-			case 'inline':
+			case 'classic':
 				popup.classList.add('classic', 'bu-popup-hide');
-				if (darkTheme) {
+				if (darkTheme == true) {
 					popup.classList.add('darkTheme');
 				}
-				popup.innerHTML = this.inline();
+				popup.innerHTML = this.classic();
 				document.body.appendChild(popup);
 				break;
 		
-				//wiki-style
+			//wiki-style
 			case 'wiki':
 				popup.classList.add('wiki', 'bu-popup-hide');
-				if (darkTheme) {
+				if (darkTheme == true) {
 					popup.classList.add('darkTheme');
 				}
 				popup.innerHTML = this.wiki();
 				document.body.appendChild(popup);
 				break;
-		
+				
+			//inline
+			case 'inline': 
+				popup.classList.add('inline', 'bu-popup-hide');
+				if (darkTheme == true) {
+					popup.classList.add('darkTheme');
+				}
+				popup.innerHTML = this.inline();
+				document.body.appendChild(popup);
+				break;
+				
 			default:
 				return false;
 		}
 	}
 	
 	
-	static inline() {
+	static classic() {
 		const markup = `
 		<div class="header">
 		<p class='ref'></p>
@@ -68,9 +78,28 @@ export default class ConstructPopup {
 	 </div>
 	  
 	 	<div class="footer">
-	 	<p>BibleUp 📖💡</p> 
+	 	<p>BibleUp📖💡</p> 
 	 	</div>
 	 	`
 	 return markup;
 	}
+	
+	
+	static inline() {
+		const markup = `
+		<div class="content">
+  	<ol class="text">
+   	<li>Loading..</li>
+  	</ol>
+  </div>
+ 
+ 	<div class="footer">
+  	<p>BibleUp 📖💡</p>
+ 	</div>
+		`
+		
+		return markup;
+	}
+	
+	
 }
