@@ -1,19 +1,47 @@
 
 
 let positionPopup = (e, popup) => {
-	if(popup == 'classic') {
+	if (popup == 'classic') {
 		return classic(e);
 	}
-	
 	if (popup == 'inline') {
 		return inline(e);
 	}
-	
-	
 	return false;
 }
 
+	/**
+	 * Adjust popup to left or right of click
+	*/
+let adjustPopupToLeft = (width, rectLeft, popup, popWidth) => {
+	let remainingSpace = width - rectLeft
+	if (remainingSpace > popWidth) {
+		//enough space
+		popup.style.left = `${rectLeft + 'px'}`;
+		if (rectLeft < 0) {
+			rectLeft -= rectLeft;
+			adjustPopupToLeft(width, rectLeft, popup, popWidth);
+		}
+	} else {
+		let offsetBy = popWidth - remainingSpace;
+		let adjust = rectLeft - offsetBy
+		popup.style.left = `${adjust + 'px'}`;
+	}
+}
 
+
+/**
+ * adjust popup to bottom or top of link according to space remaining
+*/
+let adjustPopupToBottom = (height, rectBottom, popup, popHeight) => {
+	let remainingSpace_bottom = height - rectBottom;
+	if (!(remainingSpace_bottom > popHeight + 100)) {
+		let offsetBy = popHeight - remainingSpace_bottom;
+		let popTop = height - popHeight;
+		let ad2 = popTop + window.scrollY - remainingSpace_bottom;
+		popup.style.top = `${ad2 - 25 +'px'}`
+	}
+}
 
 
 let classic = (e) => {
@@ -35,30 +63,9 @@ let classic = (e) => {
 	let realBottom = window.pageYOffset + rectBottom;
 	let realLeft = window.scrollX + rectLeft;
 	
-	
 	popup.style.top = `${realTop + 25 +'px'}`
-	
-	//Adjust popup to left or right of click
-	let remainingSpace = width - rectLeft
-	if (remainingSpace > popWidth) {
-		//enough space
-		popup.style.left = `${rectLeft + 'px'}`;
-	} else {
-		let offsetBy = popWidth - remainingSpace;
-		let adjust = rectLeft - offsetBy
-		popup.style.left = `${adjust + 'px'}`;
-		alert('adjusted')
-	}
-	
-	//adjust popup to bottom or top of link according to space remaining
-	let remainingSpace_bottom = height - rectBottom;
-	if (!(remainingSpace_bottom > popHeight + 100)) {
-		let offsetBy = popHeight - remainingSpace_bottom;
-		let adjust = realBottom - offsetBy;
-		let popTop = height - popHeight;
-		let ad2 = popTop + window.scrollY - remainingSpace_bottom;
-		popup.style.top = `${ad2 - 25 +'px'}`
-	}
+	adjustPopupToLeft(width, rectLeft, popup, popWidth);
+	adjustPopupToBottom(height, rectBottom, popup, popHeight);
 }
 
 
@@ -84,29 +91,10 @@ let inline = (e) => {
 	let realBottom = window.pageYOffset + rectBottom;
 	let realLeft = window.scrollX + rectLeft;
 	
-	
-	popup.style.top = `${realTop + 25 +'px'}`
-	
-	//Adjust popup to left or right of click
-	let remainingSpace = width - rectLeft
-	if (remainingSpace > popWidth) {
-		//enough space
-		popup.style.left = `${rectLeft + 'px'}`;
-	} else {
-		let offsetBy = popWidth - remainingSpace;
-		let adjust = rectLeft - offsetBy
-		popup.style.left = `${adjust + 'px'}`;
-	}
-	
-	//adjust popup to bottom or top of link according to space remaining
-	let remainingSpace_bottom = height - rectBottom;
-	if (!(remainingSpace_bottom > popHeight + 100)) {
-		let offsetBy = popHeight - remainingSpace_bottom;
-		let adjust = realBottom - offsetBy;
-		let popTop = height - popHeight;
-		let ad2 = popTop + window.scrollY - remainingSpace_bottom;
-		popup.style.top = `${ad2 - 25 +'px'}`
-	}
+	popup.style.top = `${realTop + 25 +'px'}`;
+	adjustPopupToLeft(width, rectLeft, popup, popWidth);
+	adjustPopupToBottom(height, rectBottom, popup, popHeight);
 }
+
 
 export default positionPopup;
