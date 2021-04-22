@@ -1,3 +1,13 @@
+html {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	height: 100%;
+	padding-bottom: 10px;
+}
+
 #test-panel {
 	margin-top: 20px;
 	color: #2D2F3D;
@@ -12,4 +22,14 @@
 
 a {
 	color: red;
+}
+
+#test {
+	padding: 15px;
+	height: 150px;
+	overflow-x: auto;
+	overflow-y: hidden;
+	background: red;
+	white-space: nowrap;
+	width: 300px;
 }

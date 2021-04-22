@@ -1,5 +1,6 @@
 import bible_abbr from './key_abbreviations_english.js'
 import ConstructPopup from './construct_popup.js'
+import positionPopup from './position_popup.js'
 import fetchData from './fetch_data.js'
 console.log("BibleUP 📖💡");
 
@@ -11,7 +12,7 @@ export default class BibleUp {
 		this.defaultOptions = {
 			version: 'kjv', 
 			linkStyle: 'classic',
-			popup: 'inline',
+			popup: 'classic',
 			darkTheme: false,
 			bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A']
 		}
@@ -248,56 +249,8 @@ async clickb(e) {
 	let res = await fetchData(bibleRef, this.options.version);
 	
 	this.updatePopupData(res);
-	if (!(this.options.popup == 'wiki')) {
-		this.positionPopup(e);
-	}
+	positionPopup(e, this.options.popup);
 	this.openPopup();
-}
-
-
-
-positionPopup(e) {
-	let height = window.innerHeight;
-	let width = document.documentElement.clientWidth;
-	let popup = document.getElementById('bu-popup')
-	let popWidth = popup.offsetWidth;
-	let popHeight = popup.offsetHeight;
-	
-	//link element rect
-	let rect = e.target.getBoundingClientRect();
-	let rectX = Math.round(rect.x);
-	let rectY = rect.y;
-	let rectTop = rect.top;
-	let rectBottom = rect.bottom;
-	let rectLeft = Math.round(rect.left);
-	let rectRight = Math.floor(rect.right);
-	
-	//position of link from overall page with scroll
-	let realTop = window.scrollY+rectTop;
-	let realBottom = window.pageYOffset+rectBottom;
-	let realLeft = window.scrollX+rectLeft;
-	popup.style.top = `${realTop + 25 +'px'}`
-	
-	//Adjust popup to left or right of click
-	let remainingSpace = width - rectLeft
-	if (remainingSpace > popWidth) {
-		//enough space
-		popup.style.left = `${rectLeft + 'px'}`;
-	} else {
-		let offsetBy = popWidth - remainingSpace;
-		let adjust = rectLeft - offsetBy
-		popup.style.left = `${adjust + 'px'}`;
-	}
-	
-	//adjust popup to bottom or top of link according to space remaining
-	let remainingSpace_bottom = height - rectBottom;
-	if (!(remainingSpace_bottom > popHeight + 100)) {
-		let offsetBy = popHeight - remainingSpace_bottom;
-		let adjust = realBottom - offsetBy;
-		let popTop = height - popHeight;
-		let ad2 = popTop + window.scrollY - remainingSpace_bottom;
-		popup.style.top = `${ad2 - 25 +'px'}`
-	}
 }
 
 
@@ -313,8 +266,14 @@ updatePopupData(res) {
 	let popupText = document.querySelector('#bu-popup .text');
 	
 	//update
-	popupRef.textContent = res.ref;
-	popupVersion.textContent = res.version.toUpperCase();
+	if (popupRef) {
+		popupRef.textContent = res.ref;
+	}
+	
+	if (popupVersion) {
+		popupVersion.textContent = res.version.toUpperCase();
+	}
+	
 	popupText.setAttribute('start', res.verse);
 	if (res.text == null) {
 		popupText.textContent = 'This bible reference cannot be loaded.';
