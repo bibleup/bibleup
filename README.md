@@ -1,7 +1,7 @@
-# BibleupJS
+# Bibleup
 
-**BibleupJS** transforms all bible references on a webpage (e.g 1 Timothy 2:7, John 3:16) into links and makes the bible text accessible via a hover popup.<br>
-<img src="docs/asset/illustration.mp4" width="100" height="100" />
+**Bibleup** transforms all bible references on a webpage (e.g 1 Timothy 2:7, John 3:16) into links and makes the bible text accessible via a hover popup.<br>
+<img src="docs/asset/illustration.gif" width="100" height="100" />
 	
 # Introduction
 BibleUp makes bible references and verses on a webpage easily accessible without the need of opening them on a new window.
