@@ -1,0 +1,264 @@
+.highlight {
+  background: #f2f2f2;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+#bu-link-all.bu-link {
+  font-style: normal;
+  text-decoration: none;
+  color: #2B60DE;
+}
+#bu-link-all.bu-link:hover,
+#bu-link-all.bu-link:active {
+  text-decoration: none;
+}
+#bu-link-all.bu-link.classic {
+  text-decoration: none;
+}
+#bu-link-all.bu-link.classic:hover,
+#bu-link-all.bu-link.classic:active {
+  color: #0038A8;
+  text-decoration: underline;
+}
+#bu-link-all.bu-link.underline {
+  text-decoration: underline;
+}
+#bu-link-all.bu-link.underline:hover {
+  color: #0038A8;
+  background: lightblue;
+}
+#bu-link-all.bu-link.style1 {
+  padding: 3px;
+  background: #f1f1f4;
+  color: #2b2d3b;
+}
+#bu-link-all.bu-link.style1:hover {
+  background: lightblue;
+}
+#bu-link-all.bu-link.style2 {
+  padding: 3px;
+  background: #f2f2f2;
+  color: black;
+}
+#bu-link-all.bu-link.style2:hover {
+  background: lightblue;
+  text-decoration: underline;
+}
+/* CLASSIC POPUP
+   BIBLEUP 📖💡
+*/
+#bu-popup.classic {
+  position: absolute;
+  font-size: 15px;
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0px 0px 3px 0.7px #a6a6a6;
+}
+#bu-popup.classic p {
+  margin: 0;
+}
+#bu-popup.classic div {
+  padding: 10px;
+}
+#bu-popup.classic .header {
+  background: #e6e6e6;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#bu-popup.classic .header .version {
+  background: #f2f2f2;
+  padding: 2px 10px;
+  border-radius: 3px;
+  font-weight: normal;
+}
+#bu-popup.classic .content {
+  min-height: 60px;
+  max-height: 130px;
+  overflow-x: auto;
+  font-size: 14px;
+}
+#bu-popup.classic .content ol {
+  padding: 0 20px;
+  margin: 0;
+}
+#bu-popup.classic .content li {
+  padding: 0 5px;
+  margin: 0;
+}
+#bu-popup.classic .content li:not(:last-child) {
+  padding-bottom: 10px;
+}
+#bu-popup.classic .footer {
+  font-weight: bold;
+  text-align: right;
+  color: #8c8c8c;
+}
+#bu-popup.classic.darkTheme {
+  background: #595959;
+  color: #f2f2f2;
+}
+#bu-popup.classic.darkTheme .header {
+  color: #333333;
+  background: #d9d9d9;
+}
+/* WIKI POPUP
+   BIBLEUP 📖💡
+*/
+#bu-popup.wiki {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  width: 90%;
+  max-width: 500px;
+  height: auto;
+  max-height: 220px;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px 0.7px #a6a6a6;
+  font-size: 15px;
+}
+#bu-popup.wiki p {
+  margin: 0;
+}
+#bu-popup.wiki div {
+  padding: 10px;
+}
+#bu-popup.wiki .header {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  padding-bottom: 13px;
+}
+#bu-popup.wiki .header .ref {
+  font-weight: bold;
+}
+#bu-popup.wiki .header .version {
+  /*background: darken(@bg-color, 5%);
+			padding: 2px 10px;
+			border-radius: 3px;*/
+  margin-left: 5px;
+}
+#bu-popup.wiki .header .close {
+  text-align: right;
+  margin-right: 5px;
+  font-size: 18px;
+}
+#bu-popup.wiki .content {
+  font-size: 14px;
+  min-height: 60px;
+  max-height: 130px;
+  overflow-x: auto;
+}
+#bu-popup.wiki .content ol {
+  padding: 0 20px;
+  margin: 0;
+}
+#bu-popup.wiki .content li {
+  padding: 0 5px;
+  margin: 0;
+}
+#bu-popup.wiki .content li:not(:last-child) {
+  padding-bottom: 10px;
+}
+#bu-popup.wiki .footer {
+  font-weight: bold;
+  text-align: right;
+  color: #8c8c8c;
+}
+#bu-popup.wiki.darkTheme {
+  background: #3d4245;
+  color: #f2f2f2;
+}
+/* INLINE POPUP
+   BIBLEUP 📖💡
+*/
+#bu-popup.inline {
+  position: absolute;
+  width: 80%;
+  padding-top: 10px;
+  max-width: 500px;
+  height: auto;
+  max-height: 220px;
+  background: #ffffff;
+  box-shadow: 0px 0px 3px 0.7px #cccccc;
+  font-size: 15px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+#bu-popup.inline p {
+  margin: 0;
+}
+#bu-popup.inline div {
+  padding: 10px;
+}
+#bu-popup.inline .content {
+  font-size: 14px;
+  min-height: 60px;
+  max-height: 130px;
+  overflow-x: auto;
+}
+#bu-popup.inline .content ol {
+  padding: 0 20px;
+  margin: 0;
+}
+#bu-popup.inline .content li {
+  padding: 0 5px;
+  margin: 0;
+}
+#bu-popup.inline .content li:not(:last-child) {
+  padding-bottom: 10px;
+}
+#bu-popup.inline .footer {
+  font-weight: bold;
+  text-align: right;
+  color: #8c8c8c;
+}
+#bu-popup.inline.darkTheme {
+  background: #3d4245;
+  color: #f2f2f2;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+#bu-popup {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.bu-popup-hide {
+  visibility: hidden;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+.flex .col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.flex .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*# sourceMappingURL=app.css.map */

@@ -5,9 +5,7 @@
   "main": "bibleup/js/bibleup.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "snowpack build",
-    "start": "snowpack dev",
-    "init": "snowpack init"
+    "build": "rollup --config"
   },
   "repository": {
     "type": "git",
@@ -29,5 +27,9 @@
     "url": "https://github.com/Bibleup/bibleup.js/issues"
   },
   "homepage": "https://github.com/Bibleup/bibleup.js#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "rollup": "^2.45.2",
+    "rollup-plugin-less-modules": "^0.1.11",
+    "rollup-plugin-uglify": "^6.0.4"
+  }
 }
