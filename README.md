@@ -1,7 +1,7 @@
 <h1 align="center">BibleUp</h1>
-<img src="https://raw.githubusercontent.com/Bibleup/bibleup.js/main/docs/asset/illustration.gif?token=AQFTW2ZIV5I5KKSMEJDTZZLAQLY66" />
+<img src="./docs/asset/illustration.gif" />
 <p align="center">
-<b>BibleUp<b> transforms all bible references on a webpage (e.g 1 Timothy 2:7, John 3:16) into links and makes the bible text accessible via a hover popup.<br>
+<b>BibleUp</b> transforms all bible references on a webpage (e.g 1 Timothy 2:7, John 3:16) into links and makes the bible text accessible via a hover popup.<br>
 </p>
 
 	
