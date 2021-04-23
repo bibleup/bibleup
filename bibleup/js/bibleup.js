@@ -255,7 +255,6 @@ async clickb(e) {
 	let res = await fetchData(bibleRef, this.options.version);
 	this.updatePopupData(res);
 	positionPopup(e, this.options.popup);
-	
 }
 
 
