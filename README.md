@@ -24,10 +24,11 @@ You can also include BibleUp by using the ES6 import statement. Simply put the f
 import BibleUp from "https://skypack.com/bibleup/bibleupjs"
 ```
 ## Initialize BibleUp
-Initialize bibleup using the ```create``` method.
+After installing, initialize BibleUp using the ```create``` method.
 ```javascript
-let body = document.querySelector(body)
-BibleUP.create(body)
+let body = document.querySelector(body);
+let bibleup = new BibleUp(body);
+bibleup.create();
 ```
 
 
