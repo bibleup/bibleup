@@ -246,11 +246,13 @@ async clickb(e) {
 	let bibleRef = e.currentTarget.getAttribute('bu-data');
 	bibleRef = JSON.parse(bibleRef);
 	
-	let res = await fetchData(bibleRef, this.options.version);
 	
-	this.updatePopupData(res);
 	positionPopup(e, this.options.popup);
 	this.openPopup();
+	
+	let res = await fetchData(bibleRef, this.options.version);
+	this.updatePopupData(res);
+	
 }
 
 

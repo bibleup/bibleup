@@ -37,8 +37,8 @@ let fetchData = async (bibleRef, version) => {
 		const response = await fetch('bibleup/script/getscripture.php', {
 		 method: 'POST',
 		 body: form,
-		 mode: "same-origin",
-		 cache: 'no-cache'
+		 mode: "cors",
+		 cache: 'force-cache'
 		});
 		
 		if (!response.ok) {
