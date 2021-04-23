@@ -14,7 +14,8 @@ export default class BibleUp {
 			linkStyle: 'classic',
 			popup: 'classic',
 			darkTheme: false,
-			bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A']
+			bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'], 
+			bu_allow: []
 		}
 		
 		if (typeof options === 'object' && options !== null) {
@@ -128,7 +129,8 @@ export default class BibleUp {
 	 */
 	validateEl(e) {
 		let forbidden_tags = this.options.bu_ignore;
-		if (forbidden_tags.includes(e.tagName)) return false
+		let allowed_tags = this.options.bu_allow;
+		if (forbidden_tags.includes(e.tagName) && !allowed_tags.includes(e.tagName)) return false
 		if (e.classList.contains('bu-ignore') == false)
 		return true;
 	}
@@ -252,6 +254,7 @@ async clickb(e) {
 	
 	let res = await fetchData(bibleRef, this.options.version);
 	this.updatePopupData(res);
+	positionPopup(e, this.options.popup);
 	
 }
 
