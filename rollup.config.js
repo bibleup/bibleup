@@ -12,7 +12,7 @@ export default {
         {
             file: './dist/bibleup.min.js',
             format: 'iife',
-            name: 'bundle'
+            name: 'BibleUp'
         }
     ],
     plugins: [
