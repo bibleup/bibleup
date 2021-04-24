@@ -3,11 +3,18 @@ import less from 'rollup-plugin-less';
 
 export default {
     input: './bibleup/js/bibleup.js',
-    output: {
-        file: './dist/bibleup.min.js',
-        format: 'iife',
-        name: 'bundle'
-    },
+    output: [
+        {
+            file: './dist/bibleup.es.min.js',
+            format: 'es',
+            name: 'bundle'
+        },
+        {
+            file: './dist/bibleup.min.js',
+            format: 'iife',
+            name: 'bundle'
+        }
+    ],
     plugins: [
         uglify(),
         less({
