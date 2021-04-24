@@ -5,7 +5,7 @@ export default {
     input: './bibleup/js/bibleup.js',
     output: {
         file: './dist/bibleup.min.js',
-        format: 'es',
+        format: 'iife',
         name: 'bundle'
     },
     plugins: [
