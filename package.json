@@ -29,7 +29,8 @@
   "homepage": "https://github.com/Bibleup/bibleup.js#readme",
   "devDependencies": {
     "rollup": "^2.45.2",
-    "rollup-plugin-less-modules": "^0.1.11",
+    "rollup-plugin-less": "^1.1.3",
     "rollup-plugin-uglify": "^6.0.4"
-  }
+  },
+  "dependencies": {}
 }

@@ -1,8 +1,8 @@
 import { uglify } from 'rollup-plugin-uglify';
-import lessModules from 'rollup-plugin-less-modules';
+import less from 'rollup-plugin-less';
 
 export default {
-    input: './bibleup/js/main.js',
+    input: './bibleup/js/bibleup.js',
     output: {
         file: './dist/bibleup.min.js',
         format: 'umd',
@@ -10,15 +10,9 @@ export default {
     },
     plugins: [
         uglify(),
-        lessModules({
-            // Does not output the styles to an external file
-            // output: false,
-
-            // Outputs the styles to a separate bundle file with the same name as the input file name of the bundle.
-            // output: true,
-
-            // Outputs the bundled styles to a custom path
-            output: 'dist/app.css'
+        less({
+            insert: 'true',
+            output: 'dist/bibleup.build.css'
         })
     ]
 }
