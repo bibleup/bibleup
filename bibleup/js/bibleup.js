@@ -1,3 +1,4 @@
+import '../css/bibleup.less';
 import bible_abbr from './key_abbreviations_english.js'
 import ConstructPopup from './construct_popup.js'
 import positionPopup from './position_popup.js'
