@@ -1,12 +1,13 @@
-import BibleUp from './bibleup/js/bibleup.js'
+import BibleUp from './dist/bibleup.min.js'
 if (eruda) eruda.init();
 
 let test = document.querySelector('#test');
 let testPanel = document.querySelector('#test-panel');
 let body = document.querySelector('body')
 
-let bibleup = new BibleUp(testPanel, {linkStyle: 'classic', popup: 'inline', darkTheme: 'u', bu_allow:['H2']});
-bibleup.create();
+/*let bibleup = new BibleUp(testPanel, {linkStyle: 'classic', popup: 'inline', darkTheme: 'u', bu_allow:['H2']});
+bibleup.create();*/
+
 
 
 
