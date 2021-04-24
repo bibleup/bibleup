@@ -1,4 +1,4 @@
-import BibleUp from './dist/bibleup.es.min.js';
+//import BibleUp from './dist/bibleup.es.min.js';
 if (eruda) eruda.init();
 
 let test = document.querySelector('#test');
