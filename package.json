@@ -1,8 +1,12 @@
 {
   "name": "bibleup",
   "version": "1.0.0",
-  "description": "A tool for converting bible references on a webpage to a link with an accessible popup",
-  "main": "bibleup/js/bibleup.js",
+  "description": "A tool for converting bible references on a webpage to links with an accessible popup",
+  "main": "dist/bibleup.min.js",
+  "module": "dist/esm/bibleup.es.min.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rollup --config"
@@ -15,11 +19,12 @@
     "bible",
     "scripture",
     "tagger",
-    "scripture",
+    "verse",
     "popup",
-    "bible",
+    "modal",
     "reference",
     "link"
+    "hover"
   ],
   "author": "BibleUp",
   "license": "ISC",
@@ -28,9 +33,12 @@
   },
   "homepage": "https://github.com/Bibleup/bibleup.js#readme",
   "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/preset-env": "^7.13.15",
+    "@rollup/plugin-babel": "^5.3.0",
     "rollup": "^2.45.2",
     "rollup-plugin-less": "^1.1.3",
-    "rollup-plugin-uglify": "^6.0.4"
+    "rollup-plugin-terser": "^7.0.2"
   },
   "dependencies": {}
 }
