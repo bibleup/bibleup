@@ -7,8 +7,7 @@ let body = document.querySelector('body')
 
 let bibleup = new BibleUp(body)
 bibleup.create()
-//console.log(BibleUP)
-
+//console.log(BibleUp)
 
 
 
