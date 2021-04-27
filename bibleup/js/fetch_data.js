@@ -34,12 +34,14 @@ let fetchData = async (bibleRef, version) => {
 	form.append('json', a);
 		
 	try {
-		const response = await fetch('bibleup/script/getscripture.php', {
+		const response = await fetch('../bibleup/script/getscripture.php', {
 		 method: 'POST',
 		 body: form,
 		 mode: "cors",
 		 cache: 'force-cache'
 		});
+		//fetch url is mapped to work for demo/index.html
+		//when serving bibleup.js from dist/
 		
 		if (!response.ok) {
 		 let err = (`An error has occurred: ${response.status}`);
