@@ -13,22 +13,28 @@ It searches for all bible references on a page and transforms each one to a link
 At it core, BibleUp is a blend of an internal api and interactive display interface
 
 # Getting Started 🚀
-## Install via CDN
+## Install using <script> tag 
 To integrate BibleUp to your webpage using the script tag simply put the following code at the bottom of body
 ```javascript
-<script src="cdn.jsdelivr.net/bibleup/bibleup.js"></script>
+<script src="cdn.jsdelivr.net/bibleup"></script>
 ```
 ## Install using ES6 import
 You can also include BibleUp by using the ES6 import statement. Simply put the following at the top of your javascript file.
 ```javascript
-import BibleUp from "https://skypack.com/bibleup/bibleupjs"
+import BibleUp from "https://skypack.com/bibleup/bibleupjs
 ```
-## Initialize BibleUp
+## NPM
+Install package locally from NPM
+```
+$ npm install bibleup
+```
+
+# Initialize BibleUp
 After installing, initialize BibleUp using the ```create``` method.
 ```javascript
 let body = document.querySelector(body);
 let bibleup = new BibleUp(body);
 bibleup.create();
 ```
-
+## Methods 
 
