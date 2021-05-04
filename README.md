@@ -37,5 +37,6 @@ let body = document.querySelector(body);
 let bibleup = new BibleUp(body);
 bibleup.create();
 ```
-## Methods 
+## Methods
+
 
