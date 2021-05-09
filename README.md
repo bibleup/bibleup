@@ -1,7 +1,7 @@
 ﻿<h1 align="center">BibleUp 📖💡</h1>
 <img src="./docs/asset/illustration.gif" />
 <p align="center">
-BibleUp transforms all bible references on a webpage (e.g 1 Timothy 2:7, John 3:16) into links and makes the text accessible via a hover popup.<br>
+BibleUp transforms all bible references on a webpage (1 Timothy 2:7, John 3:16) into links and makes the text accessible via a hover popup.<br>
 </p>
 
 	
@@ -18,7 +18,7 @@ To integrate BibleUp using the script tag, put the following code at the bottom 
 ```javascript
 <script src="cdn.jsdelivr.net/npm/bibleup"></script>
 ```
-## ES Module Import
+## ES Module
 BibleUp also ships with native ES module build on browser supporting the ES6 import statement
 Simply put the following at the top of your javascript file.
 ```javascript
@@ -30,18 +30,19 @@ Install package locally from NPM
 $ npm install bibleup
 ```
 
-# USAGE
+# Usage ⚡
 After installing, create a BibleUp instance using the ```create``` method.
 ```javascript
 let body = document.querySelector(body);
 let bibleup = new BibleUp(body);
 bibleup.create();
 ```
-BibleUp instances accepts two arguments: 
+A BibleUp instance accepts two arguments: 
 - The selector: A typical HTMLElement
 - The Instance Object: An object that defines BibleUp behaviour
 ```javascript
 let bibleup = new BibleUp(body, {
+// all default values
 version: 'KJV',
 linkStyle: 'classic',
 popup: 'classic',
@@ -49,21 +50,21 @@ darkTheme: false,
 bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
 bu_allow: []
 });
-//All default values
 ```
 
 ## Options
-### Version
-Bible version to display on hover. BibleUp currently supports only 5 versions: KJV, ASV, BBE, WEB and YLT
+### version
+Bible version to display on hover. BibleUp currently supports only 5 versions: KJV, ASV, BBE, WEB and YLT<br>
 Default: KJV
 
 ### linkStyle
-BibleUp ships with different link styles: classic, underline, style1, style2
+BibleUp ships with different link styles: classic, underline, style1, style2<br>
 Default: classic
 
 You can replace these with your custom css style. Use the following selector
 ```css
 #bu-link-all.bu-link.myStyle {
+...
 }
 ```
 ```javascript
@@ -73,12 +74,12 @@ linkStyle: 'myStyle'
 ```
 
 ### darkTheme
-A boolean option to toggle dark theme on popup
-default: false
+A boolean to toggle dark theme on popup<br>
+Default: false
 
 ### popup
-BibleUp popup style. Check out the [Themes documentation](./docs/themes.md) for a list of popup styles
-default: classic
+BibleUp popup style. Check out the [Themes documentation](./docs/themes.md) for a list of popup styles<br>
+Default: classic
 
 ### bu_allow
 BibleUp ignores bible references on the following elements by default: H1 - H6, IMG, A, INPUT, SELECT, TEXTAREA, SCRIPT. Use this option to look up certain elements
@@ -93,8 +94,7 @@ bu_allow: ['H4','H5'] //allow references on h4 and h5 tags
 Put BibleUp to work using the ```create()``` method. This method doesn't accept any argument.
 
 ### getOptions()
-A getter method that returns all active BibleUp options.
-Returns the instance object. Use ```JSON.stringify()``` to parse to string
+A getter method that returns all active BibleUp options. Use ```JSON.stringify()``` to parse to string
 ```javascript
 console.log(bibleup.getOptions) //[object Object], 
 ```
@@ -103,15 +103,16 @@ console.log(bibleup.getOptions) //[object Object],
 Check out all bible abbreviations, their aliases and guidelines here: [Bible citations](./docs/guidelines.md)
 
 The following are tested bible citations:
-John 3:16 ✔️
-Romans 4:5-6 ✔️
-Acts 1:8, 10, 12 ✔️
-Jn. 3:3, 6-9 ✔️
-1 cor 1:1 ❌ 1 Cor 1:1 ✔️
+John 3:16 ✔️<br>
+Romans 4:5-6 ✔️<br>
+Acts 1:8, 10, 12 ✔️<br>
+Jn. 3:3, 6-9 ✔️<br>
+1 cor 1:1 ❌ 1 Cor 1:1 ✔️<br>
 
-N.B - All bible books must start with a capital letter. Check the [guidelines](./docs/guidelines.md) for more details
+All bible books must start with a capital letter. Check the [guidelines](./docs/guidelines.md) for more details
 
 # Contributions
-Push requests and issues are always welcomed. Kindly make sure you state the specifics in details, whether a bug, feature requests or a fix.
-Thank you! ❤️
+Push requests and issues are always welcomed.
+Kindly make sure you state the specifics in details, whether a bug, feature requests or a fix.<br>
+Thank you!
 
