@@ -3,44 +3,44 @@
   border-radius: 5px;
   padding: 2px 5px;
 }
-#bu-link-all.bu-link {
+a.bu-link {
   font-style: normal;
   text-decoration: none;
   color: #2B60DE;
 }
-#bu-link-all.bu-link:hover,
-#bu-link-all.bu-link:active {
+a.bu-link:hover,
+a.bu-link:active {
   text-decoration: none;
 }
-#bu-link-all.bu-link.classic {
+a.bu-link.classic {
   text-decoration: none;
 }
-#bu-link-all.bu-link.classic:hover,
-#bu-link-all.bu-link.classic:active {
+a.bu-link.classic:hover,
+a.bu-link.classic:active {
   color: #0038A8;
   text-decoration: underline;
 }
-#bu-link-all.bu-link.underline {
+a.bu-link.underline {
   text-decoration: underline;
 }
-#bu-link-all.bu-link.underline:hover {
+a.bu-link.underline:hover {
   color: #0038A8;
   background: lightblue;
 }
-#bu-link-all.bu-link.style1 {
+a.bu-link.style1 {
   padding: 3px;
   background: #f1f1f4;
   color: #2b2d3b;
 }
-#bu-link-all.bu-link.style1:hover {
+a.bu-link.style1:hover {
   background: lightblue;
 }
-#bu-link-all.bu-link.style2 {
+a.bu-link.style2 {
   padding: 3px;
   background: #f2f2f2;
   color: black;
 }
-#bu-link-all.bu-link.style2:hover {
+a.bu-link.style2:hover {
   background: lightblue;
   text-decoration: underline;
 }
@@ -265,44 +265,44 @@ body {
   border-radius: 5px;
   padding: 2px 5px;
 }
-#bu-link-all.bu-link {
+a.bu-link {
   font-style: normal;
   text-decoration: none;
   color: #2B60DE;
 }
-#bu-link-all.bu-link:hover,
-#bu-link-all.bu-link:active {
+a.bu-link:hover,
+a.bu-link:active {
   text-decoration: none;
 }
-#bu-link-all.bu-link.classic {
+a.bu-link.classic {
   text-decoration: none;
 }
-#bu-link-all.bu-link.classic:hover,
-#bu-link-all.bu-link.classic:active {
+a.bu-link.classic:hover,
+a.bu-link.classic:active {
   color: #0038A8;
   text-decoration: underline;
 }
-#bu-link-all.bu-link.underline {
+a.bu-link.underline {
   text-decoration: underline;
 }
-#bu-link-all.bu-link.underline:hover {
+a.bu-link.underline:hover {
   color: #0038A8;
   background: lightblue;
 }
-#bu-link-all.bu-link.style1 {
+a.bu-link.style1 {
   padding: 3px;
   background: #f1f1f4;
   color: #2b2d3b;
 }
-#bu-link-all.bu-link.style1:hover {
+a.bu-link.style1:hover {
   background: lightblue;
 }
-#bu-link-all.bu-link.style2 {
+a.bu-link.style2 {
   padding: 3px;
   background: #f2f2f2;
   color: black;
 }
-#bu-link-all.bu-link.style2:hover {
+a.bu-link.style2:hover {
   background: lightblue;
   text-decoration: underline;
 }
