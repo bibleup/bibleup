@@ -4,33 +4,33 @@ import less from 'rollup-plugin-less';
 
 export default [
     {
-        input: './bibleup/js/bibleup.js',
+        input: './bibleup/js/main.js',
         output: {
-            file: './dist/esm/bibleup.es.min.js',
+            file: './dist/bibleup.es.min.js',
             format: 'es',
             name: 'BibleUp'
         },
         plugins: [
             less({
                 insert: 'true',
-                output: 'dist/bibleup.build.css'
+                output: 'dist/css/bibleup.build.css'
             }),
             terser()
         ]
     },
     {
         // UMD
-        input: './bibleup/js/bibleup.js',
+        input: './bibleup/js/main.js',
         output: {
-          file: './dist/bibleup.min.js',
+          file: './dist/umd/bibleup.min.js',
           format: "umd",
-          name: "BibleUp", // this is the name of the global object
+          name: "BibleUp", //name of the global object
           sourcemap: true,
         },
         plugins: [
             less({
                 insert: 'true',
-                output: 'dist/bibleup.build.css'
+                output: 'dist/css/bibleup.build.css'
             }),
             /* babel({
                 exclude: 'node_modules/**',
