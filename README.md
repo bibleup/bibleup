@@ -53,11 +53,11 @@ bu_allow: []
 ```
 
 ## Options
-### version
+### ```version```
 Bible version to display on hover. BibleUp currently supports only 5 versions: KJV, ASV, BBE, WEB and YLT<br>
 Default: KJV
 
-### linkStyle
+### ```linkStyle```
 BibleUp ships with different link styles: classic, underline, style1, style2<br>
 Default: classic
 
@@ -73,15 +73,15 @@ linkStyle: 'myStyle'
 })
 ```
 
-### darkTheme
+### ```darkTheme```
 A boolean to toggle dark theme on popup<br>
 Default: false
 
-### popup
+### ```popup```
 BibleUp popup style. Check out the [Themes documentation](./docs/themes.md) for a list of popup styles<br>
 Default: classic
 
-### bu_allow
+### ```bu_allow```
 BibleUp ignores bible references on the following elements by default: H1 - H6, IMG, A, INPUT, SELECT, TEXTAREA, SCRIPT. Use this option to look up certain elements
 Type: array
 ```javascript
@@ -90,17 +90,17 @@ bu_allow: ['H4','H5'] //allow references on h4 and h5 tags
 })
 ```
 ## Methods
-### create()
+### ```create()```
 Put BibleUp to work using the ```create()``` method. This method doesn't accept any argument.
 
-### getOptions()
+### ```getOptions()```
 A getter method that returns all active BibleUp options. Use ```JSON.stringify()``` to parse to string
 ```javascript
 console.log(bibleup.getOptions) //[object Object], 
 ```
 
-# Behaviour ✔️
-Check out all bible abbreviations, their aliases and guidelines here: [Bible citations](./docs/guidelines.md)
+# Behaviour
+Check out all book abbreviations, their aliases and guidelines here: [Bible citations](./docs/guidelines.md)
 
 The following are tested bible citations:
 John 3:16 ✔️<br>
