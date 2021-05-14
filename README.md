@@ -60,7 +60,7 @@ The Bible version to display on hover. BibleUp currently supports only 5 version
 Default: ```kjv```
 
 ### ```linkStyle```
-BibleUp ships with different link styles: ```classic```, ```underline```, ```style1```, ```style2```<br>
+BibleUp comes with different link styles: ```classic```, ```underline```, ```style1```, ```style2```<br>
 Default: ```classic```
 
 You can replace these with your custom css style. Use the following selector
