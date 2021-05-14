@@ -44,13 +44,13 @@ A BibleUp instance accepts two arguments:
 
 ```javascript
 let bibleup = new BibleUp(body, {
-// default values
-version: 'kjv',
-linkStyle: 'classic',
-popup: 'classic',
-darkTheme: false,
-bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
-bu_allow: []
+ // default values
+ version: 'kjv',
+ linkStyle: 'classic',
+ popup: 'classic',
+ darkTheme: false,
+ bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
+ bu_allow: []
 });
 ```
 
@@ -66,12 +66,12 @@ Default: ```classic```
 You can replace these with your custom css style. Use the following selector
 ```css
 #bu-link-all.bu-link.myStyle {
-color: blue;
+ color: blue;
 }
 ```
 ```javascript
 let bibleup = new BibleUp(body, {
-linkStyle: 'myStyle'
+ linkStyle: 'myStyle'
 })
 ```
 
@@ -90,7 +90,7 @@ Use this option to look up bible references on certain elements.
 Type: array
 ```javascript
 let bibleup = new BibleUp(body, {
-bu_allow: ['H4','H5'] //allow references on h4 and h5 tags
+ bu_allow: ['H4','H5'] //allow references on h4 and h5 tags
 })
 ```
 
