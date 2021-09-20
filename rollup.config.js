@@ -6,7 +6,7 @@ export default [
     {
         input: './bibleup/js/main.js',
         output: {
-            file: './dist/bibleup.es.min.js',
+            file: './dist/esm/bibleup.es.min.js',
             format: 'es',
             name: 'BibleUp'
         },
