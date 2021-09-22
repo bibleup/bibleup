@@ -1,4 +1,4 @@
-import BibleUp from '../dist/esm/bibleup.esm.min.js';
+import BibleUp from '../dist/esm/bibleup.es.min.js';
 //import BibleUp from '../bibleup/js/bibleup.js'
 
 
