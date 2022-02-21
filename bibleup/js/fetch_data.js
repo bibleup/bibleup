@@ -19,6 +19,7 @@ let trimAll = (data) => {
 	* api endpoint - script/getscripture.php
 */
 let fetchData = async (bibleRef, version) => {
+  console.log(bibleRef)
 	let book = bibleRef['book'];
 	let chapter = trimAll(bibleRef['chapter']);
 	let verse = trimAll(bibleRef['verse']);
@@ -32,7 +33,8 @@ let fetchData = async (bibleRef, version) => {
 		
 	let form = new FormData();
 	form.append('json', a);
-		
+	
+	/*
 	try {
 		const response = await fetch('../bibleup/script/getscripture.php', {
 		 method: 'POST',
@@ -54,6 +56,8 @@ let fetchData = async (bibleRef, version) => {
 	} catch (error) {
 		return error;
 	}
+	
+	*/
 }
 	
 export default fetchData;
