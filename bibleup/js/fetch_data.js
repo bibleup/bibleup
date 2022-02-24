@@ -15,8 +15,8 @@ let trimAll = (data) => {
 	
 	
 /**
-	* get json data through XMLHttpRequest
-	* api endpoint - script/getscripture.php
+* get json data through XMLHttpRequest
+* api endpoint - script/getscripture.php
 */
 let fetchData = async (bibleRef, version) => {
   console.log(bibleRef)

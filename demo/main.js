@@ -9,7 +9,7 @@ let bibleup = new BibleUp(body, {
 	linkStyle: 'myStyle'
 })
 bibleup.create()
-console.log(bibleup.getOptions)
+//console.log(bibleup.getOptions)
 
 
 
