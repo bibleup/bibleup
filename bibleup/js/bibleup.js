@@ -1,7 +1,8 @@
 import bible_abbr from './key_abbreviations_english.js'
 import ConstructPopup from './construct_popup.js'
 import positionPopup from './position_popup.js'
-import fetchData from './fetch_data.js'
+//import fetchData from './fetch_data.js'
+import Search from './helper/search.js';
 console.log("BibleUP 📖💡");
 
 
@@ -247,12 +248,16 @@ async clickb(e) {
 	this.clearTimer();
 	let bibleRef = e.currentTarget.getAttribute('bu-data');
 	bibleRef = JSON.parse(bibleRef);
-	
+	let bibleRef2 = e.currentTarget.textContent
+	console.log(bibleRef2)
 	
 	positionPopup(e, this.options.popup);
 	this.openPopup();
+	//let res = await fetchData(bibleRef, this.options.version);
+
+	let res = await Search.getBibleData(bibleRef2, this.options.version)
 	
-	let res = await fetchData(bibleRef, this.options.version);
+	console.log(typeof(res))
 	this.updatePopupData(res);
 	positionPopup(e, this.options.popup);
 }
@@ -268,6 +273,8 @@ updatePopupData(res) {
 	let popupRef = document.querySelector('#bu-popup .ref');
 	let popupVersion = document.querySelector('#bu-popup .version');
 	let popupText = document.querySelector('#bu-popup .text');
+	console.log(res)
+	console.log(res[0].apiBook)
 	
 	//update
 	if (popupRef) {
@@ -275,7 +282,8 @@ updatePopupData(res) {
 	}
 	
 	if (popupVersion) {
-		popupVersion.textContent = res.version.toUpperCase();
+		//popupVersion.textContent = res.version.toUpperCase();
+		popupVersion.textContent = 'KJV'
 	}
 	
 	popupText.setAttribute('start', res.verse);
