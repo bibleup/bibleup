@@ -5,4 +5,4 @@ BibleUp transforms all bible references on a webpage (1 Timothy 2:7, John 3:16) 
 </p>
 
 # Bugs 🐛
-[ ] remove `bu-data` from links
+[ ] fix `bu-data`: concate the object into string to be passed on to `Search`

@@ -8,11 +8,15 @@ export default class Search {
 	 * returns array {'ref':<str>, 'version': {obj}, 'text': <str> ...}
 	 */
 	static async getBibleData(input, version) {
-		let result = [];
-		let bible = Bible.extractPassage(input);
-		let r = await this.getScripture(bible, version)
-		console.log(bible)
-		return r
+	  //input to str
+	  let str = JSON.parse(input)
+	  str = str['book'] + ' '+ str['chapter'] + ':'+ str['verse']
+
+	  //bibleup.js to extract real passage references
+		let bible = Bible.extractPassage(str);
+		//get scripture through API configurations
+		let result = await this.getScripture(bible, version)
+		return result
 		
 		// BELOW IS ONLY MEANT FOR STRINGS WITH MULTIPLE BIBLE REFERENCES
 		/* if (bible != false) {
@@ -23,9 +27,10 @@ export default class Search {
 					result.push(r)
 				}
 			}
-		} */
+		} 
 	
 		return result;
+		*/
 	}
 	
 	
@@ -36,7 +41,6 @@ export default class Search {
  */
 static async getScripture(bible, version) {
 	let text;
-	//console.log(JSON.stringify(bible.chapter))
 	if (bible.verseEnd) {
 		text = await this.getPassage(bible.apiBook, version.id)
 		} else {
@@ -60,7 +64,7 @@ static async getScripture(bible, version) {
 	
 	
 	static async getText(ref, version) {
-	let result = '';
+	let result = [];
 	let bibleId = 'de4e12af7f28f599-01';
 	let url = `https://api.scripture.api.bible/v1/bibles/${bibleId}/verses/${ref}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false&include-verse-spans=false&use-org-id=false`;
 	
@@ -83,7 +87,8 @@ static async getScripture(bible, version) {
 		}
 		
 		let content = await res.json();
-		result = this.processBibleText(content, 'text')
+		let text = this.processBibleText(content, 'text')
+		result.push(text)
 		return result;
 		
 	} catch(error) {
@@ -121,7 +126,7 @@ static async getScripture(bible, version) {
 	
 			let content = await res.json();
 			let text = this.processBibleText(content, 'passage')
-			return text;
+			return text
 	
 		} catch (error) {
 			//console.log(error);
