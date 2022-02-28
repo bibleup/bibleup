@@ -89,7 +89,7 @@ export default class BibleUp {
 		if (matches !== false) {
 			let matchesLength = matches.length;
 			this.transverseTextNodes(e, regex);
-			console.log(matches);
+			//console.log(matches);
 		} else {
 			this.error('warning', "No scripture reference found in selector's text");
 		}
@@ -98,7 +98,7 @@ export default class BibleUp {
 	
 	transverseTextNodes(e, regex) {
 		let type = e.nodeType;
-		let match = e.textContent .match(regex) || false;
+		let match = e.textContent.match(regex) || false;
 		let next;
 	
 		if (type == 3 && match != false) {
@@ -193,6 +193,14 @@ export default class BibleUp {
 			full_match['verse'] = p6;
 		}
 		
+		/*
+		FILTER BOOKS
+		if (p1 == 'Romans' || p4 == 'Romans') {
+		  return match;
+		}
+		*/
+		
+		
 		let result = `
 		<cite>
 		<a href='#' id='bu-link-all' class='bu-link ${linkStyle}' bu-data='${JSON.stringify(full_match)}'>${match}</a>
@@ -247,17 +255,14 @@ async clickb(e) {
 	//clear all popupTimer;
 	this.clearTimer();
 	let bibleRef = e.currentTarget.getAttribute('bu-data');
-	bibleRef = JSON.parse(bibleRef);
-	let bibleRef2 = e.currentTarget.textContent
-	console.log(bibleRef2)
 	
 	positionPopup(e, this.options.popup);
 	this.openPopup();
 	//let res = await fetchData(bibleRef, this.options.version);
 
-	let res = await Search.getBibleData(bibleRef2, this.options.version)
+	let res = await Search.getBibleData(bibleRef, this.options.version)
 	
-	console.log(typeof(res))
+	//console.log(res)
 	this.updatePopupData(res);
 	positionPopup(e, this.options.popup);
 }
@@ -273,8 +278,8 @@ updatePopupData(res) {
 	let popupRef = document.querySelector('#bu-popup .ref');
 	let popupVersion = document.querySelector('#bu-popup .version');
 	let popupText = document.querySelector('#bu-popup .text');
-	console.log(res)
-	console.log(res[0].apiBook)
+	console.log(JSON.stringify(res))
+	console.log(res.apiBook)
 	
 	//update
 	if (popupRef) {
@@ -286,7 +291,8 @@ updatePopupData(res) {
 		popupVersion.textContent = 'KJV'
 	}
 	
-	popupText.setAttribute('start', res.verse);
+	popupText.setAttribute('start', res.refData.startVerse);
+	
 	if (res.text == null) {
 		popupText.textContent = 'This bible reference cannot be loaded.';
 	} else {

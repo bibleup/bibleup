@@ -86,15 +86,15 @@ export default class Bible {
 	 * returns array of objects [{<ref>,<book>,<chapter>,<verse>,<verseEnd><apiBook>}]
 	*/
 	static extractPassage(txt) {
-		txt = txt.trim();
- 		let result = [];
+		txt = txt.trim()
+ 		let result = {};
 		let bibleRegex = this.regex();
 		let bible = [...txt.matchAll(bibleRegex)];
-	
+			
 		if (bible.length > 0) {
 			bible.forEach((bibleRef) => {
-		 	result.push(this._structureRef(bibleRef));
-			})
+		 	result = this._structureRef(bibleRef);
+		 	})
 		} else {
 			result = false;
 		}
