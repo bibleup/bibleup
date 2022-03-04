@@ -155,6 +155,7 @@ export default class BibleUp {
 	setScriptureLink(node, regex) {
 	 let newNode = document.createElement('div');
 	 newNode.innerHTML = node.nodeValue.replace(regex, this.setLinkStyle.bind(this));
+	 //console.log(node.nodeValue)
 	 
 	 while (newNode.firstChild) {
 	  //console.log(newNode.firstChild.textContent);

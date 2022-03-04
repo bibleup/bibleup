@@ -1,6 +1,5 @@
 import bibleData from './bible-data.js';
 
-
 export default class Bible {
 	
 	/**
