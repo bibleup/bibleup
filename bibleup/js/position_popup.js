@@ -1,4 +1,9 @@
-
+/**
+ * positionPopup() calls positional codes for the type of popup and sets the popup new positions
+ * NOTE - the popup dimensions(height, width) can only be gotten when using 'visibility:hidden' and not
+ * 'display:none'
+ * use classic() to set position on custom syled popups
+ */
 
 let positionPopup = (e, popup) => {
 	if (popup == 'classic') {
