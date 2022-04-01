@@ -1,70 +1,53 @@
 export default class ConstructPopup {
-	
-	static build(options) {
-		const popup = document.createElement('div');
-		popup.setAttribute('id', 'bu-popup');
-		let popupStyle = options.popup;
-		let darkTheme = options.darkTheme;
-		
-		switch (popupStyle) {
-			case 'classic':
-				popup.classList.add('classic', 'bu-popup-hide');
-				if (darkTheme == true) {
-					popup.classList.add('darkTheme');
-				}
-				popup.innerHTML = this.classic();
-				document.body.appendChild(popup);
-				break;
-		
-			//wiki-style
-			case 'wiki':
-				popup.classList.add('wiki', 'bu-popup-hide');
-				if (darkTheme == true) {
-					popup.classList.add('darkTheme');
-				}
-				popup.innerHTML = this.wiki();
-				document.body.appendChild(popup);
-				break;
-				
-			//inline
-			case 'inline': 
-				popup.classList.add('inline', 'bu-popup-hide');
-				if (darkTheme == true) {
-					popup.classList.add('darkTheme');
-				}
-				popup.innerHTML = this.inline();
-				document.body.appendChild(popup);
-				break;
-				
-			default:
-				return false;
-		}
+
+  static build(options) {
+    const popup = document.createElement("div");
+    popup.setAttribute("id", "bu-popup");
+    popup.classList.add("bu-popup-hide");
+    let popupStyle = options.popup;
+    let darkTheme = options.darkTheme;
+
+	if (popupStyle == 'classic') {
+        popup.classList.add("classic");
+        popup.innerHTML = this.classic();
+	}
+
+	if (popupStyle == 'inline') {
+        popup.classList.add("inline");
+        popup.innerHTML = this.inline();
+	}
+
+	if (popupStyle == 'wiki') {
+        popup.classList.add("wiki");
+        popup.innerHTML = this.wiki();
 	}
 	
-	
-	static classic() {
-		const markup = `
+	if (darkTheme == true) {
+		popup.classList.add("darkTheme");
+	}
+    document.body.appendChild(popup);
+  }
+
+  static classic() {
+    const markup = `
 		<div class="header">
 		<p class='ref'></p>
 		<p class="version">...</p>
 		</div>
 		
 		<div class="content">
-			<ol class='text'>
-				<li>Loading..</li>
-			</ol>
+			<ol class='text'></ol>
 		</div>
 		
 		<div class="footer">
 			<p>BibleUp 📖💡</p>
 		</div>
-		`
-	return markup;
-	}
-	
-	
-	static wiki() {
-		const markup = `
+		`;
+    return markup;
+  }
+
+  static wiki() {
+    const markup = `
 	 <div class="header">
 	  <p class='ref'></p>
 	  <span class='version'></span>
@@ -72,34 +55,26 @@ export default class ConstructPopup {
 	 </div> 
 	 
 	 <div class = "content">
-	 	<ol class='text'>
-	   <li>Loading..</li>
-	  </ol> 
+	 	<ol class='text'></ol> 
 	 </div>
 	  
-	 	<div class="footer">
+	 <div class="footer">
 	 	<p>BibleUp📖💡</p> 
-	 	</div>
-	 	`
-	 return markup;
-	}
-	
-	
-	static inline() {
-		const markup = `
+	 </div>`
+
+    return markup;
+  }
+
+  static inline() {
+    const markup = `
 		<div class="content">
-  	<ol class="text">
-   	<li>Loading..</li>
-  	</ol>
-  </div>
+  			<ol class="text"></ol>
+  		</div>
  
- 	<div class="footer">
-  	<p>BibleUp 📖💡</p>
- 	</div>
-		`
-		
-		return markup;
-	}
-	
-	
+ 		<div class="footer">
+  			<p>BibleUp 📖💡</p>
+ 		</div>`
+
+    return markup;
+  }
 }
