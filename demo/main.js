@@ -6,10 +6,10 @@ let testPanel = document.querySelector('#test-panel');
 let body = document.querySelector('body')
 
 let bibleup = new BibleUp(body, {
-	version: 'lsv',
+	version: 'bsb',
 	linkStyle: 'myStyle',
 	popup: 'classic',
-	darkTheme: true
+	darkTheme: false
 })
 bibleup.create()
 //console.log(bibleup.regex)

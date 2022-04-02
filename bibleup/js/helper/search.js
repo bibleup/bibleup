@@ -47,6 +47,9 @@ export default class Search {
       case 'WEB':
         id = "9879dbb7cfe39e4d-01"
         break;
+      case 'BSB':
+        id = "bba9f40183526463-01"
+        break;
       default:
         id =  "de4e12af7f28f599-01"
     }
@@ -68,8 +71,6 @@ export default class Search {
       });
 
       if (!res.ok) {
-        let err = `An error has occurred: ${res.status}`;
-        //result.push("Cannot load passage at the moment");
         result = null
         return result;
       }
@@ -79,7 +80,6 @@ export default class Search {
       result.push(text);
       return result;
     } catch (error) {
-      //result.push("Cannot load passage at the moment");
       result = null
       return result
     }
@@ -102,8 +102,7 @@ export default class Search {
       });
 
       if (!res.ok) {
-        let err = `An error has occurred: ${res.status}`;
-        result.push("Cannot load passage at the moment");
+        result = null
         return result
       }
 
@@ -111,7 +110,7 @@ export default class Search {
       let text = this.#processBibleText(content, "passage");
       return text;
     } catch (error) {
-      result.push("Cannot load passage at the moment");
+      result = null
       return result
     }
   }
