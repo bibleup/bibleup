@@ -43,7 +43,7 @@ export default class BibleUp {
 
 
 	#validateOptions(options) {
-		let versions = ['KJV', 'ASV', 'LSV', 'WEB']
+		let versions = ['KJV', 'ASV', 'LSV', 'WEB', 'BSB']
 		options.version = options.version.toUpperCase() //opt version to uppercase
 		if (versions.includes(options.version) == false) {
 			this.#error("The version in BibleUp options is currently not supported. Try with other supported versions");
@@ -218,7 +218,7 @@ export default class BibleUp {
 
 		let result = `
 		<cite>
-		<a href='#' id='bu-link-all' class='bu-link ${linkStyle}' bu-data='${validRef}'>${match}</a>
+		<a href='#' class='bu-link ${linkStyle}' bu-data='${validRef}'>${match}</a>
 		</cite>`;
 
 		return result;

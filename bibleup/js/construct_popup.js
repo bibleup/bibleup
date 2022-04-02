@@ -32,7 +32,7 @@ export default class ConstructPopup {
     const markup = `
 		<div class="header">
 		<p class='ref'></p>
-		<p class="version">...</p>
+		<p class="version"></p>
 		</div>
 		
 		<div class="content">
@@ -59,7 +59,7 @@ export default class ConstructPopup {
 	 </div>
 	  
 	 <div class="footer">
-	 	<p>BibleUp📖💡</p> 
+	 	<p>BibleUp 📖💡</p> 
 	 </div>`
 
     return markup;

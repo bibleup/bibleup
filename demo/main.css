@@ -29,7 +29,7 @@ body {
 	width: 100%;
 }
 
-#bu-link-all.bu-link.myStyle {
+.bu-link.myStyle {
 	text-decoration: none;
 	color: red;
 	text-decoration: underline;
