@@ -58,7 +58,7 @@ export default class ConstructPopup {
 	 <div id='bu-popup-header'>
 	  <p id='bu-popup-ref'></p>
 	  <span id='bu-popup-version'></span>
-	  <p id='bu-popup-close' tabindex='0'>&#x2715</p>
+	  <button id='bu-popup-close' tabindex='0'>&#x2715</button>
 	 </div> 
 	 
 	 <div id='bu-popup-content'>

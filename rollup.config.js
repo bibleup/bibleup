@@ -1,5 +1,4 @@
 import { terser } from "rollup-plugin-terser";
-import babel from "@rollup/plugin-babel";
 import less from 'rollup-plugin-less';
 
 export default [
@@ -32,10 +31,6 @@ export default [
                 insert: 'true',
                 output: 'dist/css/bibleup.build.css'
             }),
-            /* babel({
-                exclude: 'node_modules/**',
-                babelHelpers: "bundled"
-            }), */
             terser()
           ]
     }
