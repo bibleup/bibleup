@@ -2,7 +2,7 @@
    BIBLEUP 📖💡
 */
 
-#bu-popup.classic {
+#bu-popup.bu-classic {
 	@bg-color: #ffffff;
 	position: absolute;
 	font-size: 15px;
@@ -25,13 +25,14 @@
 		padding: 10px;
 	}
 
-	.header {
+	#bu-popup-header {
 		background: darken(@bg-color, 10%);
 		font-weight: bold;
-		//box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
-		//border-bottom: 1px solid darken(@bg-color, 50%);
-		.flex > .row;
-		.version {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		
+		#bu-popup-version {
 			background: #f2f2f2;
 			padding: 2px 10px;
 			border-radius: 3px;
@@ -39,16 +40,17 @@
 		}
 	}
 
-	.content {
+	#bu-popup-content {
 		min-height: 60px;
 		max-height: 130px;
 		overflow-x: auto;
-		//box-shadow: 0px 0px 10px 0px #bfbfbf;
 		font-size: 14px;
+		
 		ol {
 			padding: 0 20px;
 			margin: 0;
 		}
+		
 		li {
 			padding: 0 5px;
 			margin: 0;
@@ -58,26 +60,27 @@
 		}
 	}
 
-	.footer {
+	#bu-popup-footer {
 		//background: darken(@bg-color, 10%);
 		font-weight: bold;
 		text-align: right;
 		color: #8c8c8c;
-		//box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.45);
 	}
 }
 
-#bu-popup.classic.darkTheme {
+#bu-popup.bu-classic.bu-theme-dark {
 	@bg1: #595959;
 	@color: #333333;
 	@color2: #f2f2f2;
 	background: @bg1;
 	color: @color2 ;
-	.header {
+	
+	#bu-popup-header {
 		color: #333333;
 		background: lighten(@bg1, 50%);
 	}
-	.footer {
+	
+	#bu-popup-footer {
 		//color: @color2;
 	}
 }

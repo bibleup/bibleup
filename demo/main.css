@@ -29,8 +29,12 @@ body {
 	width: 100%;
 }
 
-.bu-link.myStyle {
+.bu-link {
 	text-decoration: none;
-	color: red;
-	text-decoration: underline;
+	color: orange;
+	font-style: normal;
+}
+
+.ref {
+  background: red;
 }

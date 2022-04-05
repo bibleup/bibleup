@@ -2,44 +2,51 @@ export default class ConstructPopup {
 
   static build(options) {
     const popup = document.createElement("div");
-    popup.setAttribute("id", "bu-popup");
+    popup.id = 'bu-popup';
     popup.classList.add("bu-popup-hide");
     let popupStyle = options.popup;
     let darkTheme = options.darkTheme;
+    
+    //Accessibility
+    popup.setAttribute('role', 'dialog')
+    popup.setAttribute('aria-description', 'A non-modal popup showing the text of Bible reference clicked on')
 
-	if (popupStyle == 'classic') {
-        popup.classList.add("classic");
-        popup.innerHTML = this.classic();
-	}
+	  if (popupStyle == 'classic') {
+	    popup.classList.add("bu-classic");
+	    popup.innerHTML = this.classic();
+	  }
 
-	if (popupStyle == 'inline') {
-        popup.classList.add("inline");
-        popup.innerHTML = this.inline();
-	}
+	  if (popupStyle == 'inline') {
+      popup.classList.add("bu-inline");
+      popup.innerHTML = this.inline();
+	  }
 
-	if (popupStyle == 'wiki') {
-        popup.classList.add("wiki");
-        popup.innerHTML = this.wiki();
-	}
+	  if (popupStyle == 'wiki') {
+	    popup.classList.add("bu-wiki") ;
+      popup.innerHTML = this.wiki();
+	  }
 	
-	if (darkTheme == true) {
-		popup.classList.add("darkTheme");
-	}
+	  if (darkTheme == true) {
+	    popup.classList.add("bu-theme-dark");
+	  }
+	 
     document.body.appendChild(popup);
   }
+  
+  // bu-popup-ref/version/header/content/text/footer
 
   static classic() {
     const markup = `
-		<div class="header">
-		<p class='ref'></p>
-		<p class="version"></p>
+		<div id='bu-popup-header'>
+		<p id='bu-popup-ref'></p>
+		<p id="bu-popup-version"></p>
 		</div>
 		
-		<div class="content">
-			<ol class='text'></ol>
+		<div id='bu-popup-content'>
+			<ol id='bu-popup-text'></ol>
 		</div>
 		
-		<div class="footer">
+		<div id='bu-popup-footer'>
 			<p>BibleUp 📖💡</p>
 		</div>
 		`;
@@ -48,17 +55,17 @@ export default class ConstructPopup {
 
   static wiki() {
     const markup = `
-	 <div class="header">
-	  <p class='ref'></p>
-	  <span class='version'></span>
-	  <p class="close">&#x2715</p>
+	 <div id='bu-popup-header'>
+	  <p id='bu-popup-ref'></p>
+	  <span id='bu-popup-version'></span>
+	  <p id='bu-popup-close' tabindex='0'>&#x2715</p>
 	 </div> 
 	 
-	 <div class = "content">
-	 	<ol class='text'></ol> 
+	 <div id='bu-popup-content'>
+	 	<ol id='bu-popup-text'></ol> 
 	 </div>
 	  
-	 <div class="footer">
+	 <div id='bu-popup-footer'>
 	 	<p>BibleUp 📖💡</p> 
 	 </div>`
 
@@ -67,11 +74,11 @@ export default class ConstructPopup {
 
   static inline() {
     const markup = `
-		<div class="content">
-  			<ol class="text"></ol>
-  		</div>
+		<div id='bu-popup-content'>
+  			<ol id='bu-popup-text'></ol>
+  	</div>
  
- 		<div class="footer">
+ 		<div id='bu-popup-footer'>
   			<p>BibleUp 📖💡</p>
  		</div>`
 

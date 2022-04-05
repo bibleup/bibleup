@@ -3,7 +3,7 @@
    BIBLEUP 📖💡
 */
 
-#bu-popup.inline {
+#bu-popup.bu-inline {
 	@bg-color: #ffffff;
 	position: absolute;
 	width: 80%;
@@ -22,10 +22,10 @@
 	}
 	
 	div {
-		padding: 10px;
+		padding: 10px 15px;
 	}
 
-	.content {
+	#bu-popup-content {
 		font-size: 14px;
 		min-height: 50px;
 		max-height: 130px;
@@ -45,14 +45,14 @@
 		}
 	}
 	
-	.footer {
+	#bu-popup-footer {
 		font-weight: bold;
 		text-align: right;
 		color: #8c8c8c;
 	}
 }
 
-#bu-popup.inline.darkTheme {
+#bu-popup.bu-inline.bu-theme-dark {
 	@bg1: #3d4245;
 	@color: #333333;
 	background: @bg1;
