@@ -27,7 +27,7 @@
   
 	#bu-popup-header {
 	  display: grid;
-	  grid-template-columns: auto auto 1fr;
+	  grid-template-columns: auto auto 1fr ;
   
 	  #bu-popup-ref {
 		font-weight: bold;
@@ -44,7 +44,18 @@
 	  #bu-popup-close {
 		text-align: right;
 		margin-right: 5px;
+		margin-left: auto;
+		padding: 0 5px;
 		font-size: 18px;
+		cursor: pointer;
+		background: none;
+		outline: none;
+		border: none;
+
+		&:focus {
+			outline: none;
+			outline: 2px solid #a6a6a6;
+		}
 	  }
 	}
   
