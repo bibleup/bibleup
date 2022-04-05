@@ -8,11 +8,20 @@ console.log("BibleUP 📖💡");
 
 
 export default class BibleUp {
+  // PRIVATE_FIELD
+  #element
+  #options
+  #defaultOptions;
+  #regex;
+  #mouseOnPopup; //if mouse is on popup 
+  #popupTimer;
+  #loadingRef; //currently loading bible ref
+  #popup
+  
 	constructor(element, options) {
-		this.element = element;
-		this.defaultOptions = {
+		this.#element = element;
+		this.#defaultOptions = {
 			version: 'KJV',
-			linkStyle: 'classic',
 			popup: 'classic',
 			darkTheme: false,
 			bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
@@ -20,16 +29,22 @@ export default class BibleUp {
 		}
 
 		if (typeof options === 'object' && options !== null) {
-			this.options = { ...this.defaultOptions, ...options };
+			this.#options = { ...this.#defaultOptions, ...options };
 		} else {
-			this.options = this.defaultOptions;
+			this.#options = this.#defaultOptions;
 		}
 
-		this.#validateOptions(this.options)
-		this.regex = this.#scriptureRegex(bibleData);
-		this.mouseOnPopup = false; //if mouse is on popup
-		this.popupTimer;
-		this.loadingRef;
+		this.#validateOptions(this.#options)
+		this.#regex = this.#scriptureRegex(bibleData);
+		this.#mouseOnPopup = false;
+		this.#popup = {
+		  'container': document.querySelector('#bu-popup'),
+		  'ref': document.querySelector('#bu-popup-ref'), 
+		  'version': document.querySelector('#bu-popup-version'), 
+		  'content': document.querySelector('#bu-popup-content'),
+		  'text': document.querySelector('#bu-popup-text'), 
+		  'close': document.querySelector('#bu-popup-close') || false,
+		}
 	}
 
 
@@ -38,12 +53,12 @@ export default class BibleUp {
 		* {return} all options for present class instance
 		*/
 	get getOptions() {
-		return this.options;
+		return this.#options;
 	}
 
 
 	#validateOptions(options) {
-		let versions = ['KJV', 'ASV', 'LSV', 'WEB', 'BSB']
+		let versions = ['KJV', 'ASV', 'LSV', 'WEB']
 		options.version = options.version.toUpperCase() //opt version to uppercase
 		if (versions.includes(options.version) == false) {
 			this.#error("The version in BibleUp options is currently not supported. Try with other supported versions");
@@ -89,8 +104,8 @@ export default class BibleUp {
 	 * 
 	 */
 	create() {
-		this.#transverseTextNodes(this.element, this.regex);
-		this.#setStage(this.options);
+		this.#transverseTextNodes(this.#element, this.#regex);
+		this.#setStage(this.#options);
 	}
 
 
@@ -127,9 +142,7 @@ export default class BibleUp {
 					next = e.nextSibling;
 					type = e.nodeType;
 					if (type == 1) {
-						if (e.classList.contains('bu-link')) {
-							this.#modifyLink(e);
-						} else if (this.#validateEl(e)) {
+						if (this.#validateEl(e)) {
 							this.#transverseTextNodes(e, regex);
 						}
 					} else {
@@ -146,20 +159,11 @@ export default class BibleUp {
 	 * Returns true after successful validation else returns false 
 	 */
 	#validateEl(e) {
-		let forbidden_tags = this.options.bu_ignore;
-		let allowed_tags = this.options.bu_allow;
+		let forbidden_tags = this.#options.bu_ignore;
+		let allowed_tags = this.#options.bu_allow;
 		if (forbidden_tags.includes(e.tagName) && !allowed_tags.includes(e.tagName)) return false
 		if (e.classList.contains('bu-ignore') == false)
 			return true;
-	}
-
-
-	/**
-	 * description: If element node is contains 'bu-link' class, then this function helps modify/change it styles rather than running #transverseTextNodes() a second time
-	 * returns same element data but with a new modified style
-	 */
-	#modifyLink(e) {
-		e.className = `bu-link ${this.options.linkStyle}`
 	}
 
 
@@ -171,8 +175,7 @@ export default class BibleUp {
 	 */
 	#setScriptureLink(node, regex) {
 		let newNode = document.createElement('div');
-		newNode.innerHTML = node.nodeValue.replace(regex, this.#setLinkStyle.bind(this));
-		//console.log(node.nodeValue)
+		newNode.innerHTML = node.nodeValue.replace(regex, this.#setLinkMatch.bind(this));
 
 		while (newNode.firstChild) {
 			//console.log(newNode.firstChild.textContent);
@@ -184,15 +187,13 @@ export default class BibleUp {
 
 
 	/**
-		* param(style): linkStyle from options
 		* param(match) is the actual matched string. Check replace() on MDN
 		* param(p1) is value of first capturing group. Pn is the capturing group for 'n'. Check replace() on MDN
 		* The first three capturing groups (p1 - p3) matches a standard Bible reference (Romans 3:23-25)
 		* The remaining three capturing groups matches the look-behind Bible reference (John 3:16,27,3-5 = matches 27 and 3-5)
 		* returns <cite[data-*]>john 3:16</cite>
 		*/
-	#setLinkStyle(match, p1, p2, p3, p4, p5, p6) {
-		let linkStyle = this.options.linkStyle;
+	#setLinkMatch(match, p1, p2, p3, p4, p5, p6) {
 		let full_match = {
 			'book': undefined,
 			'chapter': undefined,
@@ -218,7 +219,7 @@ export default class BibleUp {
 
 		let result = `
 		<cite>
-		<a href='#' class='bu-link ${linkStyle}' bu-data='${validRef}'>${match}</a>
+		<a href='#' class='bu-link' bu-data='${validRef}'>${match}</a>
 		</cite>`;
 
 		return result;
@@ -254,51 +255,58 @@ export default class BibleUp {
 
 	#setStage(options) {
 		let bulink = document.querySelectorAll('.bu-link');
-		let popup = document.getElementById('bu-popup');
-
 		bulink.forEach(link => {
 			link.addEventListener('click', evt => {
 				evt.preventDefault();
 				evt.stopPropagation();
 			});
+			
 			link.addEventListener('mouseenter', this.#clickb.bind(this));
 			link.addEventListener('mouseleave', this.#closePopup.bind(this))
 		});
-
-		popup.addEventListener('mouseenter', () => {
-			this.mouseOnPopup = true;
+		
+		this.#popup.container.addEventListener('mouseenter', () => {
+			this.#mouseOnPopup = true;
 		});
 
-		popup.addEventListener('mouseleave', (e) => {
-			this.mouseOnPopup = false;
+		this.#popup.container.addEventListener('mouseleave', (e) => {
+			this.#mouseOnPopup = false;
 			this.#closePopup(e);
 		});
 
-		let closeBtn = document.querySelector('#bu-popup .close') || false;
-		if (closeBtn) {
-			closeBtn.addEventListener('click', this.#exitPopup.bind(this))
+		if (this.#popup.close) {
+			this.#popup.close.addEventListener('click', this.#exitPopup.bind(this))
+		}
+		
+		// ESC to close dialog
+		window.onkeydown = (e) => {
+		  if (e.key == 'Escape') {
+		    this.#exitPopup()
+		  }
 		}
 	}
 
 
 	async #clickb(e) {
-		//clear all popupTimer;
+		//clear popup timer;
 		this.#clearTimer();
+		
 		let bibleRef = e.currentTarget.getAttribute('bu-data');
 		bibleRef = JSON.parse(bibleRef)
 
-		positionPopup(e, this.options.popup);
+		positionPopup(e, this.#options.popup);
 		this.#updatePopup(bibleRef, true)
-		positionPopup(e, this.options.popup);
+		positionPopup(e, this.#options.popup);
 		this.#openPopup();
 
-		this.loadingRef = bibleRef.ref
-		let res = await Search.getScripture(bibleRef, this.options.version)
+		this.#loadingRef = bibleRef.ref
+		let res = await Search.getScripture(bibleRef, this.#options.version)
 
-		if (this.loadingRef == res.ref) {
+		if (this.#loadingRef == res.ref) {
 			this.#updatePopup(res, false);
-			positionPopup(e, this.options.popup);
+			positionPopup(e, this.#options.popup);
 		}
+		
 	}
 
 
@@ -310,63 +318,62 @@ export default class BibleUp {
 	 * (description) update popup data
 	*/
 	#updatePopup(res, isLoading) {
-		let popupRef = document.querySelector('#bu-popup .ref');
-		let popupVersion = document.querySelector('#bu-popup .version');
-		let popupContent = document.querySelector('.content')
-		let popupText = popupContent.querySelector('.text');
-		/* console.log(JSON.stringify(res)) */
-
+	  
 		if (isLoading) {
-			if (popupRef) {
-				popupRef.textContent = res.ref;
+			if (this.#popup.ref) {
+				this.#popup.ref.textContent = res.ref;
 			}
 
-			if (popupVersion) {
-				popupVersion.textContent = this.options.version
+			if (this.#popup.version) {
+				this.#popup.version.textContent = this.#options.version
 			}
 			
-			popupText.textContent = 'Loading...'
+			this.#popup.text.textContent = 'Loading...'
 		} else {
-			if (popupRef) {
-				popupRef.textContent = res.ref;
+			if (this.#popup.ref) {
+				this.#popup.ref.textContent = res.ref;
+				//REF Accessibility
+				this.#popup.container.setAttribute('aria-label', 'bu-popup-ref')
 			}
 
-			if (popupVersion) {
-				popupVersion.textContent = res.version
+			if (this.#popup.version) {
+				this.#popup.version.textContent = res.version
 			}
 
-			popupText.setAttribute('start', res.refData.startVerse);
+			this.#popup.text.setAttribute('start', res.refData.startVerse);
 	
 			if (res.text == null) {
-				popupText.textContent = 'Cannot load bible reference at the moment.';
+				this.#popup.text.textContent = 'Cannot load bible reference at the moment.';
 			} else {
 				let text = res.text
-				popupText.innerHTML = '';
+				this.#popup.text.innerHTML = '';
 				text.forEach(verse => {
-					popupText.innerHTML += `<li>${verse} </li>`
+					this.#popup.text.innerHTML += `<li>${verse} </li>`
 				})
 			}
 		}
-
 	}
 
 
 	#openPopup() {
-		let popup = document.getElementById('bu-popup');
-		if (popup.classList.contains('bu-popup-hide')) {
-			popup.classList.remove('bu-popup-hide');
+		if (this.#popup.container.classList.contains('bu-popup-hide')) {
+			this.#popup.container.classList.remove('bu-popup-hide');
+			if (this.#popup.close) {
+			  this.#popup.close.focus();
+			}
 		}
 	}
-
-
+	
+	
+	/**
+	 * closePopup() is for mouse events which needs timeout 
+	 */
 	#closePopup(e) {
-		this.popupTimer = setTimeout(() => {
-			if (!this.mouseOnPopup) {
+		this.#popupTimer = setTimeout(() => {
+			if (!this.#mouseOnPopup) {
 				let mouseFrom = e.relatedTarget;
 				if (mouseFrom.classList.contains('bu-link') == false) {
-					let popup = document.getElementById('bu-popup');
-					popup.classList.add('bu-popup-hide');
-					this.mouseOnPopup = false;
+					this.#exitPopup();
 				}
 			}
 		}, 50)
@@ -374,14 +381,13 @@ export default class BibleUp {
 
 
 	#exitPopup() {
-		let popup = document.getElementById('bu-popup');
-		popup.classList.add('bu-popup-hide');
-		this.mouseOnPopup = false;
+		this.#popup.container.classList.add('bu-popup-hide');
+		this.#mouseOnPopup = false;
 	}
 
 	#clearTimer() {
-		if (this.popupTimer)
-			clearTimeout(this.popupTimer);
+		if (this.#popupTimer)
+			clearTimeout(this.#popupTimer);
 	}
 
 

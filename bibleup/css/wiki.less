@@ -2,7 +2,7 @@
    BIBLEUP 📖💡
 */
 
-#bu-popup.wiki {
+#bu-popup.bu-wiki {
 	@bg-color: #ffffff;
 	position: fixed;
 	bottom: 0;
@@ -25,30 +25,30 @@
 		padding: 12px 15px;
 	}
   
-	.header {
+	#bu-popup-header {
 	  display: grid;
 	  grid-template-columns: auto auto 1fr;
   
-	  .ref {
+	  #bu-popup-ref {
 		font-weight: bold;
 		padding: 2px 0;
 	  }
   
-	  .version {
+	  #bu-popup-version {
 		background: darken(@bg-color, 5%);
 		padding: 2px 10px;
 		border-radius: 3px;
 		margin-left: 5px;
 	  }
   
-	  .close {
+	  #bu-popup-close {
 		text-align: right;
 		margin-right: 5px;
 		font-size: 18px;
 	  }
 	}
   
-	.content {
+	#bu-popup-content {
 	  font-size: 14px;
 	  min-height: 50px;
 	  max-height: 100px;
@@ -66,14 +66,14 @@
 	  }
 	}
   
-	.footer {
+	#bu-popup-footer {
 	  font-weight: bold;
 	  text-align: right;
 	  color: #8c8c8c;
 	}
   }
   
-  #bu-popup.wiki.darkTheme {
+  #bu-popup.bu-wiki.bu-theme-dark {
 	@bg1: #3d4245;
 	@color: #333333;
 	background: @bg1;

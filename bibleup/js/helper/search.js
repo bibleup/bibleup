@@ -47,9 +47,6 @@ export default class Search {
       case 'WEB':
         id = "9879dbb7cfe39e4d-01"
         break;
-      case 'BSB':
-        id = "bba9f40183526463-01"
-        break;
       default:
         id =  "de4e12af7f28f599-01"
     }
