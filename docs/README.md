@@ -17,6 +17,9 @@ BibleUp transforms all bible references on a webpage (1 Timothy 2:7, John 3:16) 
 # Minor Improvements
 [x] Implement WAI-ARAI accessibility guidelines to make dialogs readable by assistive technologies - focus on close button and ESC to close dialog
 [x] `styleLink` option removed. Links should be styled directly instead.
+[x] add `styles` to BibleUp options - object with diiferent properties 
+[x] fix font-size declaration on bibleup css files
+
 
 # Before Production
 [x] `bible-data.js` was included twice in bundle - at `bible.js` and `bibleup.js`. Check if it is only incuded once in dist output

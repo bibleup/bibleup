@@ -25,7 +25,8 @@ or using `<srcipt/>` in your HTML
 `<script src="https://jsdlvr.com/bibleup"></script>`
 
 > NOTE: 
-You can also use the `<script/>` to include BibleUp after installation with NPM. BibleUp ships both ESM and UMD builds
+You can also use the `<script/>` to include BibleUp after installation with NPM.
+BibleUp ships both ESM and UMD builds
 
 ## BibleUp Core
 BibleUp comes with the CSS included into the build by default therefore providing a single minified build. However, you can decide to include BibleUp Core API and CSS separately.

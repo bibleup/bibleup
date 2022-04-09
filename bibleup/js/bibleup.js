@@ -6,7 +6,6 @@ import Search from './helper/search.js';
 console.log("BibleUP 📖💡");
 
 
-
 export default class BibleUp {
   // PRIVATE_FIELD
   #element
@@ -25,7 +24,8 @@ export default class BibleUp {
 			popup: 'classic',
 			darkTheme: false,
 			bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
-			bu_allow: []
+			bu_allow: [],
+			styles: undefined,
 		}
 
 		if (typeof options === 'object' && options !== null) {
@@ -70,6 +70,54 @@ export default class BibleUp {
 		} else {
 			this.#error("BibleUp was unable to construct popup. Check to see if 'popup' option is correct");
 		}
+
+		if (this.#options.styles) {
+			this.#setStyles(this.#options.styles)
+		}
+	}
+
+	#setStyles(styles) {
+		const elExists = (id) => {
+			if (document.getElementById(id)) {
+				return true
+			}
+		}
+
+		for (let prop in styles) {
+			if (prop && styles[prop]) {
+				if (prop == 'primary') {
+					document.getElementById('bu-popup').style.background = styles[prop]
+				}
+
+				if (prop == 'secondary' && elExists('bu-popup-header')) {
+					document.getElementById('bu-popup-header').style.background = styles[prop]
+				}
+
+				if (prop == 'tertiary' && elExists('bu-popup-version')) {
+					document.getElementById('bu-popup-version').style.background = styles[prop]
+				}
+
+				if (prop == 'headerColor' && elExists('bu-popup-header')) {
+					document.getElementById('bu-popup-header').style.color = styles[prop]
+				}
+
+				if (prop == 'color') {
+					//font color
+					document.getElementById('bu-popup').style.color = styles.color[0]
+					//version color
+					if (elExists('bu-popup-version'))
+						document.getElementById('bu-popup-version').style.color = styles.color[1]
+					//close color
+					if (elExists('bu-popup-close'))
+						document.getElementById('bu-popup-close').style.color = styles.color[2]
+				}
+
+				if (prop == 'borderRadius' || prop == 'boxShadow' || prop == 'fontSize') {
+					document.getElementById('bu-popup').style[prop] = styles[prop]
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -119,9 +167,7 @@ export default class BibleUp {
 		let matches = eContent.match(regex) || false;
 
 		if (matches !== false) {
-			let matchesLength = matches.length;
 			this.#transverseTextNodes(e, regex);
-			//console.log(matches);
 		} else {
 			this.#error("No scripture reference found in selector's text");
 		}
@@ -413,8 +459,6 @@ export default class BibleUp {
 
 
 	#error(msg) {
-		//console.log(msg);
-		//return false;
 		throw new Error(msg);
 	}
 }
