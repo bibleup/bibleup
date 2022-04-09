@@ -76,7 +76,7 @@ export default class ConstructPopup {
     const markup = `
 		<div id='bu-popup-content'>
   			<ol id='bu-popup-text'></ol>
-  	</div>
+  		</div>
  
  		<div id='bu-popup-footer'>
   			<p>BibleUp 📖💡</p>
