@@ -1,3 +1,4 @@
+import api_key from "./config.js";
 
 export default class Search {
 
@@ -62,7 +63,7 @@ export default class Search {
       let res = await fetch(url, {
         method: "GET",
         headers: {
-          "api-key": "f3aa9d8a78fc43aaa708fb5032042f4b",
+          "api-key": api_key,
         },
         cache: 'force-cache'
       });
@@ -93,7 +94,7 @@ export default class Search {
       let res = await fetch(url, {
         method: "GET",
         headers: {
-          "api-key": "1f52dfac1bbd400ebb653227547f4912",
+          "api-key": api_key,
         },
         cache: 'force-cache'
       });
