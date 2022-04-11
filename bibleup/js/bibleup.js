@@ -152,47 +152,34 @@ export default class BibleUp {
 	 * 
 	 */
 	create() {
-		this.#transverseTextNodes(this.#element, this.#regex);
-		this.#setStage(this.#options);
+		this.#searchNode(this.#element, this.#regex);
+		this.#manageEvents(this.#options);
 	}
 
 
-	/*
-	This function is currently not in use. Intended use is to check whether bibleup element contains scripture references or not. Then output an error if negative but if positive proceeds to #transverseTextNodes()
-	
-	This function is already being handled by #transverseTextNodes() without displaying error
-	*/
-	searchScripInstances(e, regex) {
-		let eContent = e.textContent;
-		let matches = eContent.match(regex) || false;
-
-		if (matches !== false) {
-			this.#transverseTextNodes(e, regex);
-		} else {
-			this.#error("No scripture reference found in selector's text");
-		}
-	}
-
-
-	#transverseTextNodes(e, regex) {
+  /**
+  * This function traverse all nodes and child nodes in the `e` parameter and calls #createLink on all text nodes that matches the Bible regex
+  * The function performs a self call on element child nodes until all matches are found
+  */
+	#searchNode(e, regex) {
 		let type = e.nodeType;
 		let match = e.textContent.match(regex) || false;
 		let next;
 
-		if (type == 3 && match != false) {
-			this.#setScriptureLink(e, regex);
-		} else if (type == 1) {
+		if (type == 3 && match) {
+			this.#createLink(e, regex);
+		} else if (type == 1 && match) {
 			//element node
 			if (e = e.firstChild) {
 				do {
 					next = e.nextSibling;
 					type = e.nodeType;
 					if (type == 1) {
-						if (this.#validateEl(e)) {
-							this.#transverseTextNodes(e, regex);
+						if (this.#validateNode(e)) {
+							this.#searchNode(e, regex);
 						}
 					} else {
-						this.#transverseTextNodes(e, regex);
+						this.#searchNode(e, regex);
 					}
 				} while (e = next);
 			}
@@ -201,10 +188,10 @@ export default class BibleUp {
 
 
 	/**
-	 * description: This function validates elements node before running #transverseTextNodes() on subsequent child elements
+	 * {desc} This function validates elements node before running #searchNode() on subsequent child elements
 	 * Returns true after successful validation else returns false 
 	 */
-	#validateEl(e) {
+	#validateNode(e) {
 		let forbidden_tags = this.#options.bu_ignore;
 		let allowed_tags = this.#options.bu_allow;
 		if (forbidden_tags.includes(e.tagName) && !allowed_tags.includes(e.tagName)) return false
@@ -215,13 +202,13 @@ export default class BibleUp {
 
 
 	/**
-	 * description: This function returns appends <cite> on text nodes with a scripture match
+	 * {desc} This function returns appends <cite> on text nodes with a scripture match
 	 * It replace 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
 	 * param(node) is a text node
 	 */
-	#setScriptureLink(node, regex) {
+	#createLink(node, regex) {
 		let newNode = document.createElement('div');
-		newNode.innerHTML = node.nodeValue.replace(regex, this.#setLinkMatch.bind(this));
+		newNode.innerHTML = node.nodeValue.replace(regex, this.#setLinkMarkup.bind(this));
 
 		while (newNode.firstChild) {
 			//console.log(newNode.firstChild.textContent);
@@ -239,8 +226,8 @@ export default class BibleUp {
 		* The remaining three capturing groups matches the look-behind Bible reference (John 3:16,27,3-5 = matches 27 and 3-5)
 		* returns <cite[data-*]>john 3:16</cite>
 		*/
-	#setLinkMatch(match, p1, p2, p3, p4, p5, p6) {
-		let full_match = {
+	#setLinkMarkup(match, p1, p2, p3, p4, p5, p6) {
+		let bible = {
 			'book': undefined,
 			'chapter': undefined,
 			'verse': undefined
@@ -248,24 +235,24 @@ export default class BibleUp {
 
 		if (p1 != undefined) {
 			//standard Bible regex
-			full_match['book'] = p1;
-			full_match['chapter'] = p2;
-			full_match['verse'] = p3 || '1';
+			bible['book'] = p1;
+			bible['chapter'] = p2;
+			bible['verse'] = p3 || '1';
 		} else {
 			//look-behind Bible regex
-			full_match['book'] = p4;
-			full_match['chapter'] = p5;
-			full_match['verse'] = p6;
+			bible['book'] = p4;
+			bible['chapter'] = p5;
+			bible['verse'] = p6;
 		}
-
-		let validRef = this.#filterBooks(full_match)
-		if (validRef == false) {
+		
+		let buData = this.#validateBible(bible)
+		if (buData == false) {
 			return match
 		}
 
 		let result = `
 		<cite>
-		<a href='#' class='bu-link' bu-data='${validRef}'>${match}</a>
+		<a href='#' class='bu-link' bu-data='${buData}'>${match}</a>
 		</cite>`;
 
 		return result;
@@ -273,11 +260,12 @@ export default class BibleUp {
 
 	/* 
 	* @param match - match is an object with reference breakdown
-	* Returns the valid complete reference if it is valid else returns false
+	* Returns stringified object containing valid, complete reference (bu-data) if reference is valid else returns false
+	* The object is in the form - {ref,book,chapter,verse,apiBook}
 	*/
-	#filterBooks(match) {
+	#validateBible(match) {
 		let bibleRef = `${match['book']} ${match['chapter']}:${match['verse']}`;
-		let bible = Bible.extractPassage(bibleRef) //valid
+		let bible = Bible.extractPassage(bibleRef)
 
 		for (const data of bibleData) {
 			if (data.book == bible.book) {
@@ -299,18 +287,21 @@ export default class BibleUp {
 	}
 
 
-	#setStage(options) {
+	#manageEvents(options) {
 		let bulink = document.querySelectorAll('.bu-link');
+		
+		// link 'anchor' events
 		bulink.forEach(link => {
 			link.addEventListener('click', evt => {
 				evt.preventDefault();
 				evt.stopPropagation();
 			});
 			
-			link.addEventListener('mouseenter', this.#clickb.bind(this));
+			link.addEventListener('mouseenter', this.#clickHandler.bind(this));
 			link.addEventListener('mouseleave', this.#closePopup.bind(this))
 		});
 		
+		// mouse events inside popup
 		this.#popup.container.addEventListener('mouseenter', () => {
 			this.#mouseOnPopup = true;
 		});
@@ -319,22 +310,26 @@ export default class BibleUp {
 			this.#mouseOnPopup = false;
 			this.#closePopup(e);
 		});
-
+		
+		// close popup events
 		if (this.#popup.close) {
 			this.#popup.close.addEventListener('click', this.#exitPopup.bind(this))
 		}
 		
-		// ESC to close dialog
 		window.onkeydown = (e) => {
 		  if (e.key == 'Escape') {
 		    this.#exitPopup()
 		  }
 		}
 	}
-
-
-	async #clickb(e) {
-		//clear popup timer;
+	
+	
+	/**
+	 * {type} Event Handler for mouseEnter and click events
+	 * calls series of methods and updates popup
+	 */
+	 
+	async #clickHandler(e) {
 		this.#clearTimer();
 		
 		let bibleRef = e.currentTarget.getAttribute('bu-data');
@@ -345,8 +340,9 @@ export default class BibleUp {
 		positionPopup(e, this.#options.popup);
 		this.#openPopup();
 
-		this.#loadingRef = bibleRef.ref
+		// call to fetch bible text
 		let res = await Search.getScripture(bibleRef, this.#options.version)
+		this.#loadingRef = bibleRef.ref
 
 		if (this.#loadingRef == res.ref) {
 			this.#updatePopup(res, false);
