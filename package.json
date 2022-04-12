@@ -15,7 +15,7 @@
     }
   },
   "files": [
-    "dist", "demo"
+    "dist"
   ],
   "scripts": {
     "build": "rollup --config"
