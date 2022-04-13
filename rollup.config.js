@@ -6,12 +6,12 @@ export default [
     input: "./bibleup/js/main.js",
     output: [
       {
-        file: "./dist/bibleup.esm.min.js",
+        file: "./dist/esm/bibleup.esm.min.js",
         format: "es",
         name: "BibleUp",
       },
       {
-        file: "./dist/bibleup.min.js",
+        file: "./dist/umd/bibleup.min.js",
         format: "umd",
         name: "BibleUp", //name of the global object
         sourcemap: true,
@@ -19,8 +19,8 @@ export default [
     ],
     plugins: [
       less({
-        insert: "true",
-        output: "dist/bibleup.css",
+        insert: true,
+        output: false,
       }),
       terser(),
     ],
@@ -31,12 +31,12 @@ export default [
     input: "./bibleup/js/main.js",
     output: [
       {
-        file: "./dist/bibleup-core.esm.min.js",
+        file: "./dist/esm/bibleup-core.esm.min.js",
         format: "es",
         name: "BibleUp",
       },
       {
-        file: "./dist/bibleup-core.min.js",
+        file: "./dist/umd/bibleup-core.min.js",
         format: "umd",
         name: "BibleUp", //name of the global object
         sourcemap: true,
@@ -44,8 +44,8 @@ export default [
     ],
     plugins: [
         less({
-          insert: "false",
-          output: "dist/bibleup.css",
+          insert: false,
+          output: "./dist/css/bibleup.css",
         }),
         terser(),
       ],
