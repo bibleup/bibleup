@@ -1,5 +1,5 @@
 {
-  "name": "bibleup",
+  "name": "@bibleup/bibleup",
   "version": "1.0.0-beta",
   "description": "A tool for converting bible references on a webpage to links with an accessible popup",
   "type": "module",
@@ -33,6 +33,9 @@
     "url": "https://github.com/Bibleup/bibleup.js/issues"
   },
   "homepage": "https://github.com/Bibleup/bibleup.js#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "rollup": "^2.45.2",
     "rollup-plugin-less": "^1.1.3",
