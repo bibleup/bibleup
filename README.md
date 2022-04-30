@@ -11,8 +11,8 @@ It searches for all bible references on a page and transforms each one to a link
 
 At its core, BibleUp is a blend of an internal API and a display interface.
 
-# Beta
-BibleUp is current in **beta** and still under development. However, it can be used without much worry for breaking changes
+# Beta 🏗
+BibleUp is current in **beta** and still under development. However, it can be used without much worry or concern for breaking changes
 
 # Behaviour
 
