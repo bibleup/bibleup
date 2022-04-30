@@ -8,7 +8,7 @@ let body = document.querySelector('body')
 let bibleup = new BibleUp(body, {
 	version: 'kjv',
 	popup: 'wiki',
-	darkTheme: false,
+	darkTheme: true,
 	/* styles: {
 		primary: ' #192841',
 		secondary: '#192841',
