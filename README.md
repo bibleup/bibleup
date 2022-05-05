@@ -7,20 +7,22 @@
 <p align="center">
 A tool for converting Bible references on a webpage to links with accessible popup<br>
 </p>
+<br>
+
+> BibleUp is currently in **beta**. However, it can be used without much worry or concern for breaking changes.
 
 # Introduction
-BibleUp makes the texts of bible references on a webpage easily accessible without the need of opening in a new window.
-It searches for all bible references on a page and transforms each one to a link. Hovering on these links will make the Bible text accessible via a feature-rich and flexible hover popup. <br>
-At its core, BibleUp is a blend of an internal API and a display interface.
-
-> BibleUp is current in **beta** and still under development. However, it can be used without much worry or concern for breaking changes
+BibleUp makes bible references on a webpage easily accessible without the need of leaving the page.
+It searches for all Bible references on a page and transforms each one to a link. Hovering on these links will make the Bible text accessible via a feature-rich and flexible hover popup.
+<br><br>
+BibleUp is a blend of an internal API and a display interface.
 
 # Documentation
 For guides on installation and getting started with Bibleup, and to see a demo, visit the [website](https://bibleup.netlify.app)
 
 # Contributions
 Feature requests and issues are always welcomed.<br>
-Kindly make sure you state the specifics in details, whether a bug, feature requests or a fix.<br>
+Kindly make sure you state the specifics in detail, whether a bug, feature requests or a fix.<br>
 
 # Credits
 Special thanks to [API.Bible](https://scripture.api.bible)!
