@@ -1,38 +1,40 @@
 export default class ConstructPopup {
-
   static build(options) {
     const popup = document.createElement("div");
-    popup.id = 'bu-popup';
+    popup.id = "bu-popup";
     popup.classList.add("bu-popup-hide");
     let popupStyle = options.popup;
     let darkTheme = options.darkTheme;
-    
+
     //Accessibility
-    popup.setAttribute('role', 'dialog')
-    popup.setAttribute('aria-description', 'A non-modal popup showing the text of Bible reference clicked on')
+    popup.setAttribute("role", "dialog");
+    popup.setAttribute(
+      "aria-description",
+      "A non-modal popup showing the text of Bible reference clicked on"
+    );
 
-	  if (popupStyle == 'classic') {
-	    popup.classList.add("bu-classic");
-	    popup.innerHTML = this.classic();
-	  }
+    if (popupStyle == "classic") {
+      popup.classList.add("bu-classic");
+      popup.innerHTML = this.classic();
+    }
 
-	  if (popupStyle == 'inline') {
+    if (popupStyle == "inline") {
       popup.classList.add("bu-inline");
       popup.innerHTML = this.inline();
-	  }
+    }
 
-	  if (popupStyle == 'wiki') {
-	    popup.classList.add("bu-wiki") ;
+    if (popupStyle == "wiki") {
+      popup.classList.add("bu-wiki");
       popup.innerHTML = this.wiki();
-	  }
-	
-	  if (darkTheme == true) {
-	    popup.classList.add("bu-theme-dark");
-	  }
-	 
+    }
+
+    if (darkTheme == true) {
+      popup.classList.add("bu-theme-dark");
+    }
+
     document.body.appendChild(popup);
   }
-  
+
   // bu-popup-ref/version/header/content/text/footer
 
   static classic() {
@@ -47,7 +49,7 @@ export default class ConstructPopup {
 		</div>
 		
 		<div id='bu-popup-footer'>
-			<p>BibleUp 📖💡</p>
+			<p>Powered by BibleUp</p>
 		</div>
 		`;
     return markup;
@@ -66,8 +68,8 @@ export default class ConstructPopup {
 	 </div>
 	  
 	 <div id='bu-popup-footer'>
-	 	<p>BibleUp 📖💡</p> 
-	 </div>`
+	 	<p>Powered by BibleUp</p> 
+	 </div>`;
 
     return markup;
   }
@@ -79,8 +81,8 @@ export default class ConstructPopup {
   		</div>
  
  		<div id='bu-popup-footer'>
-  			<p>BibleUp 📖💡</p>
- 		</div>`
+  			<p>Powered by BibleUp</p>
+ 		</div>`;
 
     return markup;
   }

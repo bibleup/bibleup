@@ -1,13 +1,12 @@
 {
   "name": "@bibleup/bibleup",
   "version": "1.0.0-beta",
-  "description": "A tool for converting bible references on a webpage to links with an accessible popup",
+  "description": "A tool for converting Bible references on a webpage to links with an accessible popup",
   "type": "module",
   "main": "./dist/umd/bibleup.min.js",
-  "module": "./dist/esm/bibleup.esm.min.js",
+  "module": "./dist/esm/bibleup.esm.js",
   "exports": {
-    ".": "./dist/esm/bibleup.esm.min.js",
-    "./core": "./dist/esm/bibleup-core.esm.min.js"
+    ".": "./dist/esm/bibleup.esm.js"
   },
   "files": [
     "dist"
