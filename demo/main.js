@@ -1,5 +1,5 @@
-import BibleUp from '../dist/esm/bibleup.esm.min.js';
-//import BibleUp from '../bibleup/js/bibleup.js'
+//import BibleUp from '../dist/esm/bibleup.esm.js';
+import BibleUp from '../bibleup/js/bibleup.js'
 
 let test = document.querySelector('#test');
 let testPanel = document.querySelector('#test-panel');
@@ -8,7 +8,7 @@ let body = document.querySelector('body')
 let bibleup = new BibleUp(body, {
 	version: 'kjv',
 	popup: 'wiki',
-	darkTheme: true,
+	darkTheme: false,
 	/* styles: {
 		primary: ' #192841',
 		secondary: '#192841',

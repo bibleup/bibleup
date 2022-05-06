@@ -1,9 +1,8 @@
 import bibleData from './helper/bible-data.js'
 import Bible from "./helper/bible.js";
-import ConstructPopup from './construct_popup.js'
-import positionPopup from './position_popup.js'
+import ConstructPopup from './construct-popup.js'
+import positionPopup from './position-popup.js'
 import Search from './helper/search.js';
-console.log("BibleUP 📖💡");
 
 
 export default class BibleUp {
