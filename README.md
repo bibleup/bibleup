@@ -5,11 +5,23 @@
 </p>
 
 <p align="center">
+  <a href="https://www.npmjs.com/package/@bibleup/bibleup">
+    <img src='https://img.shields.io/npm/v/@bibleup/bibleup?logo=Npm&style=flat-square' />
+  </a>
+  <a href="">
+    <img src='https://img.shields.io/github/v/release/Bibleup/bibleup?include_prereleases&logo=Github&style=flat-square' />
+  </a>
+  <a href="">
+    <img src='https://img.shields.io/github/languages/top/Bibleup/bibleup?logo=Javascript&style=flat-square' />
+  </a>  
+</p>
+
+<p align="center">
 A tool for converting Bible references on a webpage to links with accessible popup<br>
 </p>
-<br>
 
-> BibleUp is currently in **beta**. However, it can be used without much worry or concern for breaking changes.
+<hr>
+
 
 # Introduction
 BibleUp makes bible references on a webpage easily accessible without the need of leaving the page.
