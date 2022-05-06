@@ -27,11 +27,11 @@
     "browser"
   ],
   "author": "BibleUp",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Bibleup/bibleup.js/issues"
   },
-  "homepage": "https://github.com/Bibleup/bibleup.js#readme",
+  "homepage": "https://bibleup.netlify.app",
   "publishConfig": {
     "access": "public"
   },
