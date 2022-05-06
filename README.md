@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+<strong>A tool for converting Bible references on a webpage to links with an accessible popup.</strong><br>
+</p>
+
+<p align="center">
   <a href="https://www.npmjs.com/package/@bibleup/bibleup">
     <img src='https://img.shields.io/npm/v/@bibleup/bibleup?logo=Npm&style=flat-square' />
   </a>
@@ -14,11 +18,7 @@
   <a href="">
     <img src='https://img.shields.io/github/languages/top/Bibleup/bibleup?logo=Javascript&style=flat-square' />
   </a>  
-</p>
-
-<p align="center">
-A tool for converting Bible references on a webpage to links with accessible popup<br>
-</p>
+</p> 
 
 <hr>
 
