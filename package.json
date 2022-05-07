@@ -24,10 +24,11 @@
   "keywords": [
     "bible",
     "scripture",
-    "tagger",
+    "tooltip",
     "popup",
-    "reference",
-    "browser"
+    "references",
+    "browser",
+    "es6"
   ],
   "author": "BibleUp",
   "license": "MIT",
