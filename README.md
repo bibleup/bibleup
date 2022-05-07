@@ -18,7 +18,7 @@
   <a href="">
     <img src='https://img.shields.io/github/languages/top/Bibleup/bibleup?logo=Javascript&style=flat-square' />
   </a>
-  <a href="https://openbase.com/js/@bibleup/bibleup?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge"><img src="https://badges.openbase.com/js/featured/@bibleup/bibleup.svg?style=openbase&amp;token=NjtAIf4fk+5e5Xw3xIKavilPZP4fZsNjqmEEL7mGm30=" alt="Featured on Openbase"></a>
+  <a href="https://openbase.com/js/@bibleup/bibleup?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge"><img src="https://badges.openbase.com/js/featured/@bibleup/bibleup.svg?token=NjtAIf4fk+5e5Xw3xIKavilPZP4fZsNjqmEEL7mGm30=" alt="Featured on Openbase"></a>
 </p>
 
 <p align="center">
