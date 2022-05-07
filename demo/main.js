@@ -1,5 +1,5 @@
-//import BibleUp from '../dist/esm/bibleup.esm.js';
-import BibleUp from '../bibleup/js/bibleup.js'
+import BibleUp from '../dist/esm/bibleup.esm.js';
+//import BibleUp from '../bibleup/js/bibleup.js'
 
 let test = document.querySelector('#test');
 let testPanel = document.querySelector('#test-panel');

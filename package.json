@@ -7,7 +7,8 @@
   "unpkg": "./dist/umd/bibleup.min.js",
   "module": "./dist/esm/bibleup.esm.js",
   "exports": {
-    ".": "./dist/esm/bibleup.esm.js"
+    ".": "./dist/esm/bibleup.esm.js",
+    "./css": "./dist/css/bibleup.css"
   },
   "files": [
     "dist"
