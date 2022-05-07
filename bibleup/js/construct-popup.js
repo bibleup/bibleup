@@ -49,7 +49,7 @@ export default class ConstructPopup {
 		</div>
 		
 		<div id='bu-popup-footer'>
-			<p>Powered by BibleUp</p>
+			<p>BibleUp 📖💡 </p>
 		</div>
 		`;
     return markup;
@@ -68,7 +68,7 @@ export default class ConstructPopup {
 	 </div>
 	  
 	 <div id='bu-popup-footer'>
-	 	<p>Powered by BibleUp</p> 
+	 	<p>BibleUp 📖💡 </p> 
 	 </div>`;
 
     return markup;
@@ -81,7 +81,7 @@ export default class ConstructPopup {
   		</div>
  
  		<div id='bu-popup-footer'>
-  			<p>Powered by BibleUp</p>
+  			<p>BibleUp 📖💡 </p>
  		</div>`;
 
     return markup;
