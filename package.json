@@ -8,10 +8,12 @@
   "module": "./dist/esm/bibleup.esm.js",
   "exports": {
     ".": "./dist/esm/bibleup.esm.js",
+    "./core": "./bibleup/js/bibleup.js",
     "./css": "./dist/css/bibleup.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "bibleup"
   ],
   "scripts": {
     "test": "echo \"No test specified\"",
@@ -40,6 +42,9 @@
     "access": "public"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.17.10",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
     "rollup": "^2.45.2",
     "rollup-plugin-less": "^1.1.3",
     "rollup-plugin-terser": "^7.0.2"
