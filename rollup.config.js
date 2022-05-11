@@ -1,6 +1,7 @@
 import { terser } from "rollup-plugin-terser";
 import less from "rollup-plugin-less";
 import resolve from "@rollup/plugin-node-resolve";
+import commonjs from '@rollup/plugin-commonjs';
 import babel from "@rollup/plugin-babel";
 
 const babelConfig = babel({
@@ -8,16 +9,14 @@ const babelConfig = babel({
     [
       "@babel/preset-env",
       {
-        targets: {
-          ie: "11",
-        },
+        targets: '> 0.5%, last 2 versions, Firefox ESR, not dead'
       },
     ],
   ],
-  babelHelpers: "bundled",
+  plugins: ["@babel/plugin-transform-runtime"],
   exclude: "node_modules/**",
-})
-
+  babelHelpers: 'runtime'
+});
 
 export default [
   {
@@ -27,11 +26,14 @@ export default [
         file: "./dist/esm/bibleup.esm.js",
         format: "es",
         name: "BibleUp",
-      }
+      },
     ],
     plugins: [
       // no minified, no css
       resolve(),
+      commonjs({
+        include: 'node_modules/**'
+      }),
       babelConfig
     ],
   },
@@ -49,6 +51,9 @@ export default [
     plugins: [
       // minified but no css
       resolve(),
+      commonjs({
+        include: 'node_modules/**'
+      }),
       babelConfig,
       terser(),
     ],
@@ -69,6 +74,10 @@ export default [
       less({
         insert: true,
         output: "./dist/css/bibleup.css",
+      }),
+      resolve(),
+      commonjs({
+        include: 'node_modules/**'
       }),
       babelConfig,
       terser(),
