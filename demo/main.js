@@ -1,4 +1,4 @@
-import BibleUp from '../dist/esm/bibleup.esm.js';
+//import BibleUp from '../dist/esm/bibleup.esm.js';
 //import BibleUp from '../bibleup/js/bibleup.js'
 
 let test = document.querySelector('#test');
