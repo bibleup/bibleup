@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<strong>A tool for converting Bible references on a webpage to links with an accessible popup.</strong><br>
+<strong>A tool for converting Bible references on a webpage to accessible popovers.</strong><br>
 </p>
 
 <p align="center">
@@ -32,8 +32,8 @@
 
 
 # Introduction
-BibleUp makes bible references on a webpage easily accessible without the need of leaving the page.
-It searches for all Bible references on a page and transforms each one to a link. Hovering on these links will make the Bible text accessible via a feature-rich and flexible hover popup.
+BibleUp makes Bible references on a webpage easily accessible without the need of leaving the page.
+It searches for all Bible references on a page and transforms each one to a link. Hovering on these links will make the Bible text accessible via a feature-rich and flexible popover.
 <br><br>
 BibleUp is a blend of an internal API and a display interface.
 
