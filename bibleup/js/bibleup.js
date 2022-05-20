@@ -13,8 +13,9 @@ export default class BibleUp {
   #regex;
   #mouseOnPopup; //if mouse is on popup 
   #popupTimer;
-  #loadingRef; //currently loading bible ref
+  #currentRef; //currently loading bible ref
   #popup
+  #ispopupOpen;
   
 	constructor(element, options) {
 		this.#element = element;
@@ -36,6 +37,7 @@ export default class BibleUp {
 		this.#validateOptions(this.#options)
 		this.#regex = this.#scriptureRegex(bibleData);
 		this.#mouseOnPopup = false;
+    this.#ispopupOpen = false;
 		this.#popup = {
 		  'container': document.querySelector('#bu-popup'),
 		  'ref': document.querySelector('#bu-popup-ref'), 
@@ -334,19 +336,22 @@ export default class BibleUp {
 		let bibleRef = e.currentTarget.getAttribute('bu-data');
 		bibleRef = JSON.parse(bibleRef)
 
-		positionPopup(e, this.#options.popup);
-		this.#updatePopup(bibleRef, true)
-		positionPopup(e, this.#options.popup);
-		this.#openPopup();
-
-		// call to fetch bible text
-		let res = await Search.getScripture(bibleRef, this.#options.version)
-		this.#loadingRef = bibleRef.ref
-
-		if (this.#loadingRef == res.ref) {
-			this.#updatePopup(res, false);
-			positionPopup(e, this.#options.popup);
-		}
+    // only update popup if popup is already hidden or cuurentRef is different from clicked ref
+    if (this.#ispopupOpen == false || this.#currentRef != bibleRef.ref) {
+      positionPopup(e, this.#options.popup);
+      this.#updatePopup(bibleRef, true)
+      positionPopup(e, this.#options.popup);
+      this.#openPopup();
+  
+      // call to fetch bible text
+      let res = await Search.getScripture(bibleRef, this.#options.version)
+      this.#currentRef = bibleRef.ref
+  
+      if (this.#currentRef == res.ref) {
+        this.#updatePopup(res, false);
+        positionPopup(e, this.#options.popup);
+      }
+    }
 		
 	}
 
@@ -402,6 +407,7 @@ export default class BibleUp {
 			if (this.#popup.close) {
 			  this.#popup.close.focus();
 			}
+      this.#ispopupOpen = true;
 		}
 	}
 	
@@ -410,25 +416,31 @@ export default class BibleUp {
 	 * closePopup() is for mouse events which needs timeout 
 	 */
 	#closePopup(e) {
-		this.#popupTimer = setTimeout(() => {
-			if (!this.#mouseOnPopup) {
-				let mouseFrom = e.relatedTarget;
-				if (mouseFrom.classList.contains('bu-link') == false) {
-					this.#exitPopup();
-				}
-			}
-		}, 50)
+    if (!this.#popupTimer) {
+      console.log('Timer set')
+      this.#popupTimer = setTimeout(() => {
+        if (!this.#mouseOnPopup) {
+          let mouseFrom = e.relatedTarget;
+          if (mouseFrom.classList.contains('bu-link') == false) {
+            this.#exitPopup();
+          }
+        }
+        this.#popupTimer = undefined
+      }, 300)
+    }
 	}
 
 
 	#exitPopup() {
 		this.#popup.container.classList.add('bu-popup-hide');
 		this.#mouseOnPopup = false;
+    this.#ispopupOpen = false;
 	}
 
 	#clearTimer() {
 		if (this.#popupTimer)
 			clearTimeout(this.#popupTimer);
+      this.#popupTimer = undefined
 	}
 
 
