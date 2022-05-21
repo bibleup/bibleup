@@ -7,16 +7,16 @@ let body = document.querySelector('body')
 
 let bibleup = new BibleUp(body, {
 	version: 'kjv',
-	popup: 'classic',
+	popup: 'inline',
 	darkTheme: false,
 	styles: {
-		primary: ' #192841',
-		secondary: '#192841',
-		tertiary: '#7e9bcd',
+		primary: ' #fff',
+		secondary: '#fff',
+		tertiary: '#fff',
 		headerColor: 'white',
-		color: ['white', false,'white'],
-		borderRadius: '12px',
-		boxShadow: '5px 5px #7e9bcd',
+		color: ['#404040', false,'white'],
+		borderRadius: '0px',
+		boxShadow: '0 0 15px #404040',
 		fontSize: '',
 	}
 })
