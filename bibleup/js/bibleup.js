@@ -35,7 +35,7 @@ export default class BibleUp {
     }
 
     this.#validateOptions(this.#options);
-    this.#regex = this.#scriptureRegex(bibleData);
+    this.#regex = this.#generateRegex(bibleData);
     this.#mouseOnPopup = false;
     this.#ispopupOpen = false;
     this.#popup = {
@@ -138,8 +138,9 @@ export default class BibleUp {
    * one set of the capturing group returns 'undefined' when the other regex is matched
    * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
    */
-  #scriptureRegex(bibleData) {
+  #generateRegex(bibleData) {
     let refGroup = "";
+    let versions = 'KJV|ASV|LSV|WEB'
 
     for (const book of bibleData) {
       if (book.id == 66) {
@@ -149,9 +150,9 @@ export default class BibleUp {
       }
     }
 
-    let regex_literal = `(?:(?:(${refGroup})\\.?\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|))|(?<=(?:(${refGroup})\\.?\\s?(\\d{1,3}))\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?(?:\\,|\\&)\\s?(?:\\d{1,3}(?:\\,|\\&)\\s?|\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\&))*)(\\d{1,3}(?!\\s?\\-\\s?)|\\d{1,3}\\s?\\-\\s?\\d{1,3})`;
+    let regex_literal = `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)|(?<=(?:(${refGroup})\\s?(\\d{1,3}))\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d))`;
 
-    let bible_regex = new RegExp(regex_literal, "g");
+    let bible_regex = new RegExp(regex_literal, 'g');
     return bible_regex;
   }
 
@@ -229,14 +230,16 @@ export default class BibleUp {
    * param(match) is the actual matched string. Check replace() on MDN
    * param(p1) is value of first capturing group. Pn is the capturing group for 'n'. Check replace() on MDN
    * The first three capturing groups (p1 - p3) matches a standard Bible reference (Romans 3:23-25)
+   * p4 matches verse-level references for only single references
    * The remaining three capturing groups matches the look-behind Bible reference (John 3:16,27,3-5 = matches 27 and 3-5)
    * returns <cite[data-*]>john 3:16</cite>
    */
-  #setLinkMarkup(match, p1, p2, p3, p4, p5, p6) {
+  #setLinkMarkup(match, p1, p2, p3, p4, p5, p6, p7) {
     let bible = {
       book: undefined,
       chapter: undefined,
       verse: undefined,
+      version: undefined
     };
 
     if (p1 != undefined) {
@@ -244,17 +247,23 @@ export default class BibleUp {
       bible["book"] = p1;
       bible["chapter"] = p2;
       bible["verse"] = p3 || "1";
+      if (p4 != undefined) {
+        bible['version'] = p4
+      }
     } else {
       //look-behind Bible regex
-      bible["book"] = p4;
-      bible["chapter"] = p5;
-      bible["verse"] = p6;
+      bible["book"] = p5;
+      bible["chapter"] = p6;
+      bible["verse"] = p7;
     }
 
     let buData = this.#validateBible(bible);
+    
     if (buData == false) {
       return match;
     }
+
+    console.log(buData)
 
     let result = `
 		<cite>
@@ -269,21 +278,21 @@ export default class BibleUp {
    * Returns stringified object containing valid, complete reference (bu-data) if reference is valid else returns false
    * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
-  #validateBible(match) {
-    let bibleRef = `${match["book"]} ${match["chapter"]}:${match["verse"]}`;
-    let bible = Bible.extractPassage(bibleRef);
+  #validateBible(bible) {
+    let bibleRef = `${bible["book"]} ${bible["chapter"]}:${bible["verse"]}`;
+    bibleRef = Bible.extractPassage(bibleRef);
 
     for (const data of bibleData) {
-      if (data.book == bible.book) {
+      if (data.book == bibleRef.book) {
         if (
-          bible.chapter <= data.chapters.length &&
-          data.chapters[bible.chapter - 1] != undefined &&
-          bible.verse <= data.chapters[bible.chapter - 1]
+          bibleRef.chapter <= data.chapters.length &&
+          data.chapters[bibleRef.chapter - 1] != undefined &&
+          bibleRef.verse <= data.chapters[bibleRef.chapter - 1]
         ) {
-          if (bible.verseEnd == undefined) {
-            return JSON.stringify(bible);
-          } else if (bible.verseEnd <= data.chapters[bible.chapter - 1]) {
-            return JSON.stringify(bible);
+          if (bibleRef.verseEnd == undefined) {
+            return JSON.stringify(bibleRef);
+          } else if (bibleRef.verseEnd <= data.chapters[bibleRef.chapter - 1]) {
+            return JSON.stringify(bibleRef);
           } else {
             return false;
           }
@@ -344,15 +353,14 @@ export default class BibleUp {
 		let bibleRef = e.currentTarget.getAttribute("bu-data");
 		bibleRef = JSON.parse(bibleRef);
 
-		console.info('again')
 		let loading;
 		loading = setTimeout(() => {
 			this.#updatePopup(bibleRef, true);
 			positionPopup(e, this.#options.popup);
 			this.#openPopup();
-			console.log('loading')
 		}, 200)
 
+    console.log(bibleRef)
       // call to fetch bible text
       let res = await Search.getScripture(bibleRef, this.#options.version);
       this.#currentRef = bibleRef.ref;
@@ -360,8 +368,8 @@ export default class BibleUp {
       if (this.#currentRef == res.ref) {
         this.#updatePopup(res, false);
         positionPopup(e, this.#options.popup);
-		clearTimeout(loading)
-		this.#openPopup();
+		    clearTimeout(loading)
+		    this.#openPopup();
       }
     }
   }
