@@ -30,7 +30,7 @@ body {
 }
 
 .bu-link {
-	text-decoration: none;
+	text-decoration: underline;
 	color: orange;
 	font-style: normal;
 }

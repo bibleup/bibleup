@@ -17,7 +17,8 @@
   ],
   "scripts": {
     "test": "echo \"No test specified\"",
-    "build": "rollup --config"
+    "build": "npm run clean && rollup --config",
+    "clean": "rd /s /q dist"
   },
   "repository": {
     "type": "git",

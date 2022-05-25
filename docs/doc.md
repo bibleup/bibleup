@@ -8,4 +8,10 @@
 
 - [x] prevent popup position 'flickers'. This happens because popup position is recalculated after text has loaded and based on the remaining height of screen and new height of popup the popup might change position really fast causing the flicker.
 
-- [] Enable multi-chapter tagging (E.g Romans 3:23, 4:4)
+---
+## Discussion
+Seting A Bible Citation Standard
+- Space must come after `book` and `chapter`, currently, no space is permitted (Romans 6 ✔ Romans6 ❌)
+- Should multiple spaces be allowed (Romans 6: 3 - 5)
+- Enable multi-chapter tagging (E.g Romans 3:23, 4:4)
+- Match standalone verses after a single chapter definition [romans 5  (john 4:5) verse 5 to match 'VERSE 5' as Romans 5:5]
