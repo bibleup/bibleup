@@ -10,13 +10,13 @@ let bibleup = new BibleUp(body, {
 	popup: 'classic',
 	darkTheme: false,
 	styles: {
-		primary: ' #192841',
-		secondary: '#192841',
-		tertiary: '#7e9bcd',
+		primary: ' #fff',
+		secondary: '#d9d9d9',
+		tertiary: '#fff',
 		headerColor: 'white',
-		color: ['white', false,'white'],
-		borderRadius: '12px',
-		boxShadow: '5px 5px #7e9bcd',
+		color: ['#404040','#d9d9d9'],
+		borderRadius: '0px',
+		boxShadow: '0 0 0 3px #d9d9d9',
 		fontSize: '',
 	}
 })
