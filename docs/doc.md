@@ -1,7 +1,7 @@
 **BIBLEUP DOCUMENTATION (v1.0.0)** 📖💡
 - [x] Delay popup dissapearance when mouse leaves link. This helps to prevent quick dissappearance when mouse jitters away from link
 - [] reduce popup full height
-- [] enable reference-level version tagging
+- [x] enable reference-level version tagging
 - [x] add z-index to popup. Popup hides behind some element.
 - [x] Popup shouldn't show 'loading' again when mouse quickly jitters out of link and comes in again but popup is already open
 -- [x] The current solution checks to see if reference is the same. This causes problems in the case where ref is the same but at different part of the page. The specific elements should be checked instead

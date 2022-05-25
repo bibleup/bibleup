@@ -150,7 +150,7 @@ export default class BibleUp {
       }
     }
 
-    let regex_literal = `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)|(?<=(?:(${refGroup})\\s?(\\d{1,3}))\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d))`;
+    let regex_literal = `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)|(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(?:\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(?:${versions}))?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d))`;
 
     let bible_regex = new RegExp(regex_literal, 'g');
     return bible_regex;
@@ -263,8 +263,6 @@ export default class BibleUp {
       return match;
     }
 
-    console.log(buData)
-
     let result = `
 		<cite>
 		<a href='#' class='bu-link' bu-data='${buData}'>${match}</a>
@@ -281,6 +279,11 @@ export default class BibleUp {
   #validateBible(bible) {
     let bibleRef = `${bible["book"]} ${bible["chapter"]}:${bible["verse"]}`;
     bibleRef = Bible.extractPassage(bibleRef);
+
+    if (bible['version']) {
+      // add version tagging if present
+      bibleRef.version = bible['version']
+    }
 
     for (const data of bibleData) {
       if (data.book == bibleRef.book) {
@@ -347,12 +350,14 @@ export default class BibleUp {
   async #clickHandler(e) {
     this.#clearTimer();
 
-    // only update popup if popup is already hidden or different link is clicked from the one active
+    // only update popup if popup is already hidden or different link is clicked than the one active
     if (this.#ispopupOpen == false || this.#activeLink != e.currentTarget.getBoundingClientRect().x) {
+
 		this.#activeLink = e.currentTarget.getBoundingClientRect().x
 		let bibleRef = e.currentTarget.getAttribute("bu-data");
 		bibleRef = JSON.parse(bibleRef);
 
+    // add delay to before popup 'loading' - to allow fetch return cache if exists
 		let loading;
 		loading = setTimeout(() => {
 			this.#updatePopup(bibleRef, true);
@@ -360,9 +365,8 @@ export default class BibleUp {
 			this.#openPopup();
 		}, 200)
 
-    console.log(bibleRef)
       // call to fetch bible text
-      let res = await Search.getScripture(bibleRef, this.#options.version);
+      let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
       this.#currentRef = bibleRef.ref;
 
       if (this.#currentRef == res.ref) {
@@ -387,7 +391,7 @@ export default class BibleUp {
       }
 
       if (this.#popup.version) {
-        this.#popup.version.textContent = this.#options.version;
+        this.#popup.version.textContent = res.version ?? this.#options.version;
       }
 
       this.#popup.text.textContent = "Loading...";
