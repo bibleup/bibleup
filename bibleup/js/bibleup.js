@@ -258,7 +258,7 @@ export default class BibleUp {
     }
 
     let buData = this.#validateBible(bible);
-    
+
     if (buData == false) {
       return match;
     }
@@ -351,19 +351,21 @@ export default class BibleUp {
     this.#clearTimer();
 
     // only update popup if popup is already hidden or different link is clicked than the one active
-    if (this.#ispopupOpen == false || this.#activeLink != e.currentTarget.getBoundingClientRect().x) {
+    if (this.#ispopupOpen == false || this.#activeLink != e.currentTarget.getBoundingClientRect().top) {
 
-		this.#activeLink = e.currentTarget.getBoundingClientRect().x
-		let bibleRef = e.currentTarget.getAttribute("bu-data");
-		bibleRef = JSON.parse(bibleRef);
+      console.log(this.#activeLink)
+      this.#activeLink = e.currentTarget.getBoundingClientRect().top
+      console.log(this.#activeLink)
+      let bibleRef = e.currentTarget.getAttribute("bu-data");
+      bibleRef = JSON.parse(bibleRef);
 
-    // add delay to before popup 'loading' - to allow fetch return cache if exists
-		let loading;
-		loading = setTimeout(() => {
-			this.#updatePopup(bibleRef, true);
-			positionPopup(e, this.#options.popup);
-			this.#openPopup();
-		}, 200)
+      // add delay to before popup 'loading' - to allow fetch return cache if exists
+      let loading;
+      loading = setTimeout(() => {
+        this.#updatePopup(bibleRef, true);
+        positionPopup(e, this.#options.popup);
+        this.#openPopup();
+      }, 200)
 
       // call to fetch bible text
       let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
@@ -372,8 +374,8 @@ export default class BibleUp {
       if (this.#currentRef == res.ref) {
         this.#updatePopup(res, false);
         positionPopup(e, this.#options.popup);
-		    clearTimeout(loading)
-		    this.#openPopup();
+        clearTimeout(loading)
+        this.#openPopup();
       }
     }
   }
