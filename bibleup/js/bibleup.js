@@ -350,12 +350,15 @@ export default class BibleUp {
   async #clickHandler(e) {
     this.#clearTimer();
 
-    // only update popup if popup is already hidden or different link is clicked than the one active
-    if (this.#ispopupOpen == false || this.#activeLink != e.currentTarget.getBoundingClientRect().top) {
+    let getPosition = (el) => {
+      let top = el.getBoundingClientRect().top
+      let left = el.getBoundingClientRect().left
+      return (top + left)
+    }
 
-      console.log(this.#activeLink)
-      this.#activeLink = e.currentTarget.getBoundingClientRect().top
-      console.log(this.#activeLink)
+    // only update popup if popup is already hidden or different link is clicked than the one active
+    if (this.#ispopupOpen == false || this.#activeLink != getPosition(e.currentTarget)) {
+      this.#activeLink = getPosition(e.currentTarget)
       let bibleRef = e.currentTarget.getAttribute("bu-data");
       bibleRef = JSON.parse(bibleRef);
 
@@ -365,7 +368,7 @@ export default class BibleUp {
         this.#updatePopup(bibleRef, true);
         positionPopup(e, this.#options.popup);
         this.#openPopup();
-      }, 200)
+      }, 100)
 
       // call to fetch bible text
       let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
