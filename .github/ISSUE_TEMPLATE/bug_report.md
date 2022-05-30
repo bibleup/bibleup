@@ -15,7 +15,7 @@ assignees: ''
 
 **Screenshots** (If applicable, add screenshots to help explain your problem.) 
 
-**Device (please complete the following information):**
+**Device Specifications (please complete the following information):**
  - Device: 
  - OS: 
  - Browser: 
