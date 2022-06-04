@@ -167,6 +167,23 @@ export default class BibleUp {
   }
 
   /**
+   * This method destoys BibleUp creation and removes the links and popup from the page
+   */
+  destroy() {
+    // remove all 'bu-links'
+    let links = document.querySelectorAll('.bu-link');
+    for (let link of links) {
+      link.closest('cite').replaceWith(...link.childNodes);
+    }
+
+    // remove popup
+    let popup = document.getElementById('bu-popup')
+    if (popup) {
+      popup.remove();
+    }
+  }
+
+  /**
    * This function traverse all nodes and child nodes in the `e` parameter and calls #createLink on all text nodes that matches the Bible regex
    * The function performs a self call on element child nodes until all matches are found
    */
@@ -258,7 +275,7 @@ export default class BibleUp {
     }
 
     let buData = this.#validateBible(bible);
-    
+
     if (buData == false) {
       return match;
     }
@@ -350,20 +367,25 @@ export default class BibleUp {
   async #clickHandler(e) {
     this.#clearTimer();
 
+    let getPosition = (el) => {
+      let top = el.getBoundingClientRect().top
+      let left = el.getBoundingClientRect().left
+      return (top + left)
+    }
+
     // only update popup if popup is already hidden or different link is clicked than the one active
-    if (this.#ispopupOpen == false || this.#activeLink != e.currentTarget.getBoundingClientRect().x) {
+    if (this.#ispopupOpen == false || this.#activeLink != getPosition(e.currentTarget)) {
+      this.#activeLink = getPosition(e.currentTarget)
+      let bibleRef = e.currentTarget.getAttribute("bu-data");
+      bibleRef = JSON.parse(bibleRef);
 
-		this.#activeLink = e.currentTarget.getBoundingClientRect().x
-		let bibleRef = e.currentTarget.getAttribute("bu-data");
-		bibleRef = JSON.parse(bibleRef);
-
-    // add delay to before popup 'loading' - to allow fetch return cache if exists
-		let loading;
-		loading = setTimeout(() => {
-			this.#updatePopup(bibleRef, true);
-			positionPopup(e, this.#options.popup);
-			this.#openPopup();
-		}, 200)
+      // add delay to before popup 'loading' - to allow fetch return cache if exists
+      let loading;
+      loading = setTimeout(() => {
+        this.#updatePopup(bibleRef, true);
+        positionPopup(e, this.#options.popup);
+        this.#openPopup();
+      }, 100)
 
       // call to fetch bible text
       let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
@@ -372,8 +394,8 @@ export default class BibleUp {
       if (this.#currentRef == res.ref) {
         this.#updatePopup(res, false);
         positionPopup(e, this.#options.popup);
-		    clearTimeout(loading)
-		    this.#openPopup();
+        clearTimeout(loading)
+        this.#openPopup();
       }
     }
   }
