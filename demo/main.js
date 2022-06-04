@@ -20,8 +20,13 @@ let bibleup = new BibleUp(body, {
 		fontSize: '',
 	}
 })
-bibleup.create()
+bibleup.create();
 //console.log(bibleup.getOptions)
+
+let btn = document.querySelector('button')
+btn.onclick = () => {
+	bibleup.destroy();
+}
 
 
 
