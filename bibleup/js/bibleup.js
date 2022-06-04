@@ -167,6 +167,23 @@ export default class BibleUp {
   }
 
   /**
+   * This method destoys BibleUp creation and removes the links and popup from the page
+   */
+  destroy() {
+    // remove all 'bu-links'
+    let links = document.querySelectorAll('.bu-link');
+    for (let link of links) {
+      link.closest('cite').replaceWith(...link.childNodes);
+    }
+
+    // remove popup
+    let popup = document.getElementById('bu-popup')
+    if (popup) {
+      popup.remove();
+    }
+  }
+
+  /**
    * This function traverse all nodes and child nodes in the `e` parameter and calls #createLink on all text nodes that matches the Bible regex
    * The function performs a self call on element child nodes until all matches are found
    */
