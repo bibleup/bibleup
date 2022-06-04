@@ -124,15 +124,14 @@ export default class Search {
       let content = obj["data"]["content"];
       let parser = new DOMParser();
       let doc = parser.parseFromString(content, "text/html");
-      let p = doc.querySelector("p");
-      return p.textContent;
+      let p = doc.querySelectorAll("p");
+      return p[0].textContent || p[1].textContent;
     }
 
     if (type == "passage") {
       let content = obj["data"]["content"];
       let parser = new DOMParser();
       let doc = parser.parseFromString(content, "text/html");
-      let p = doc.querySelector(".p");
       let span = doc.getElementsByClassName("verse-span");
       let passage = [];
       let lastVerse;
