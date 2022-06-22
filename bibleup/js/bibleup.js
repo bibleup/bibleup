@@ -12,6 +12,7 @@ export default class BibleUp {
   #regex;
   #mouseOnPopup; //if mouse is on popup
   #popupTimer;
+  #loadingTimer;
   #currentRef; //currently loading bible ref
   #activeLink; //unique identifier of last clicked link
   #popup;
@@ -170,17 +171,18 @@ export default class BibleUp {
    * This method destoys BibleUp creation and removes the links and popup from the page
    */
   destroy() {
-    // remove all 'bu-links'
     let links = document.querySelectorAll('.bu-link');
+    let popup = document.getElementById('bu-popup')
     for (let link of links) {
       link.closest('cite').replaceWith(...link.childNodes);
     }
-
-    // remove popup
-    let popup = document.getElementById('bu-popup')
     if (popup) {
       popup.remove();
     }
+  }
+
+  refresh() {
+    this.#searchNode(this.#element, this.#regex);
   }
 
   /**
@@ -323,7 +325,7 @@ export default class BibleUp {
     }
   }
 
-  #manageEvents(options) {
+  #manageEvents() {
     let bulink = document.querySelectorAll(".bu-link");
 
     // link 'anchor' events
@@ -380,23 +382,26 @@ export default class BibleUp {
       bibleRef = JSON.parse(bibleRef);
 
       // add delay to before popup 'loading' - to allow fetch return cache if exists
-      let loading;
-      loading = setTimeout(() => {
+      this.#loadingTimer = setTimeout(() => {
         this.#updatePopup(bibleRef, true);
         positionPopup(e, this.#options.popup);
         this.#openPopup();
       }, 100)
 
       // call to fetch bible text
-      let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
       this.#currentRef = bibleRef.ref;
-
+      let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
+      
       if (this.#currentRef == res.ref) {
+        //only when cursor is on same link
         this.#updatePopup(res, false);
         positionPopup(e, this.#options.popup);
-        clearTimeout(loading)
-        this.#openPopup();
+        if (this.#loadingTimer) {
+          this.#openPopup()
+          clearTimeout(this.#loadingTimer)
+        }
       }
+
     }
   }
 
@@ -444,7 +449,7 @@ export default class BibleUp {
   }
 
   #openPopup() {
-    if (this.#popup.container.classList.contains("bu-popup-hide")) {
+    if (!this.#ispopupOpen) {
       this.#popup.container.classList.remove("bu-popup-hide");
       if (this.#popup.close) {
         this.#popup.close.focus();
@@ -465,7 +470,7 @@ export default class BibleUp {
             this.#exitPopup();
           }
         }
-        this.#popupTimer = undefined;
+        this.#clearTimer()
       }, 150);
     }
   }
@@ -477,7 +482,9 @@ export default class BibleUp {
   }
 
   #clearTimer() {
-    if (this.#popupTimer) clearTimeout(this.#popupTimer);
+    clearTimeout(this.#loadingTimer)
+    clearTimeout(this.#popupTimer)
+    this.#loadingTimer = undefined
     this.#popupTimer = undefined;
   }
 
