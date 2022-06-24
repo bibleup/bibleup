@@ -711,7 +711,7 @@ export default bibleData = [
   },
   {
     book: "1 Peter",
-    api: "1PI",
+    api: "1PE",
     abbr: [
       "1 Pet",
       "1 Pe",
@@ -733,7 +733,7 @@ export default bibleData = [
   },
   {
     book: "2 Peter",
-    api: "2PI",
+    api: "2PE",
     abbr: [
       "2 Pet",
       "2 Pe",
