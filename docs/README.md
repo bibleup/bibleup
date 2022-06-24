@@ -10,6 +10,7 @@ Seting A Bible Citation Standard to remove citation ambiguity.
 - Should multiple spaces be allowed (Romans 6: 3 - 5). This is currently allowed.
 - Enable multi-chapter tagging (E.g Romans 3:23, 4:4). This is currently not allowed.
 - Match standalone verses after a single chapter definition [romans 5  (john 4:5) verse 5 to match 'VERSE 5' as Romans 5:5]
+- Remove incomprehensible abbreviations for Books as defined in [`bible-data.js`](https://github.com/bibleup/bibleup/blob/main/bibleup/js/helper/bible-data.js) (Some examples are: Jd for Jude, 2 Pet for 2nd Peter, Ti for Titus)
 
 ## Popover Presets
 ### Github-popover style
