@@ -246,13 +246,13 @@ export default class BibleUp {
       this.#setLinkMarkup.bind(this)
     );
 
-    console.log(node.nodeValue)
     while (newNode.firstChild) {
       //console.log(newNode.firstChild.textContent);
       node.parentNode.insertBefore(newNode.firstChild, node);
     }
     node.parentNode.removeChild(node);
   }
+
 
   /**
    * param(match) is the actual matched string. Check replace() on MDN
@@ -284,7 +284,6 @@ export default class BibleUp {
       bible["chapter"] = p6;
       bible["verse"] = p7;
     }
-
 
 
     let buData = this.#validateBible(bible);

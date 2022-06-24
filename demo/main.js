@@ -30,7 +30,7 @@ btn.onclick = () => {
 
 let btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-	bibleup.refresh()
+	bibleup.create()
 }
 
 let add = document.querySelector('#add')
