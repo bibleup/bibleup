@@ -142,6 +142,8 @@ export default class BibleUp {
   #generateRegex(bibleData) {
     let refGroup = "";
     let versions = 'KJV|ASV|LSV|WEB'
+    let numberBooks = ['1 Samuel', '2 Samuel', '1 Kings', '2 Kings', '1 Chronicles', '2 Chronicles', '1 Corinthians', '2 Corinthians', '1 Thessalonians', '2 Thessalonians', '1 Timothy', '2 Timothy', '1 Peter', '2 Peter', '1 John', '2 John', '3 John']
+    let numberBooksRef = []
 
     for (const book of bibleData) {
       if (book.id == 66) {
@@ -149,11 +151,18 @@ export default class BibleUp {
       } else {
         refGroup += book.book + "|" + book.abbr.join("|") + "|";
       }
+
+      if (numberBooks.includes(book.book)) {
+        numberBooksRef.push(...book.abbr)
+      }
     }
 
-    let regex_literal = `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)|(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(?:\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(?:${versions}))?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d))`;
+    let regex = [
+      `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)`, //main regex
+      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(?:\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})\\b)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d|\\w+))`, //match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
+    ]
 
-    let bible_regex = new RegExp(regex_literal, 'g');
+    let bible_regex = new RegExp(regex.join('|'), 'g');
     return bible_regex;
   }
 
@@ -179,10 +188,6 @@ export default class BibleUp {
     if (popup) {
       popup.remove();
     }
-  }
-
-  refresh() {
-    this.#searchNode(this.#element, this.#regex);
   }
 
   /**
@@ -221,9 +226,12 @@ export default class BibleUp {
   #validateNode(e) {
     let forbidden_tags = this.#options.bu_ignore;
     let allowed_tags = this.#options.bu_allow;
-    if (forbidden_tags.includes(e.tagName) && !allowed_tags.includes(e.tagName))
+    let private_ignore = [...forbidden_tags, 'SCRIPT', 'SVG']
+    if (private_ignore.includes(e.tagName) && !allowed_tags.includes(e.tagName)) {
       return false;
-    if (e.classList.contains("bu-ignore") == false) return true;
+    } else if (e.classList.contains("bu-ignore") == false) {
+      return true;
+    }
   }
 
   /**
@@ -231,10 +239,10 @@ export default class BibleUp {
    * It replace 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
    * param(node) is a text node
    */
-  #createLink(node, regex) {
+  #createLink(node) {
     let newNode = document.createElement("div");
     newNode.innerHTML = node.nodeValue.replace(
-      regex,
+      this.#regex,
       this.#setLinkMarkup.bind(this)
     );
 
@@ -244,6 +252,7 @@ export default class BibleUp {
     }
     node.parentNode.removeChild(node);
   }
+
 
   /**
    * param(match) is the actual matched string. Check replace() on MDN
@@ -275,6 +284,7 @@ export default class BibleUp {
       bible["chapter"] = p6;
       bible["verse"] = p7;
     }
+
 
     let buData = this.#validateBible(bible);
 
@@ -391,7 +401,7 @@ export default class BibleUp {
       // call to fetch bible text
       this.#currentRef = bibleRef.ref;
       let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
-      
+
       if (this.#currentRef == res.ref) {
         //only when cursor is on same link
         this.#updatePopup(res, false);

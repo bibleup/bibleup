@@ -7,16 +7,16 @@ let body = document.querySelector('body')
 
 let bibleup = new BibleUp(body, {
 	version: 'kjv',
-	popup: 'classic',
+	popup: 'inline',
 	darkTheme: false,
 	styles: {
 		primary: ' #fff',
-		secondary: '#d9d9d9',
-		tertiary: '#fff',
-		headerColor: 'white',
-		color: ['#404040','#d9d9d9'],
-		borderRadius: '0px',
-		boxShadow: '0 0 0 3px #d9d9d9',
+		secondary: '#fff',
+		tertiary: '#f2f2f2',
+		headerColor: '#24292f',
+		color: ['#24292f','#24292f'],
+		borderRadius: '6px',
+		boxShadow: '0 0 0 1px #d0d7de, 0 8px 24px rgba(140,149,159,0.2)',
 		fontSize: '',
 	}
 })
@@ -30,8 +30,15 @@ btn.onclick = () => {
 
 let btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-	bibleup.destroy();
 	bibleup.create()
+}
+
+let add = document.querySelector('#add')
+add.onclick = () => {
+	const para = document.createElement("p");
+const textNode = document.createTextNode("Proverbs 6:6");
+para.appendChild(textNode);
+testPanel.appendChild(para)
 }
 
 

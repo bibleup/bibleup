@@ -836,7 +836,7 @@ export default bibleData = [
   {
     book: "Revelation",
     api: "REV",
-    abbr: ["Rev", "Re", "The Revelation"],
+    abbr: ["Rev", "The Revelation"],
     id: 66,
     testament: "NT",
     chapters: [
