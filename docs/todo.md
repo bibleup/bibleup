@@ -10,8 +10,8 @@ The proposed release where these features will become available will be written 
 
 ### Todo
 
-- [ ] New Popup style similar to classic but more compact and simple in design. (v2.0.0)
-- [ ] Change versions on popup. (v2.0.0)
+- [ ] New Popup style similar to classic but more compact and simple in design.
+- [ ] Change versions on popup.
 
 ### Done ✓
 
