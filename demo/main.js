@@ -23,9 +23,15 @@ let bibleup = new BibleUp(body, {
 bibleup.create();
 //console.log(bibleup.getOptions)
 
-let btn = document.querySelector('button')
+let btn = document.querySelector('#remove')
 btn.onclick = () => {
 	bibleup.destroy();
+}
+
+let btn2 = document.querySelector('#refresh')
+btn2.onclick = () => {
+	bibleup.destroy();
+	bibleup.create()
 }
 
 
