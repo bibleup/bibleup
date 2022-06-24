@@ -159,7 +159,7 @@ export default class BibleUp {
 
     let regex = [
       `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)`, //main regex
-      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(?:\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})\\b)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d|\\w+))`, //match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
+      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:\\:\\s?(?:\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})\\b)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d|\\w+))`, //match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
     ]
 
     let bible_regex = new RegExp(regex.join('|'), 'g');
