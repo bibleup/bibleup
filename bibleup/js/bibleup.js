@@ -421,7 +421,6 @@ export default class BibleUp {
 
       // call to fetch bible text
       this.#currentRef = bibleRef.ref;
-      console.log('called')
       let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
 
       if (this.#currentRef == res.ref) {
