@@ -6,100 +6,83 @@
  */
 
 let positionPopup = (e, popup) => {
-	if (popup == 'classic') {
-		return classic(e);
-	}
-	if (popup == 'inline') {
-		return inline(e);
-	}
-	return false;
-}
+  if (popup == 'classic') {
+    classic(e);
+  }
+  if (popup == 'inline') {
+    inline(e);
+  }
+  return false;
+};
 
-	/**
-	 * Adjust popup to left or right of click
-	*/
-let adjustPopupToLeft = (width, rectLeft, popup, popWidth) => {
-	let remainingSpace = width - rectLeft
-	if (remainingSpace > popWidth) {
-		//enough space
-		popup.style.left = `${rectLeft + 'px'}`;
-		if (rectLeft < 0) {
-			rectLeft -= rectLeft;
-			adjustPopupToLeft(width, rectLeft, popup, popWidth);
-		}
-	} else {
-		let offsetBy = popWidth - remainingSpace;
-		let adjust = rectLeft - offsetBy
-		popup.style.left = `${adjust + 'px'}`;
-	}
-}
+/**
+ * Adjust popup to left or right of click
+ */
+let adjustPopupToLeft = (pos) => {
+  let [width, rectLeft, popup, popWidth] = pos;
+  let remainingSpace = width - rectLeft;
 
+  if (remainingSpace > popWidth) {
+    popup.style.left = `${rectLeft + 'px'}`;
+    if (rectLeft < 0) {
+      popup.style.left = `${0 + 'px'}`;
+    }
+  } else {
+    let offsetBy = popWidth - remainingSpace;
+    let adjust = rectLeft - offsetBy;
+    popup.style.left = `${adjust + 'px'}`;
+  }
+};
 
 /**
  * adjust popup to bottom or top of link according to space remaining
-*/
-let adjustPopupToBottom = (height, rectBottom, popup, popHeight) => {
-	let remainingSpace_bottom = height - rectBottom;
-	if (!(remainingSpace_bottom > popHeight + 100)) {
-		let offsetBy = popHeight - remainingSpace_bottom;
-		let popTop = height - popHeight;
-		let ad2 = popTop + window.scrollY - remainingSpace_bottom;
-		popup.style.top = `${ad2 - 25 +'px'}`
-	}
-}
+ * Popup positions to top of link by default and fallbacks to bottom if there is no space.
+ */
+let adjustPopupToBottom = (pos) => {
+  let [height, rectBottom, popup, popHeight, realTop, rectHeight] = pos;
+  let bottomSpace = height - rectBottom;
+  let topSpace = height - bottomSpace;
 
+  if (topSpace > popHeight + 50) {
+    let adjust = realTop - popHeight;
+    popup.style.top = `${adjust - 5 + 'px'}`;
+  } else {
+    console.log(rectHeight);
+    popup.style.top = `${realTop + (20 + 5) + 'px'}`;
+  }
+};
+
+let getPosition = (e) => {
+  //get window dimensions
+  let rect = e.target.getBoundingClientRect();
+  let popup = document.getElementById('bu-popup');
+  let rectTop = rect.top;
+
+  return {
+    popup,
+    rect,
+    rectTop,
+    height: window.innerHeight,
+    width: document.documentElement.clientWidth,
+    popWidth: popup.offsetWidth,
+    popHeight: popup.offsetHeight,
+    rectBottom: rect.bottom,
+    rectLeft: Math.round(rect.left),
+    realTop: window.scrollY + rectTop,
+  };
+};
 
 let classic = (e) => {
-	//get window dimensions
-	let height = window.innerHeight;
-	let width = document.documentElement.clientWidth;
-	let popup = document.getElementById('bu-popup');
-	let popWidth = popup.offsetWidth;
-	let popHeight = popup.offsetHeight;
-	
-	//get bu-link rect (onClick)
-	let rect = e.target.getBoundingClientRect();
-	let rectTop = rect.top;
-	let rectBottom = rect.bottom;
-	let rectLeft = Math.round(rect.left);
+  let el = getPosition(e);
+  adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth]);
+  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop]);
+};
 
-	//get position of bu-link from window with scroll
-	let realTop = window.scrollY + rectTop;
-	let realBottom = window.pageYOffset + rectBottom;
-	let realLeft = window.scrollX + rectLeft;
-	
-	popup.style.top = `${realTop + 25 +'px'}`
-	adjustPopupToLeft(width, rectLeft, popup, popWidth);
-	adjustPopupToBottom(height, rectBottom, popup, popHeight);
-}
-
-
-
-//INLINE 
 let inline = (e) => {
-	//get window dimensions
-	let height = window.innerHeight;
-	let width = document.documentElement.clientWidth;
-	let popup = document.getElementById('bu-popup');
-	let popWidth = popup.offsetWidth + 25;
-	let popHeight = popup.offsetHeight;
-	
-	//get bu-link rect (onClick)
-	let rect = e.target.getBoundingClientRect();
-	let rectTop = rect.top;
-	let rectBottom = rect.bottom;
-	let rectLeft = Math.round(rect.left);
-	let rectRight = Math.floor(rect.right);
-	
-	//get position of bu-link from window with scroll
-	let realTop = window.scrollY + rectTop;
-	let realBottom = window.pageYOffset + rectBottom;
-	let realLeft = window.scrollX + rectLeft;
-	
-	popup.style.top = `${realTop + 25 +'px'}`;
-	adjustPopupToLeft(width, rectLeft, popup, popWidth);
-	adjustPopupToBottom(height, rectBottom, popup, popHeight);
-}
-
+  let el = getPosition(e);
+  el.popWidth += 10;
+  adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth]);
+  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop]);
+};
 
 export default positionPopup;
