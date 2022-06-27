@@ -17,6 +17,7 @@ export default class BibleUp {
   #activeLink; //unique identifier of last clicked link
   #popup;
   #ispopupOpen;
+  #events
 
   constructor(element, options) {
     this.#element = element;
@@ -35,18 +36,16 @@ export default class BibleUp {
       this.#options = this.#defaultOptions;
     }
 
-    this.#validateOptions(this.#options);
+    this.#init(this.#options);
     this.#regex = this.#generateRegex(bibleData);
     this.#mouseOnPopup = false;
     this.#ispopupOpen = false;
-    this.#popup = {
-      container: document.querySelector("#bu-popup"),
-      ref: document.querySelector("#bu-popup-ref"),
-      version: document.querySelector("#bu-popup-version"),
-      content: document.querySelector("#bu-popup-content"),
-      text: document.querySelector("#bu-popup-text"),
-      close: document.querySelector("#bu-popup-close") || false,
-    };
+
+    this.#events = {
+      clickHandler: this.#clickHandler.bind(this),
+      closePopup: this.#closePopup.bind(this),
+      exitPopup: this.#exitPopup.bind(this)
+    }
   }
 
   /**
@@ -57,7 +56,7 @@ export default class BibleUp {
     return this.#options;
   }
 
-  #validateOptions(options) {
+  #init(options) {
     let versions = ["KJV", "ASV", "LSV", "WEB"];
     options.version = options.version.toUpperCase(); //opt version to uppercase
     if (versions.includes(options.version) == false) {
@@ -69,6 +68,14 @@ export default class BibleUp {
     let popup = ["classic", "inline", "wiki"];
     if (popup.includes(options.popup)) {
       ConstructPopup.build(options);
+      this.#popup = {
+        container: document.querySelector("#bu-popup"),
+        ref: document.querySelector("#bu-popup-ref"),
+        version: document.querySelector("#bu-popup-version"),
+        content: document.querySelector("#bu-popup-content"),
+        text: document.querySelector("#bu-popup-text"),
+        close: document.querySelector("#bu-popup-close") || false,
+      };
     } else {
       this.#error(
         "BibleUp was unable to construct popup. Check to see if 'popup' option is correct"
@@ -188,6 +195,16 @@ export default class BibleUp {
     if (popup) {
       popup.remove();
     }
+  }
+
+  refresh(options = {}) {
+    this.#options = { ...this.#options, ...options }
+    this.#searchNode(this.#element, this.#regex);
+    if (document.getElementById('bu-popup')) {
+      document.getElementById('bu-popup').remove();
+    }
+    this.#init(this.#options)
+    this.#manageEvents(this.#options);
   }
 
   /**
@@ -340,28 +357,32 @@ export default class BibleUp {
 
     // link 'anchor' events
     bulink.forEach((link) => {
-      link.addEventListener("click", (evt) => {
-        evt.preventDefault();
-        evt.stopPropagation();
-      });
+      link.removeEventListener("mouseenter", this.#events.clickHandler)
+      link.removeEventListener("mouseleave", this.#events.closePopup);
+      
+      //prevent scroll behaviour
+      link.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }
 
-      link.addEventListener("mouseenter", this.#clickHandler.bind(this));
-      link.addEventListener("mouseleave", this.#closePopup.bind(this));
+      link.addEventListener("mouseenter", this.#events.clickHandler);
+      link.addEventListener("mouseleave", this.#events.closePopup);
     });
-
-    // mouse events inside popup
-    this.#popup.container.addEventListener("mouseenter", () => {
+    
+    this.#popup.container.onmouseenter = () => {
       this.#mouseOnPopup = true;
-    });
+    }
 
-    this.#popup.container.addEventListener("mouseleave", (e) => {
+    this.#popup.container.onmouseleave = (e) => {
       this.#mouseOnPopup = false;
       this.#closePopup(e);
-    });
+    }
 
     // close popup events
     if (this.#popup.close) {
-      this.#popup.close.addEventListener("click", this.#exitPopup.bind(this));
+      this.#popup.close.removeEventListener("click", this.#events.exitPopup);
+      this.#popup.close.addEventListener("click", this.#events.exitPopup);
     }
 
     window.onkeydown = (e) => {
@@ -400,6 +421,7 @@ export default class BibleUp {
 
       // call to fetch bible text
       this.#currentRef = bibleRef.ref;
+      console.log('called')
       let res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version);
 
       if (this.#currentRef == res.ref) {
@@ -476,7 +498,7 @@ export default class BibleUp {
       this.#popupTimer = setTimeout(() => {
         if (!this.#mouseOnPopup) {
           let mouseFrom = e.relatedTarget;
-          if (mouseFrom.classList.contains("bu-link") == false) {
+          if (!mouseFrom || mouseFrom.classList.contains("bu-link") == false) {
             this.#exitPopup();
           }
         }
