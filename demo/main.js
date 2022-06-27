@@ -30,7 +30,20 @@ btn.onclick = () => {
 
 let btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-	bibleup.create()
+	bibleup.refresh({
+		version: 'lsv',
+		popup: 'wiki',
+		darkTheme: false,
+		styles: {
+			primary: ' #fff',
+			secondary: '#fff',
+			tertiary: '#f2f2f2',
+			headerColor: '#0c0d0e',
+			color: ['#0c0d0e','#0c0d0e'],
+			borderRadius: '5px',
+			boxShadow: '0 1px 3px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06), 0 3px 8px rgba(0,0,0,0.09)'
+		}
+	})
 }
 
 let add = document.querySelector('#add')
