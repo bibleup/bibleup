@@ -263,11 +263,13 @@ export default class BibleUp {
       this.#setLinkMarkup.bind(this)
     );
 
-    while (newNode.firstChild) {
-      //console.log(newNode.firstChild.textContent);
-      node.parentNode.insertBefore(newNode.firstChild, node);
+    if (node.nodeValue !== newNode.innerHTML) {
+      while (newNode.firstChild) {
+        //console.log(newNode.firstChild.textContent);
+        node.parentNode.insertBefore(newNode.firstChild, node);
+      }
+      node.parentNode.removeChild(node);
     }
-    node.parentNode.removeChild(node);
   }
 
 
