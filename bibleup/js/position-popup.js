@@ -23,10 +23,11 @@ let adjustPopupToLeft = (pos) => {
   let remainingSpace = width - rectLeft;
 
   if (remainingSpace > popWidth) {
-    popup.style.left = `${rectLeft + 'px'}`;
     if (rectLeft < 0) {
-      popup.style.left = `${0 + 'px'}`;
-    }
+		popup.style.left = `${0 + 'px'}`;
+    } else {
+		popup.style.left = `${rectLeft + 'px'}`;
+	}
   } else {
     let offsetBy = popWidth - remainingSpace;
     let adjust = rectLeft - offsetBy;
@@ -47,8 +48,7 @@ let adjustPopupToBottom = (pos) => {
     let adjust = realTop - popHeight;
     popup.style.top = `${adjust - 5 + 'px'}`;
   } else {
-    console.log(rectHeight);
-    popup.style.top = `${realTop + (20 + 5) + 'px'}`;
+    popup.style.top = `${realTop + (rectHeight + 5) + 'px'}`;
   }
 };
 
@@ -75,14 +75,14 @@ let getPosition = (e) => {
 let classic = (e) => {
   let el = getPosition(e);
   adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth]);
-  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop]);
+  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height]);
 };
 
 let inline = (e) => {
   let el = getPosition(e);
   el.popWidth += 10;
   adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth]);
-  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop]);
+  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height]);
 };
 
 export default positionPopup;
