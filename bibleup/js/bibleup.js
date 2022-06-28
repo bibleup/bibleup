@@ -56,35 +56,49 @@ export default class BibleUp {
     return this.#options;
   }
 
-  #init(options) {
-    let versions = ["KJV", "ASV", "LSV", "WEB"];
-    options.version = options.version.toUpperCase(); //opt version to uppercase
-    if (versions.includes(options.version) == false) {
-      this.#error(
-        "The version in BibleUp options is currently not supported. Try with other supported versions"
-      );
+  /**
+   * 
+   * @param {Object} options BibleUp Options
+   * @param {*} trigger Optional - define what to trigger init on
+   */
+  #init(options, trigger = {}) {
+    let definetrigger = {version: true, popup: true, style: true}
+    trigger = {...definetrigger, ...trigger}
+
+    if (trigger.version) {
+      let versions = ["KJV", "ASV", "LSV", "WEB"];
+      if (versions.includes(options.version.toUpperCase()) == false) {
+        this.#error(
+          "The version in BibleUp options is currently not supported. Try with other supported versions"
+        );
+      }
     }
 
-    let popup = ["classic", "inline", "wiki"];
-    if (popup.includes(options.popup)) {
-      ConstructPopup.build(options);
-      this.#popup = {
-        container: document.querySelector("#bu-popup"),
-        ref: document.querySelector("#bu-popup-ref"),
-        version: document.querySelector("#bu-popup-version"),
-        content: document.querySelector("#bu-popup-content"),
-        text: document.querySelector("#bu-popup-text"),
-        close: document.querySelector("#bu-popup-close") || false,
-      };
-    } else {
-      this.#error(
-        "BibleUp was unable to construct popup. Check to see if 'popup' option is correct"
-      );
+    if (trigger.popup) {
+      let popup = ["classic", "inline", "wiki"];
+      if (popup.includes(options.popup)) {
+        ConstructPopup.build(options);
+        this.#popup = {
+          container: document.querySelector("#bu-popup"),
+          ref: document.querySelector("#bu-popup-ref"),
+          version: document.querySelector("#bu-popup-version"),
+          content: document.querySelector("#bu-popup-content"),
+          text: document.querySelector("#bu-popup-text"),
+          close: document.querySelector("#bu-popup-close") || false,
+        };
+      } else {
+        this.#error(
+          "BibleUp was unable to construct popup. Check to see if 'popup' option is correct"
+        );
+      }
     }
-
-    if (this.#options.styles) {
-      this.#setStyles(this.#options.styles);
+    
+    if (trigger.style) {
+      if (this.#options.styles) {
+        this.#setStyles(this.#options.styles);
+      }
     }
+    
   }
 
   #setStyles(styles) {
@@ -198,12 +212,33 @@ export default class BibleUp {
   }
 
   refresh(options = {}) {
-    this.#options = { ...this.#options, ...options }
-    this.#searchNode(this.#element, this.#regex);
-    if (document.getElementById('bu-popup')) {
-      document.getElementById('bu-popup').remove();
+    let old = this.#options
+    this.#options = { ...old, ...options }
+    let trigger = {version: false, popup: false, style: false}
+    
+    // set trigger version
+    if (old.version !== this.#options.version) {
+      trigger.version = true
     }
-    this.#init(this.#options)
+
+    // set trigger build popup
+    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
+      if (document.getElementById('bu-popup')) {
+        document.getElementById('bu-popup').remove();
+      }
+      trigger.popup = true
+      trigger.style = true
+    }
+
+    // set trigger styles
+    if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
+      trigger.style = true
+    }
+
+    this.#searchNode(this.#element, this.#regex);
+    if (trigger.version || trigger.popup || trigger.style) {
+      this.#init(this.#options, trigger)
+    }
     this.#manageEvents(this.#options);
   }
 
@@ -453,7 +488,7 @@ export default class BibleUp {
       }
 
       if (this.#popup.version) {
-        this.#popup.version.textContent = res.version ?? this.#options.version;
+        this.#popup.version.textContent = res.version ?? this.#options.version.toUpperCase();
       }
 
       this.#popup.text.textContent = "Loading...";
