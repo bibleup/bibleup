@@ -24,7 +24,7 @@
 <p align="center">
     <a href="https://bibleup.netlify.app/docs">Docs</a> ∙ 
 <a href="https://bibleup.netlify.app/demo">Demo</a> ∙ 
-<a href="https://stackblitz.com/edit/bibleup">Try Online</a> ∙ 
+<a href="https://stackblitz.com/edit/bibleup">Code Playground</a> ∙ 
 <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
 </p>
 
@@ -32,20 +32,29 @@
 
 
 # Introduction
-BibleUp makes Bible references on a webpage easily accessible without the need of leaving the page.
+BibleUp makes Bible references on a webpage easily accessible without the need of leaving the page.<br>
 It searches for all Bible references on a page and transforms each one to a link. Hovering on these links will make the Bible text accessible via a feature-rich and flexible popover.
 <br><br>
 BibleUp is a blend of an internal API and a display interface.
 
+# Plugin and Extention
+BibleUp is available as a plugin on WordPress and can be used on any website with the browser extention.
+- Wordpress plugin (Github, Install page)
+- Browser Extension (Github, Install page)
+
 # Documentation
-For guides, installation and getting started with Bibleup, and to see a demo, visit the [website](https://bibleup.netlify.app)
+For guides on installation and getting started with Bibleup, and to see a demo, visit the [website](https://bibleup.netlify.app).
+
+Stying the popover is now much easier when you use demo editor. You can import, export and select styles and see it change in real-time.
 
 # Contributions
+You can contibute to this project in many, different ways, as a blogger, reviewer or even by developing with us. We welcome contribution in any of the ways mentioned here<br><br>
 Feature requests and issues are always welcomed.<br>
-Kindly make sure you state the specifics in detail, whether a bug, feature requests or a fix.<br>
+Kindly make sure you state the specifics in detail, whether a bug, feature request or a fix.<br>
+Thank you for choosing to contribute!
 
 # Credits
 Special thanks to [API.Bible](https://scripture.api.bible)!
 
 # Licence
-BibleUp is available under the [MIT Licence](https://github.com/Bibleup/bibleup/blob/main/LICENSE)
+BibleUp is available under the [MIT Licence.](https://github.com/Bibleup/bibleup/blob/main/LICENSE)
