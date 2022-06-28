@@ -387,7 +387,9 @@ export default class BibleUp {
 
     window.onkeydown = (e) => {
       if (e.key == "Escape") {
-        this.#exitPopup();
+        if (this.#ispopupOpen) {
+          this.#exitPopup();
+        }
       }
     };
   }
@@ -502,7 +504,7 @@ export default class BibleUp {
           }
         }
         this.#clearTimer()
-      }, 150);
+      }, 100);
     }
   }
 
