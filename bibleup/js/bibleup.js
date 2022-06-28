@@ -160,7 +160,7 @@ export default class BibleUp {
       }
 
       if (numberBooks.includes(book.book)) {
-        numberBooksRef.push(...book.abbr)
+        numberBooksRef.push(book.book, ...book.abbr)
       }
     }
 
