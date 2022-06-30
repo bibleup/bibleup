@@ -211,7 +211,7 @@ export default class BibleUp {
     }
   }
 
-  refresh(options = {}) {
+  refresh(element = this.#element, options = {}) {
     let old = this.#options
     this.#options = { ...old, ...options }
     let trigger = {version: false, popup: false, style: false}
@@ -235,7 +235,7 @@ export default class BibleUp {
       trigger.style = true
     }
 
-    this.#searchNode(this.#element, this.#regex);
+    this.#searchNode(element, this.#regex);
     if (trigger.version || trigger.popup || trigger.style) {
       this.#init(this.#options, trigger)
     }
@@ -278,7 +278,7 @@ export default class BibleUp {
   #validateNode(e) {
     let forbidden_tags = this.#options.bu_ignore;
     let allowed_tags = this.#options.bu_allow;
-    let private_ignore = [...forbidden_tags, 'SCRIPT', 'SVG']
+    let private_ignore = [...forbidden_tags, 'SCRIPT', 'SVG', 'INPUT', 'TEXTAREA', 'SELECT']
     if (private_ignore.includes(e.tagName) && !allowed_tags.includes(e.tagName)) {
       return false;
     } else if (e.classList.contains("bu-ignore") == false) {
