@@ -278,7 +278,7 @@ export default class BibleUp {
   #validateNode(e) {
     let forbidden_tags = this.#options.bu_ignore;
     let allowed_tags = this.#options.bu_allow;
-    let private_ignore = [...forbidden_tags, 'SCRIPT', 'SVG', 'INPUT', 'TEXTAREA', 'SELECT']
+    let private_ignore = [...forbidden_tags, 'SCRIPT','STYLE', 'SVG', 'INPUT', 'TEXTAREA', 'SELECT']
     if (private_ignore.includes(e.tagName) && !allowed_tags.includes(e.tagName)) {
       return false;
     } else if (e.classList.contains("bu-ignore") == false) {
