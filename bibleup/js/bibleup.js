@@ -17,7 +17,8 @@ export default class BibleUp {
   #activeLink; //unique identifier of last clicked link
   #popup;
   #ispopupOpen;
-  #events
+  #events;
+  #inlineChapter;
 
   constructor(element, options) {
     this.#element = element;
@@ -179,8 +180,8 @@ export default class BibleUp {
     }
 
     let regex = [
-      `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:\\s(${versions}))?)`, //main regex
-      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:\\:\\s?(?:\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:\\d{1,3}(?:\\,|\\;|\\&)\\s?|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})\\b)(\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}(?!\\d|\\:\\d|\\w+))`, //match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
+      `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, //main regex
+      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` //match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
     ]
 
     let bible_regex = new RegExp(regex.join('|'), 'g');
@@ -324,6 +325,20 @@ export default class BibleUp {
       version: undefined
     };
 
+    let vesreContext = (verse) => {
+      let result = {};
+      if ((verse.includes(':') && verse.includes('-')) || verse.includes(':')) {
+        // (in-line chapter with range) or (in-line chapter only)
+        result.chapter = verse.slice(0, verse.lastIndexOf(':'))
+        result.verse = verse.slice(verse.lastIndexOf(':') + 1)
+        this.#inlineChapter = result.chapter;
+      } else if (this.#inlineChapter) {
+        result.chapter = this.#inlineChapter
+      }
+
+      return result
+    }
+
     if (p1 != undefined) {
       //standard Bible regex
       bible["book"] = p1;
@@ -332,16 +347,17 @@ export default class BibleUp {
       if (p4 != undefined) {
         bible['version'] = p4
       }
+      this.#inlineChapter = undefined;
     } else {
       //look-behind Bible regex
+      let { chapter, verse } = vesreContext(p7)
       bible["book"] = p5;
-      bible["chapter"] = p6;
-      bible["verse"] = p7;
+      bible["chapter"] = chapter || p6;
+      bible["verse"] = verse || p7
     }
 
 
     let buData = this.#validateBible(bible);
-
     if (buData == false) {
       return match;
     }
@@ -350,7 +366,6 @@ export default class BibleUp {
 		<cite>
 		<a href='#' class='bu-link' bu-data='${buData}'>${match}</a>
 		</cite>`;
-
     return result;
   }
 
@@ -360,7 +375,7 @@ export default class BibleUp {
    * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
   #validateBible(bible) {
-    let bibleRef = `${bible["book"]} ${bible["chapter"]}:${bible["verse"]}`;
+    let bibleRef = `${bible["book"]} ${bible["chapter"]}:${bible["verse"].replaceAll(' ', '')}`;
     bibleRef = Bible.extractPassage(bibleRef);
 
     if (bible['version']) {
