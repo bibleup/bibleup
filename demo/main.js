@@ -7,7 +7,7 @@ let body = document.querySelector('body')
 
 let bibleup = new BibleUp(body, {
 	version: 'kjv',
-	popup: 'inline',
+	popup: 'classic',
 	darkTheme: false,
 	styles: {
 		primary: ' #fff',
@@ -15,7 +15,6 @@ let bibleup = new BibleUp(body, {
 		tertiary: '#f2f2f2',
 		headerColor: '#24292f',
 		color: ['#24292f','#24292f'],
-		borderRadius: '6px',
 		boxShadow: '0 0 0 1px #d0d7de, 0 8px 24px rgba(140,149,159,0.2)',
 		fontSize: '',
 	}
@@ -30,7 +29,7 @@ btn.onclick = () => {
 
 let btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-	bibleup.create()
+	bibleup.refresh()
 }
 
 let add = document.querySelector('#add')

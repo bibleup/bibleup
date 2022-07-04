@@ -757,7 +757,6 @@ export default bibleData = [
     book: "1 John",
     api: "1JN",
     abbr: [
-      "1 John",
       "1 Jn",
       "I Jn",
       "1Jn",
@@ -781,7 +780,6 @@ export default bibleData = [
     book: "2 John",
     api: "2JN",
     abbr: [
-      "2 John",
       "2 Jn",
       "II Jn",
       "2Jn",
@@ -805,7 +803,6 @@ export default bibleData = [
     book: "3 John",
     api: "3JN",
     abbr: [
-      "3 John",
       "3 Jn",
       "III Jn",
       "3Jn",

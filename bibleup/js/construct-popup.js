@@ -2,7 +2,7 @@ export default class ConstructPopup {
   static build(options) {
     const popup = document.createElement("div");
     popup.id = "bu-popup";
-    popup.classList.add("bu-popup-hide");
+    popup.classList.add("bu-popup-hide", "bu-ignore");
     let popupStyle = options.popup;
     let darkTheme = options.darkTheme;
 
