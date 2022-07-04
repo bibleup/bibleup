@@ -11,6 +11,6 @@
         "sourceType": "module"
     },
     "rules": {
-        "allowIndentationTabs": true
+        "no-tabs": ["error", {"allowIndentationTabs": true}]
     }
 }
