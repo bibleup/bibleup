@@ -1,43 +1,43 @@
 export default class ConstructPopup {
-  static build(options) {
-    const popup = document.createElement("div");
-    popup.id = "bu-popup";
-    popup.classList.add("bu-popup-hide", "bu-ignore");
-    let popupStyle = options.popup;
-    let darkTheme = options.darkTheme;
+  static build (options) {
+    const popup = document.createElement('div')
+    popup.id = 'bu-popup'
+    popup.classList.add('bu-popup-hide', 'bu-ignore')
+    const popupStyle = options.popup
+    const darkTheme = options.darkTheme
 
-    //Accessibility
-    popup.setAttribute("role", "dialog");
+    // Accessibility
+    popup.setAttribute('role', 'dialog')
     popup.setAttribute(
-      "aria-description",
-      "A non-modal popup showing the text of Bible reference clicked on"
-    );
+      'aria-description',
+      'A non-modal popup showing the text of Bible reference clicked on'
+    )
 
-    if (popupStyle == "classic") {
-      popup.classList.add("bu-classic");
-      popup.innerHTML = this.classic();
+    if (popupStyle === 'classic') {
+      popup.classList.add('bu-classic')
+      popup.innerHTML = this.classic()
     }
 
-    if (popupStyle == "inline") {
-      popup.classList.add("bu-inline");
-      popup.innerHTML = this.inline();
+    if (popupStyle === 'inline') {
+      popup.classList.add('bu-inline')
+      popup.innerHTML = this.inline()
     }
 
-    if (popupStyle == "wiki") {
-      popup.classList.add("bu-wiki");
-      popup.innerHTML = this.wiki();
+    if (popupStyle === 'wiki') {
+      popup.classList.add('bu-wiki')
+      popup.innerHTML = this.wiki()
     }
 
-    if (darkTheme == true) {
-      popup.classList.add("bu-theme-dark");
+    if (darkTheme === true) {
+      popup.classList.add('bu-theme-dark')
     }
 
-    document.body.appendChild(popup);
+    document.body.appendChild(popup)
   }
 
   // bu-popup-ref/version/header/content/text/footer
 
-  static classic() {
+  static classic () {
     const markup = `
 		<div id='bu-popup-header'>
 		<p id='bu-popup-ref'></p>
@@ -51,11 +51,11 @@ export default class ConstructPopup {
 		<div id='bu-popup-footer'>
 			<p>BibleUp 📖💡 </p>
 		</div>
-		`;
-    return markup;
+		`
+    return markup
   }
 
-  static wiki() {
+  static wiki () {
     const markup = `
 	 <div id='bu-popup-header'>
 	  <p id='bu-popup-ref'></p>
@@ -69,12 +69,12 @@ export default class ConstructPopup {
 	  
 	 <div id='bu-popup-footer'>
 	 	<p>BibleUp 📖💡 </p> 
-	 </div>`;
+	 </div>`
 
-    return markup;
+    return markup
   }
 
-  static inline() {
+  static inline () {
     const markup = `
 		<div id='bu-popup-content'>
   			<ol id='bu-popup-text'></ol>
@@ -82,8 +82,8 @@ export default class ConstructPopup {
  
  		<div id='bu-popup-footer'>
   			<p>BibleUp 📖💡 </p>
- 		</div>`;
+ 		</div>`
 
-    return markup;
+    return markup
   }
 }
