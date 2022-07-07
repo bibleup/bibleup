@@ -1,7 +1,6 @@
 // import BibleUp from '../dist/esm/bibleup.esm.js';
 import BibleUp from '../bibleup/js/bibleup.js'
 
-const test = document.querySelector('#test')
 const testPanel = document.querySelector('#test-panel')
 const body = document.querySelector('body')
 
