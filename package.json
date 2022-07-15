@@ -18,6 +18,7 @@
   "scripts": {
     "test": "echo \"No test specified\"",
     "build": "npm run clean && rollup --config",
+    "lint": "eslint --fix --ext .js,.jsx ./bibleup",
     "clean": "rd /s /q dist"
   },
   "repository": {
@@ -48,6 +49,11 @@
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
+    "eslint": "^8.19.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.2.4",
+    "eslint-plugin-promise": "^6.0.0",
     "rollup": "^2.45.2",
     "rollup-plugin-less": "^1.1.3",
     "rollup-plugin-terser": "^7.0.2"
