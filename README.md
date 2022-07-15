@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-    <a href="https://bibleup.netlify.app/docs">Docs</a> ∙ 
+    <a href="https://bibleup.netlify.app">Home</a> ∙ 
 <a href="https://bibleup.netlify.app/demo">Demo</a> ∙ 
 <a href="https://stackblitz.com/edit/bibleup">Code Playground</a> ∙ 
 <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
