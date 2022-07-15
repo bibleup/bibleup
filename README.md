@@ -28,7 +28,7 @@
 <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
 </p>
 
-<img alt="BibleUp popovers" width="400" src="https://lh3.googleusercontent.com/d/1HYvvDbTx1ifC0keKlJ2mM0V3STs84KDE" />
+<img alt="BibleUp popovers" width="400" src="https://lh3.googleusercontent.com/d/1Hacc6-ueJReD-8rXOvHKapkJuBff5tYy" />
 
 <hr>
 
@@ -42,25 +42,25 @@ BibleUp is a blend of an internal API and a display interface.
 # Features
 - **Easy integration** - Simply install and configure.
 - **Powerful tagging** - Match all references including abbreviated books, verse ranges and chapter-level references.
-- **Smart ranges** - internally reorders verse ranges.
+- **Smart range** - internally reorders verse ranges.
 - **Highly customizable popover** - style according to your site theme.
 - **Supports different Bible versions**
 - **Fast and performant**
 - **Follows WAI-ARAI accessibility guidelines** - for screen readers and keyboard navigation. 
 - **BibleUp Editor**
 
-# Plugin and Extention
+# Plugin and Extension
 BibleUp is available as a plugin for WordPress sites and a browser extension that can be used on any website.
 - Wordpress plugin ([Github](https://github.com/bibleup/wordpress), Install)
 - Browser Extension ([Github](https://github.com/bibleup/browser-extension), Install)
 
 # Documentation
-For guides on installation and how to get started with Bibleup, visit the [website](https://bibleup.netlify.app).
+For guides on installation and how to get started with Bibleup, see the [docs](https://bibleup.netlify.app/docs).
 
-Stying the popover is now much easier when you use BibleUp Editor. You can import, export and select styles and see it change in real-time.
+Stying the popover is now much easier when you use the **BibleUp Editor**. You can import, export and select styles and see it change in real-time.
 
-# Contributions
-You can contibute to this project in many, different ways, as a blogger, reviewer or even by developing with us. We welcome contribution in any of the ways mentioned here<br><br>
+# Contribution
+You can contibute to this project in many, different ways: as a blogger, reviewer, organisation or even by developing with us. We welcome contribution in any of the ways mentioned here<br><br>
 Feature requests and issues are always welcomed.<br>
 Kindly make sure you state the specifics in detail, whether a bug, feature request or a fix.<br>
 Thank you for choosing to contribute!
