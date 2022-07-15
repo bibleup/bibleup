@@ -28,6 +28,8 @@
 <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
 </p>
 
+<img alt="BibleUp popovers" width="400" src="https://lh3.googleusercontent.com/d/1HYvvDbTx1ifC0keKlJ2mM0V3STs84KDE" />
+
 <hr>
 
 
