@@ -41,11 +41,12 @@ BibleUp is a blend of an internal API and a display interface.
 
 # Features
 - **Easy integration** - Simply install and configure.
-- **Powerful tagging** - Match all references including abbreviated books, verse ranges and chapter-level references.
-- **Smart range** - internally reorders verse ranges.
-- **Highly customizable popover** - style according to your site theme.
+- **Powerful tagging** - Matches all references including abbreviated books, verse ranges and chapter-level references.
+- **Smart tagging** - Matches only valid references and internally reorders invalid verse ranges.
+- **Highly customizable popover** - Style according to your site theme.
+- **Robust Configuration** - Configure behaviour as you want.
 - **Supports different Bible versions**
-- **Fast and performant**
+- **Fast and performant** - Efficient and snappy.
 - **Follows WAI-ARAI accessibility guidelines** - for screen readers and keyboard navigation. 
 - **BibleUp Editor**
 
