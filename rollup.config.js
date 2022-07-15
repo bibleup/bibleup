@@ -9,7 +9,7 @@ const babelConfig = babel({
     [
       '@babel/preset-env',
       {
-        targets: '> 0.5%, last 2 versions, Firefox ESR, not dead'
+        targets: '> 0.2%, last 3 versions, safari >=10, ios_saf >=10, not dead'
       }
     ]
   ],
