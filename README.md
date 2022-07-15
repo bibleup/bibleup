@@ -38,22 +38,22 @@ It searches for all Bible references on a page and transforms each one to a link
 BibleUp is a blend of an internal API and a display interface.
 
 # Features
-- Easy integration - Simply install and configure.
-- Powerful tagging - Match all references including abbreviated books, verse ranges and chapter-level references.
-- Smart ranges - internally reorders verse ranges.
-- Highly customizable popover - style according to your site theme.
-- Supports different Bible versions
-- Fast and performant
-- Follows the WAI-ARAI accessibility guidelines for screen readers and keyboard navigation. 
-- BibleUp Editor
+- **Easy integration** - Simply install and configure.
+- **Powerful tagging** - Match all references including abbreviated books, verse ranges and chapter-level references.
+- **Smart ranges** - internally reorders verse ranges.
+- **Highly customizable popover** - style according to your site theme.
+- **Supports different Bible versions**
+- **Fast and performant**
+- **Follows WAI-ARAI accessibility guidelines** - for screen readers and keyboard navigation. 
+- **BibleUp Editor**
 
 # Plugin and Extention
 BibleUp is available as a plugin for WordPress sites and a browser extension that can be used on any website.
-- Wordpress plugin ([Github](https://github.com/bibleup/wordpress), Install page)
-- Browser Extension ([Github](https://github.com/bibleup/browser-extension), Install page)
+- Wordpress plugin ([Github](https://github.com/bibleup/wordpress), Install)
+- Browser Extension ([Github](https://github.com/bibleup/browser-extension), Install)
 
 # Documentation
-For guides on installation, how to get started with Bibleup, visit the [website](https://bibleup.netlify.app).
+For guides on installation and how to get started with Bibleup, visit the [website](https://bibleup.netlify.app).
 
 Stying the popover is now much easier when you use BibleUp Editor. You can import, export and select styles and see it change in real-time.
 
