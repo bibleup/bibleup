@@ -27,6 +27,7 @@
 <a href="https://stackblitz.com/edit/bibleup">Code Playground</a> ∙ 
 <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
 </p>
+<hr>
 
 <img alt="BibleUp popovers" width="400" src="https://lh3.googleusercontent.com/d/1Hacc6-ueJReD-8rXOvHKapkJuBff5tYy" />
 
