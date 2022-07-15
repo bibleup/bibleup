@@ -139,6 +139,9 @@ export default class Search {
         if (currVerse !== lastVerse) {
           lastVerse = verse.getAttribute('data-verse-id')
           passage.push(verse.textContent)
+        } else {
+          // join 'separated' words in verse
+          passage[passage.length - 1] += ' ' + verse.textContent
         }
       }
 
