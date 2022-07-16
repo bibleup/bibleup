@@ -3,89 +3,91 @@
 */
 
 #bu-popup.bu-wiki {
-	@bg-color: #ffffff;
-	position: fixed;
-	bottom: 0;
-	left: 50%;
-	width: 90%;
-	max-width: 350px;
-	height: auto;
-	max-height: 220px;
-	transform: translate(-50%, -20%);
-	background: @bg-color;
-	box-shadow: 0px 0px 3px 0.7px #a6a6a6;
-	overflow: hidden;
-  
-	p {
-	  margin: 0;
-	}
-  
-	#bu-popup-header {
-	  display: grid;
-	  grid-template-columns: auto auto 1fr ;
-	  align-items: center;
-	  padding: 10px;
-  
-	  #bu-popup-ref {
-		font-weight: bold;
-		padding: 2px 0;
-	  }
-  
-	  #bu-popup-version {
-		background: darken(@bg-color, 5%);
-		padding: 0px 10px;
-		border-radius: 3px;
-		margin-left: 5px;
-	  }
-  
-	  #bu-popup-close {
-		text-align: right;
-		margin-right: 5px;
-		margin-left: auto;
-		padding: 0 5px;
-		font-size: 18px;
-		cursor: pointer;
-		background: none;
-		outline: none;
-		border: none;
+  @bg-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  width: 90%;
+  max-width: 350px;
+  height: auto;
+  max-height: 220px;
+  transform: translate(-50%, -20%);
+  background: @bg-color;
+  box-shadow: 0px 0px 3px 0.7px #a6a6a6;
+  overflow: hidden;
 
-		&:focus {
-			outline: 2px solid #b3b3b3;
-			border-radius: 100px;
-		}
-	  }
-	}
-  
-	#bu-popup-content {
-	  max-height: 100px;
-	  overflow-x: auto;
-	  padding: 0 15px;
-	  padding-bottom: 0;
-  
-	  ol {
-		padding: 0 20px;
-		margin: 0;
-	  }
-	  li {
-		margin: 0;
-		&:not(:last-child) {
-		  padding-bottom: 10px;
-		}
-	  }
-	}
+  p {
+    margin: 0;
   }
-  
-  #bu-popup.bu-wiki.bu-theme-dark {
-	@bg1: #3d4245;
-	@color: #333333;
-	background: @bg1;
-	color: #f2f2f2;
+}
 
-	#bu-popup-version {
-		color: #333;
-	  }
+#bu-popup-header {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  padding: 10px;
 
-	  #bu-popup-close {
-		  color: #fff;
-	  }
+  #bu-popup-ref {
+    font-weight: bold;
+    padding: 2px 0;
   }
+
+  #bu-popup-version {
+    background: darken(@bg-color, 5%);
+    padding: 0px 10px;
+    border-radius: 3px;
+    margin-left: 5px;
+  }
+
+  #bu-popup-close {
+    text-align: right;
+    margin-right: 5px;
+    margin-left: auto;
+    padding: 0 5px;
+    font-size: 18px;
+    cursor: pointer;
+    background: none;
+    outline: none;
+    border: none;
+
+    &:focus {
+      outline: 2px solid #b3b3b3;
+      border-radius: 100px;
+    }
+  }
+}
+
+#bu-popup-content {
+  max-height: 100px;
+  overflow-x: auto;
+  padding: 0 15px;
+  padding-bottom: 0;
+
+  ol {
+    padding: 0 20px;
+    margin: 0;
+  }
+
+  li {
+    margin: 0;
+
+    &:not(:last-child) {
+      padding-bottom: 10px;
+    }
+  }
+}
+
+#bu-popup.bu-wiki.bu-theme-dark {
+  @bg1: #3d4245;
+  @color: #333333;
+  background: @bg1;
+  color: #f2f2f2;
+
+  #bu-popup-version {
+    color: #333;
+  }
+
+  #bu-popup-close {
+    color: #fff;
+  }
+}
