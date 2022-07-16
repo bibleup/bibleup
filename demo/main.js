@@ -4,7 +4,7 @@ import BibleUp from '../bibleup/js/bibleup.js'
 const testPanel = document.querySelector('#test-panel')
 const body = document.querySelector('body')
 
-const bibleup = new BibleUp(body, {
+/* const bibleup = new BibleUp(body, {
   version: 'kjv',
   popup: 'classic',
   darkTheme: false,
@@ -17,8 +17,14 @@ const bibleup = new BibleUp(body, {
     boxShadow: '0 0 0 1px #d0d7de, 0 8px 24px rgba(140,149,159,0.2)',
     fontSize: ''
   }
+}) */
+
+const bibleupp = new BibleUp(body, {
+  version: 'kjv',
+  popup: 'classic'
 })
-bibleup.create()
+
+bibleupp.create()
 // console.log(bibleup.getOptions)
 
 const btn = document.querySelector('#remove')
