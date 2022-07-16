@@ -183,10 +183,8 @@ export default class BibleUp {
     }
 
     const regex = [
-      `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
-      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join(
-        '|'
-      )})\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
+      `(?:(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
+      `(?<=(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})(?:\\.?)\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
     ]
 
     const bibleRegex = new RegExp(regex.join('|'), 'g')
