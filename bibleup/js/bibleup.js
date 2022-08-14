@@ -98,44 +98,46 @@ export default class BibleUp {
   }
 
   #setStyles (styles) {
-    const elExists = (id) => {
-      if (document.getElementById(id)) {
-        return true
-      }
+    const real = {
+      primary: 'white',
+      secondary: '#e6e6e6',
+      tertiary: '#f2f2f2',
+      headerColor: '#212529',
+      color: ['#212529', '#212529', '#212529'],
+      borderRadius: '0',
+      boxShadow: '0px 0px 3px 0.7px #a6a6a6'
     }
 
-    for (const prop in styles) {
-      if (prop && styles[prop]) {
-        if (prop === 'primary') {
-          document.getElementById('bu-popup').style.background = styles[prop]
-        }
-
-        if (prop === 'secondary' && elExists('bu-popup-header')) {
-          document.getElementById('bu-popup-header').style.background = styles[prop]
-        }
-
-        if (prop === 'tertiary' && elExists('bu-popup-version')) {
-          document.getElementById('bu-popup-version').style.background = styles[prop]
-        }
-
-        if (prop === 'headerColor' && elExists('bu-popup-header')) {
-          document.getElementById('bu-popup-header').style.color = styles[prop]
-        }
-
-        if (prop === 'color') {
-          // font color
-          document.getElementById('bu-popup').style.color = styles.color[0]
-          // version color
-          if (elExists('bu-popup-version')) document.getElementById('bu-popup-version').style.color = styles.color[1]
-          // close color
-          if (elExists('bu-popup-close')) document.getElementById('bu-popup-close').style.color = styles.color[2]
-        }
-
-        if (prop === 'borderRadius' || prop === 'boxShadow' || prop === 'fontSize') {
-          document.getElementById('bu-popup').style[prop] = styles[prop]
-        }
-      }
+    if (this.#options.popup === 'inline') {
+      real.borderRadius = '5px'
+      real.boxShadow = '0px 0px 2px 0.5px #ccc'
     }
+    if (this.#options.popup === 'wiki') {
+      real.headerColor = 'none'
+    }
+    styles = { ...real, ...styles }
+
+    document.getElementById('bu-popup').style.background = styles.primary
+    if (document.getElementById('bu-popup-header')) {
+      document.getElementById('bu-popup-header').style.background = styles.secondary
+    }
+    if (document.getElementById('bu-popup-header')) {
+      document.getElementById('bu-popup-header').style.color = styles.headerColor
+    }
+    // font color
+    document.getElementById('bu-popup').style.color = styles.color[0]
+    // version background and color
+    if (document.getElementById('bu-popup-version')) {
+      document.getElementById('bu-popup-version').style.background = styles.tertiary
+      document.getElementById('bu-popup-version').style.color = styles.color[1]
+    }
+    // close color
+    if (document.getElementById('bu-popup-close')) {
+      document.getElementById('bu-popup-close').style.color = styles.color[2]
+    }
+    document.getElementById('bu-popup').style.borderRadius = styles.borderRadius
+    document.getElementById('bu-popup').style.boxShadow = styles.boxShadow
+    document.getElementById('bu-popup').style.fontSize = styles.fontSize
   }
 
   /**
@@ -215,7 +217,7 @@ export default class BibleUp {
     }
   }
 
-  refresh (element = this.#element, options = {}) {
+  refresh (options = {}, element = this.#element) {
     const old = this.#options
     this.#options = { ...old, ...options }
     const trigger = { version: false, popup: false, style: false }
@@ -251,7 +253,7 @@ export default class BibleUp {
    * The function performs a self call on element child nodes until all matches are found
    */
   #searchNode (e, regex) {
-    let type = e.nodeType
+    let type = e?.nodeType ?? this.#error('Element does not exist in the DOM')
     const match = e.textContent.match(regex) || false
     let next
 
