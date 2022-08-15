@@ -28,7 +28,7 @@ export default class BibleUp {
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
       bu_allow: [],
-      styles: undefined
+      styles: {}
     }
 
     if (typeof options === 'object' && options !== null) {
@@ -55,6 +55,62 @@ export default class BibleUp {
    */
   get getOptions () {
     return this.#options
+  }
+
+  /**
+   * {desc} class entry point.
+   * create instances for entire app func
+   *
+   */
+  create () {
+    this.#searchNode(this.#element, this.#regex)
+    this.#manageEvents(this.#options)
+  }
+
+  /**
+     * This method destoys BibleUp creation and removes the links and popup from the page
+     */
+  destroy () {
+    const links = document.querySelectorAll('.bu-link')
+    const popup = document.getElementById('bu-popup')
+    for (const link of links) {
+      link.closest('cite').replaceWith(...link.childNodes)
+    }
+    if (popup) {
+      popup.remove()
+    }
+  }
+
+  refresh (options = {}, element = this.#element) {
+    const old = this.#options
+    this.#options = { ...this.#defaultOptions, ...options }
+    const trigger = { version: false, popup: false, style: false }
+
+    // set trigger version
+    if (old.version !== this.#options.version) {
+      trigger.version = true
+    }
+
+    // set trigger build popup
+    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
+      if (document.getElementById('bu-popup')) {
+        document.getElementById('bu-popup').remove()
+      }
+      console.log('style')
+      trigger.popup = true
+      trigger.style = true
+    }
+
+    // set trigger styles
+    if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
+      trigger.style = true
+    }
+
+    this.#searchNode(element, this.#regex)
+    if (trigger.version || trigger.popup || trigger.style) {
+      this.#init(this.#options, trigger)
+    }
+    this.#manageEvents(this.#options)
   }
 
   /**
@@ -211,61 +267,6 @@ export default class BibleUp {
 
     const bibleRegex = new RegExp(regex.join('|'), 'g')
     return bibleRegex
-  }
-
-  /**
-   * {desc} class entry point.
-   * create instances for entire app func
-   *
-   */
-  create () {
-    this.#searchNode(this.#element, this.#regex)
-    this.#manageEvents(this.#options)
-  }
-
-  /**
-   * This method destoys BibleUp creation and removes the links and popup from the page
-   */
-  destroy () {
-    const links = document.querySelectorAll('.bu-link')
-    const popup = document.getElementById('bu-popup')
-    for (const link of links) {
-      link.closest('cite').replaceWith(...link.childNodes)
-    }
-    if (popup) {
-      popup.remove()
-    }
-  }
-
-  refresh (options = {}, element = this.#element) {
-    const old = this.#options
-    this.#options = { ...old, ...options }
-    const trigger = { version: false, popup: false, style: false }
-
-    // set trigger version
-    if (old.version !== this.#options.version) {
-      trigger.version = true
-    }
-
-    // set trigger build popup
-    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
-      if (document.getElementById('bu-popup')) {
-        document.getElementById('bu-popup').remove()
-      }
-      trigger.popup = true
-      trigger.style = true
-    }
-
-    // set trigger styles
-    if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
-      trigger.style = true
-    }
-
-    this.#searchNode(element, this.#regex)
-    if (trigger.version || trigger.popup || trigger.style) {
-      this.#init(this.#options, trigger)
-    }
-    this.#manageEvents(this.#options)
   }
 
   /**
