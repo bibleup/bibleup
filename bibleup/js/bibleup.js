@@ -108,13 +108,33 @@ export default class BibleUp {
       boxShadow: '0px 0px 3px 0.7px #a6a6a6'
     }
 
+    if (this.#options.popup === 'classic') {
+      if (this.#options.darkTheme === true) {
+        real.primary = '#595959'
+        real.secondary = '#d9d9d9'
+        real.color[0] = '#f2f2f2'
+        real.headerColor = '#333'
+      }
+    }
+
     if (this.#options.popup === 'inline') {
       real.borderRadius = '5px'
       real.boxShadow = '0px 0px 2px 0.5px #ccc'
+      if (this.#options.darkTheme === true) {
+        real.primary = '#3d4245'
+        real.color[0] = '#f2f2f2'
+      }
     }
+
     if (this.#options.popup === 'wiki') {
       real.headerColor = 'none'
+      if (this.#options.darkTheme === true) {
+        real.primary = '#3d4245'
+        real.color[0] = '#f2f2f2'
+        real.color[1] = '#333'
+      }
     }
+
     styles = { ...real, ...styles }
 
     document.getElementById('bu-popup').style.background = styles.primary
@@ -186,7 +206,7 @@ export default class BibleUp {
 
     const regex = [
       `(?:(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
-      `(?<=(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})(?:\\.?)\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
+      `(?<=(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})(?:\\.?)\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12:5)
     ]
 
     const bibleRegex = new RegExp(regex.join('|'), 'g')
@@ -293,8 +313,8 @@ export default class BibleUp {
   }
 
   /**
-   * {desc} This function returns appends <cite> on text nodes with a scripture match
-   * It replace 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
+   * {desc} This function returns: appends <cite> on text nodes with a scripture match
+   * It replaces 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
    * param(node) is a text node
    */
   #createLink (node) {
@@ -466,7 +486,7 @@ export default class BibleUp {
       let bibleRef = e.currentTarget.getAttribute('bu-data')
       bibleRef = JSON.parse(bibleRef)
 
-      // add delay to before popup 'loading' - to allow fetch return cache if exists
+      // add delay before popup 'loading' - to allow fetch return cache if it exists
       this.#loadingTimer = setTimeout(() => {
         this.#updatePopup(bibleRef, true)
         positionPopup(e, this.#options.popup)
@@ -490,9 +510,9 @@ export default class BibleUp {
   }
 
   /**
-   * @param res either contains real reference of verse clicked or the final response of bible text look up with the text
-   * @param isLoading is a boolean that makes popup show 'loading' before the bible text is updated
-   * @param res contains: res.ref, res.text, res.chapter, res.verse, res.version - if it is the final response with bible text
+   * @param res contains bu-data content of a link, and the full text (if isLoading is false)
+   * @param isLoading a boolean that makes popup show 'loading' before the bible text is updated
+   * @param res res.ref, res.text, res.chapter, res.verse, res.version - a complete res object
    * (description) update popup data
    */
   #updatePopup (res, isLoading) {
@@ -510,7 +530,7 @@ export default class BibleUp {
       if (this.#popup.ref) {
         this.#popup.ref.textContent = res.ref
         // REF Accessibility
-        this.#popup.container.setAttribute('aria-label', 'bu-popup-ref')
+        this.#popup.container.setAttribute('aria-label', `${res.ref}`)
       }
 
       if (this.#popup.version) {
@@ -522,10 +542,9 @@ export default class BibleUp {
       if (res.text == null) {
         this.#popup.text.textContent = 'Cannot load bible reference at the moment.'
       } else {
-        const text = res.text
         this.#popup.text.innerHTML = ''
-        text.forEach((verse) => {
-          this.#popup.text.innerHTML += `<li>${verse} </li>`
+        res.text.forEach((verse) => {
+          this.#popup.text.innerHTML += `<li>${verse}</li>`
         })
       }
     }

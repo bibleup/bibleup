@@ -3,6 +3,7 @@ import less from 'rollup-plugin-less'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
+import compiler from '@ampproject/rollup-plugin-closure-compiler'
 
 const babelConfig = babel({
   presets: [
@@ -36,7 +37,6 @@ export default [
       commonjs({
         include: 'node_modules/**'
       })
-      // babelConfig
     ]
   },
 
@@ -82,7 +82,8 @@ export default [
         include: 'node_modules/**'
       }),
       babelConfig,
-      terser()
+      terser(),
+      compiler()
     ]
   }
 ]
