@@ -12,5 +12,6 @@
     },
     "rules": {
         "no-tabs": ["error", {"allowIndentationTabs": true}]
-    }
+    },
+    "ignorePatterns": ["dist/*", "demo/*"]
 }

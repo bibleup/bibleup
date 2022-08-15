@@ -15,10 +15,10 @@ assignees: ''
 
 **Screenshots** (If applicable, add screenshots to help explain your problem.) 
 
-**Device Specifications (please complete the following information):**
- - Device: 
- - OS: 
- - Browser: 
-
+**Device (please complete the following information):**
+ - Device:
+ - OS:
+ - Browser:
+ - Browser version:
 
 **Add any other additional context about the problem here.**
