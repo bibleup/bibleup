@@ -7,8 +7,7 @@
   "unpkg": "./dist/umd/bibleup.min.js",
   "module": "./dist/esm/bibleup.esm.js",
   "exports": {
-    ".": "./dist/esm/bibleup.esm.js",
-    "./core": "./bibleup/js/bibleup.js",
+    ".": "./bibleup/js/bibleup.js",
     "./css": "./dist/css/bibleup.css"
   },
   "files": [
@@ -44,11 +43,13 @@
     "access": "public"
   },
   "devDependencies": {
+    "@ampproject/rollup-plugin-closure-compiler": "^0.27.0",
     "@babel/plugin-transform-runtime": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
+    "core-js": "^3.23.4",
     "eslint": "^8.19.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",

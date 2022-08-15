@@ -28,7 +28,7 @@ export default class BibleUp {
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
       bu_allow: [],
-      styles: undefined
+      styles: {}
     }
 
     if (typeof options === 'object' && options !== null) {
@@ -55,6 +55,62 @@ export default class BibleUp {
    */
   get getOptions () {
     return this.#options
+  }
+
+  /**
+   * {desc} class entry point.
+   * create instances for entire app func
+   *
+   */
+  create () {
+    this.#searchNode(this.#element, this.#regex)
+    this.#manageEvents(this.#options)
+  }
+
+  /**
+     * This method destoys BibleUp creation and removes the links and popup from the page
+     */
+  destroy () {
+    const links = document.querySelectorAll('.bu-link')
+    const popup = document.getElementById('bu-popup')
+    for (const link of links) {
+      link.closest('cite').replaceWith(...link.childNodes)
+    }
+    if (popup) {
+      popup.remove()
+    }
+  }
+
+  refresh (options = {}, element = this.#element) {
+    const old = this.#options
+    this.#options = { ...this.#defaultOptions, ...options }
+    const trigger = { version: false, popup: false, style: false }
+
+    // set trigger version
+    if (old.version !== this.#options.version) {
+      trigger.version = true
+    }
+
+    // set trigger build popup
+    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
+      if (document.getElementById('bu-popup')) {
+        document.getElementById('bu-popup').remove()
+      }
+      console.log('style')
+      trigger.popup = true
+      trigger.style = true
+    }
+
+    // set trigger styles
+    if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
+      trigger.style = true
+    }
+
+    this.#searchNode(element, this.#regex)
+    if (trigger.version || trigger.popup || trigger.style) {
+      this.#init(this.#options, trigger)
+    }
+    this.#manageEvents(this.#options)
   }
 
   /**
@@ -98,44 +154,66 @@ export default class BibleUp {
   }
 
   #setStyles (styles) {
-    const elExists = (id) => {
-      if (document.getElementById(id)) {
-        return true
+    const real = {
+      primary: 'white',
+      secondary: '#e6e6e6',
+      tertiary: '#f2f2f2',
+      headerColor: '#212529',
+      color: ['#212529', '#212529', '#212529'],
+      borderRadius: '0',
+      boxShadow: '0px 0px 3px 0.7px #a6a6a6'
+    }
+
+    if (this.#options.popup === 'classic') {
+      if (this.#options.darkTheme === true) {
+        real.primary = '#595959'
+        real.secondary = '#d9d9d9'
+        real.color[0] = '#f2f2f2'
+        real.headerColor = '#333'
       }
     }
 
-    for (const prop in styles) {
-      if (prop && styles[prop]) {
-        if (prop === 'primary') {
-          document.getElementById('bu-popup').style.background = styles[prop]
-        }
-
-        if (prop === 'secondary' && elExists('bu-popup-header')) {
-          document.getElementById('bu-popup-header').style.background = styles[prop]
-        }
-
-        if (prop === 'tertiary' && elExists('bu-popup-version')) {
-          document.getElementById('bu-popup-version').style.background = styles[prop]
-        }
-
-        if (prop === 'headerColor' && elExists('bu-popup-header')) {
-          document.getElementById('bu-popup-header').style.color = styles[prop]
-        }
-
-        if (prop === 'color') {
-          // font color
-          document.getElementById('bu-popup').style.color = styles.color[0]
-          // version color
-          if (elExists('bu-popup-version')) document.getElementById('bu-popup-version').style.color = styles.color[1]
-          // close color
-          if (elExists('bu-popup-close')) document.getElementById('bu-popup-close').style.color = styles.color[2]
-        }
-
-        if (prop === 'borderRadius' || prop === 'boxShadow' || prop === 'fontSize') {
-          document.getElementById('bu-popup').style[prop] = styles[prop]
-        }
+    if (this.#options.popup === 'inline') {
+      real.borderRadius = '5px'
+      real.boxShadow = '0px 0px 2px 0.5px #ccc'
+      if (this.#options.darkTheme === true) {
+        real.primary = '#3d4245'
+        real.color[0] = '#f2f2f2'
       }
     }
+
+    if (this.#options.popup === 'wiki') {
+      real.headerColor = 'none'
+      if (this.#options.darkTheme === true) {
+        real.primary = '#3d4245'
+        real.color[0] = '#f2f2f2'
+        real.color[1] = '#333'
+      }
+    }
+
+    styles = { ...real, ...styles }
+
+    document.getElementById('bu-popup').style.background = styles.primary
+    if (document.getElementById('bu-popup-header')) {
+      document.getElementById('bu-popup-header').style.background = styles.secondary
+    }
+    if (document.getElementById('bu-popup-header')) {
+      document.getElementById('bu-popup-header').style.color = styles.headerColor
+    }
+    // font color
+    document.getElementById('bu-popup').style.color = styles.color[0]
+    // version background and color
+    if (document.getElementById('bu-popup-version')) {
+      document.getElementById('bu-popup-version').style.background = styles.tertiary
+      document.getElementById('bu-popup-version').style.color = styles.color[1]
+    }
+    // close color
+    if (document.getElementById('bu-popup-close')) {
+      document.getElementById('bu-popup-close').style.color = styles.color[2]
+    }
+    document.getElementById('bu-popup').style.borderRadius = styles.borderRadius
+    document.getElementById('bu-popup').style.boxShadow = styles.boxShadow
+    document.getElementById('bu-popup').style.fontSize = styles.fontSize
   }
 
   /**
@@ -183,10 +261,8 @@ export default class BibleUp {
     }
 
     const regex = [
-      `(?:(?:(${refGroup})\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
-      `(?<=(?:(${refGroup})\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join(
-        '|'
-      )})\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12)
+      `(?:(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
+      `(?<=(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})(?:\\.?)\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12:5)
     ]
 
     const bibleRegex = new RegExp(regex.join('|'), 'g')
@@ -194,66 +270,11 @@ export default class BibleUp {
   }
 
   /**
-   * {desc} class entry point.
-   * create instances for entire app func
-   *
-   */
-  create () {
-    this.#searchNode(this.#element, this.#regex)
-    this.#manageEvents(this.#options)
-  }
-
-  /**
-   * This method destoys BibleUp creation and removes the links and popup from the page
-   */
-  destroy () {
-    const links = document.querySelectorAll('.bu-link')
-    const popup = document.getElementById('bu-popup')
-    for (const link of links) {
-      link.closest('cite').replaceWith(...link.childNodes)
-    }
-    if (popup) {
-      popup.remove()
-    }
-  }
-
-  refresh (element = this.#element, options = {}) {
-    const old = this.#options
-    this.#options = { ...old, ...options }
-    const trigger = { version: false, popup: false, style: false }
-
-    // set trigger version
-    if (old.version !== this.#options.version) {
-      trigger.version = true
-    }
-
-    // set trigger build popup
-    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
-      if (document.getElementById('bu-popup')) {
-        document.getElementById('bu-popup').remove()
-      }
-      trigger.popup = true
-      trigger.style = true
-    }
-
-    // set trigger styles
-    if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
-      trigger.style = true
-    }
-
-    this.#searchNode(element, this.#regex)
-    if (trigger.version || trigger.popup || trigger.style) {
-      this.#init(this.#options, trigger)
-    }
-    this.#manageEvents(this.#options)
-  }
-
-  /**
    * This function traverse all nodes and child nodes in the `e` parameter and calls #createLink on all text nodes that matches the Bible regex
    * The function performs a self call on element child nodes until all matches are found
    */
   #searchNode (e, regex) {
-    let type = e.nodeType
+    let type = e?.nodeType ?? this.#error('Element does not exist in the DOM')
     const match = e.textContent.match(regex) || false
     let next
 
@@ -293,8 +314,8 @@ export default class BibleUp {
   }
 
   /**
-   * {desc} This function returns appends <cite> on text nodes with a scripture match
-   * It replace 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
+   * {desc} This function returns: appends <cite> on text nodes with a scripture match
+   * It replaces 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
    * param(node) is a text node
    */
   #createLink (node) {
@@ -466,7 +487,7 @@ export default class BibleUp {
       let bibleRef = e.currentTarget.getAttribute('bu-data')
       bibleRef = JSON.parse(bibleRef)
 
-      // add delay to before popup 'loading' - to allow fetch return cache if exists
+      // add delay before popup 'loading' - to allow fetch return cache if it exists
       this.#loadingTimer = setTimeout(() => {
         this.#updatePopup(bibleRef, true)
         positionPopup(e, this.#options.popup)
@@ -490,9 +511,9 @@ export default class BibleUp {
   }
 
   /**
-   * @param res either contains real reference of verse clicked or the final response of bible text look up with the text
-   * @param isLoading is a boolean that makes popup show 'loading' before the bible text is updated
-   * @param res contains: res.ref, res.text, res.chapter, res.verse, res.version - if it is the final response with bible text
+   * @param res contains bu-data content of a link, and the full text (if isLoading is false)
+   * @param isLoading a boolean that makes popup show 'loading' before the bible text is updated
+   * @param res res.ref, res.text, res.chapter, res.verse, res.version - a complete res object
    * (description) update popup data
    */
   #updatePopup (res, isLoading) {
@@ -510,7 +531,7 @@ export default class BibleUp {
       if (this.#popup.ref) {
         this.#popup.ref.textContent = res.ref
         // REF Accessibility
-        this.#popup.container.setAttribute('aria-label', 'bu-popup-ref')
+        this.#popup.container.setAttribute('aria-label', `${res.ref}`)
       }
 
       if (this.#popup.version) {
@@ -522,10 +543,9 @@ export default class BibleUp {
       if (res.text == null) {
         this.#popup.text.textContent = 'Cannot load bible reference at the moment.'
       } else {
-        const text = res.text
         this.#popup.text.innerHTML = ''
-        text.forEach((verse) => {
-          this.#popup.text.innerHTML += `<li>${verse} </li>`
+        res.text.forEach((verse) => {
+          this.#popup.text.innerHTML += `<li>${verse}</li>`
         })
       }
     }
