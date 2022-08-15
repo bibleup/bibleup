@@ -23,6 +23,7 @@ const bibleupp = new BibleUp(body, {
   version: 'kjv',
   popup: 'classic',
   darkTheme: true,
+  styles: {secondary: 'red', color: ['#24292f', '#24292f']}
 })
 
 bibleupp.create()
@@ -35,7 +36,7 @@ btn.onclick = () => {
 
 const btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-  bibleupp.refresh({popup: 'inline', darkTheme: false, styles: {secondary: 'red', color: ['#24292f', '#24292f']}})
+  bibleupp.refresh({popup: 'classic', darkTheme: true})
 }
 
 const add = document.querySelector('#add')
