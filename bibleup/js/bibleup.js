@@ -183,7 +183,8 @@ export default class BibleUp {
     }
 
     if (this.#options.popup === 'wiki') {
-      real.headerColor = 'none'
+      real.primary = 'white'
+      real.secondary = 'white'
       if (this.#options.darkTheme === true) {
         real.primary = '#3d4245'
         real.color[0] = '#f2f2f2'

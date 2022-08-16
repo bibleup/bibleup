@@ -21,9 +21,8 @@ const body = document.querySelector('body')
 
 const bibleupp = new BibleUp(body, {
   version: 'kjv',
-  popup: 'classic',
-  darkTheme: true,
-  styles: {secondary: 'red', color: ['#24292f', '#24292f']}
+  popup: 'wiki',
+  darkTheme: false,
 })
 
 bibleupp.create()
