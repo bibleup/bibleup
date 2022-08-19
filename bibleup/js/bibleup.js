@@ -19,6 +19,7 @@ export default class BibleUp {
   #ispopupOpen
   #events
   #inlineChapter
+  #buid // unique bibleup instance key
 
   constructor (element, options) {
     this.#element = element
@@ -37,6 +38,7 @@ export default class BibleUp {
       this.#options = this.#defaultOptions
     }
 
+    this.#buid = Math.floor(100000 + Math.random() * 999999)
     this.#init(this.#options)
     this.#regex = this.#generateRegex(bibleData)
     this.#mouseOnPopup = false
@@ -71,13 +73,12 @@ export default class BibleUp {
      * This method destoys BibleUp creation and removes the links and popup from the page
      */
   destroy () {
-    const links = document.querySelectorAll('.bu-link')
-    const popup = document.getElementById('bu-popup')
+    const links = this.#popup.link
     for (const link of links) {
       link.closest('cite').replaceWith(...link.childNodes)
     }
-    if (popup) {
-      popup.remove()
+    if (this.#popup.container) {
+      this.#popup.container.remove()
     }
   }
 
@@ -93,8 +94,8 @@ export default class BibleUp {
 
     // set trigger build popup
     if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
-      if (document.getElementById('bu-popup')) {
-        document.getElementById('bu-popup').remove()
+      if (this.#popup.container) {
+        this.#popup.container.remove()
       }
       console.log('style')
       trigger.popup = true
@@ -132,14 +133,16 @@ export default class BibleUp {
     if (trigger.popup) {
       const popup = ['classic', 'inline', 'wiki']
       if (popup.includes(options.popup)) {
-        ConstructPopup.build(options)
+        ConstructPopup.build(options, this.#buid)
         this.#popup = {
-          container: document.querySelector('#bu-popup'),
-          ref: document.querySelector('#bu-popup-ref'),
-          version: document.querySelector('#bu-popup-version'),
-          content: document.querySelector('#bu-popup-content'),
-          text: document.querySelector('#bu-popup-text'),
-          close: document.querySelector('#bu-popup-close') || false
+          link: document.querySelectorAll(`.bu-link-${this.#buid}`),
+          container: document.getElementById(`bu-popup-${this.#buid}`),
+          header: document.querySelector(`#bu-popup-${this.#buid}` > '.bu-popup-header'),
+          ref: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-ref`),
+          version: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-version`),
+          content: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-content`),
+          text: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-text`),
+          close: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-close`) || false
         }
       } else {
         this.#error("BibleUp was unable to construct popup. Check to see if 'popup' option is correct")
@@ -183,7 +186,8 @@ export default class BibleUp {
     }
 
     if (this.#options.popup === 'wiki') {
-      real.headerColor = 'none'
+      real.primary = 'white'
+      real.secondary = 'white'
       if (this.#options.darkTheme === true) {
         real.primary = '#3d4245'
         real.color[0] = '#f2f2f2'
@@ -193,27 +197,27 @@ export default class BibleUp {
 
     styles = { ...real, ...styles }
 
-    document.getElementById('bu-popup').style.background = styles.primary
-    if (document.getElementById('bu-popup-header')) {
-      document.getElementById('bu-popup-header').style.background = styles.secondary
+    this.#popup.container.style.background = styles.primary
+    if (this.#popup.header) {
+      this.#popup.header.style.background = styles.secondary
     }
-    if (document.getElementById('bu-popup-header')) {
-      document.getElementById('bu-popup-header').style.color = styles.headerColor
+    if (this.#popup.header) {
+      this.#popup.header.style.color = styles.headerColor
     }
     // font color
-    document.getElementById('bu-popup').style.color = styles.color[0]
+    this.#popup.container.style.color = styles.color[0]
     // version background and color
-    if (document.getElementById('bu-popup-version')) {
-      document.getElementById('bu-popup-version').style.background = styles.tertiary
-      document.getElementById('bu-popup-version').style.color = styles.color[1]
+    if (this.#popup.version) {
+      this.#popup.version.style.background = styles.tertiary
+      this.#popup.version.style.color = styles.color[1]
     }
     // close color
-    if (document.getElementById('bu-popup-close')) {
-      document.getElementById('bu-popup-close').style.color = styles.color[2]
+    if (this.#popup.close) {
+      this.#popup.close.style.color = styles.color[2]
     }
-    document.getElementById('bu-popup').style.borderRadius = styles.borderRadius
-    document.getElementById('bu-popup').style.boxShadow = styles.boxShadow
-    document.getElementById('bu-popup').style.fontSize = styles.fontSize
+    this.#popup.container.style.borderRadius = styles.borderRadius
+    this.#popup.container.style.boxShadow = styles.boxShadow
+    this.#popup.container.style.fontSize = styles.fontSize
   }
 
   /**
@@ -385,7 +389,7 @@ export default class BibleUp {
 
     const result = `
 		<cite>
-		<a href='#' class='bu-link' bu-data='${buData}'>${match}</a>
+		<a href='#' class='bu-link bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
 		</cite>`
     return result
   }
@@ -426,8 +430,7 @@ export default class BibleUp {
   }
 
   #manageEvents () {
-    const bulink = document.querySelectorAll('.bu-link')
-
+    const bulink = document.querySelectorAll(`.bu-link-${this.#buid}`)
     // link 'anchor' events
     bulink.forEach((link) => {
       link.removeEventListener('mouseenter', this.#events.clickHandler)
@@ -490,7 +493,7 @@ export default class BibleUp {
       // add delay before popup 'loading' - to allow fetch return cache if it exists
       this.#loadingTimer = setTimeout(() => {
         this.#updatePopup(bibleRef, true)
-        positionPopup(e, this.#options.popup)
+        positionPopup(e, this.#options.popup, this.#popup.container)
         this.#openPopup()
       }, 100)
 
@@ -501,7 +504,7 @@ export default class BibleUp {
       if (this.#currentRef === res.ref) {
         // only when cursor is on same link
         this.#updatePopup(res, false)
-        positionPopup(e, this.#options.popup)
+        positionPopup(e, this.#options.popup, this.#popup.container)
         if (this.#loadingTimer) {
           this.#openPopup()
           clearTimeout(this.#loadingTimer)
@@ -569,7 +572,7 @@ export default class BibleUp {
       this.#popupTimer = setTimeout(() => {
         if (!this.#mouseOnPopup) {
           const mouseFrom = e.relatedTarget
-          if (!mouseFrom || mouseFrom.classList.contains('bu-link') === false) {
+          if (!mouseFrom || mouseFrom.classList.contains(`bu-link-${this.#buid}`) === false) {
             this.#exitPopup()
           }
         }

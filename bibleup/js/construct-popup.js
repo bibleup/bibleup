@@ -1,7 +1,7 @@
 export default class ConstructPopup {
-  static build (options) {
+  static build (options, buid) {
     const popup = document.createElement('div')
-    popup.id = 'bu-popup'
+    popup.id = `bu-popup-${buid}`
     popup.classList.add('bu-popup-hide', 'bu-ignore')
     const popupStyle = options.popup
     const darkTheme = options.darkTheme
@@ -10,7 +10,7 @@ export default class ConstructPopup {
     popup.setAttribute('role', 'dialog')
     popup.setAttribute(
       'aria-description',
-      'A non-modal popup showing the text of Bible reference clicked on'
+      'A non-modal popover showing the text of Bible reference'
     )
 
     if (popupStyle === 'classic') {
@@ -39,16 +39,16 @@ export default class ConstructPopup {
 
   static classic () {
     const markup = `
-		<div id='bu-popup-header'>
-		<p id='bu-popup-ref'></p>
-		<p id="bu-popup-version"></p>
+		<div class='bu-popup-header'>
+		<p class='bu-popup-ref'></p>
+		<p class="bu-popup-version"></p>
 		</div>
 		
-		<div id='bu-popup-content'>
-			<ol id='bu-popup-text'></ol>
+		<div class='bu-popup-content'>
+			<ol class='bu-popup-text'></ol>
 		</div>
 		
-		<div id='bu-popup-footer'>
+		<div class='bu-popup-footer'>
 			<p>BibleUp 📖💡 </p>
 		</div>
 		`
@@ -57,17 +57,17 @@ export default class ConstructPopup {
 
   static wiki () {
     const markup = `
-	 <div id='bu-popup-header'>
-	  <p id='bu-popup-ref'></p>
-	  <span id='bu-popup-version'></span>
-	  <button id='bu-popup-close' tabindex='0'>&#x2715</button>
+	 <div class='bu-popup-header'>
+	  <p class='bu-popup-ref'></p>
+	  <span class='bu-popup-version'></span>
+	  <button class='bu-popup-close' tabindex='0'>&#x2715</button>
 	 </div> 
 	 
-	 <div id='bu-popup-content'>
-	 	<ol id='bu-popup-text'></ol> 
+	 <div class='bu-popup-content'>
+	 	<ol class='bu-popup-text'></ol> 
 	 </div>
 	  
-	 <div id='bu-popup-footer'>
+	 <div class='bu-popup-footer'>
 	 	<p>BibleUp 📖💡 </p> 
 	 </div>`
 
@@ -76,11 +76,11 @@ export default class ConstructPopup {
 
   static inline () {
     const markup = `
-		<div id='bu-popup-content'>
-  			<ol id='bu-popup-text'></ol>
+		<div class='bu-popup-content'>
+  			<ol class='bu-popup-text'></ol>
   		</div>
  
- 		<div id='bu-popup-footer'>
+ 		<div class='bu-popup-footer'>
   			<p>BibleUp 📖💡 </p>
  		</div>`
 
