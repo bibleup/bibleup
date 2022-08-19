@@ -5,12 +5,12 @@
  * use classic() to set position on custom syled popups
  */
 
-const positionPopup = (e, popup) => {
+const positionPopup = (e, popup, container) => {
   if (popup === 'classic') {
-    classic(e)
+    classic(e, container)
   }
   if (popup === 'inline') {
-    inline(e)
+    inline(e, container)
   }
   return false
 }
@@ -52,10 +52,10 @@ const adjustPopupToBottom = (pos) => {
   }
 }
 
-const getPosition = (e) => {
+const getPosition = (e, container) => {
   // get window dimensions
   const rect = e.target.getBoundingClientRect()
-  const popup = document.getElementById('bu-popup')
+  const popup = container
   const rectTop = rect.top
 
   return {
@@ -72,14 +72,14 @@ const getPosition = (e) => {
   }
 }
 
-const classic = (e) => {
-  const el = getPosition(e)
+const classic = (e, container) => {
+  const el = getPosition(e, container)
   adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth])
   adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height])
 }
 
-const inline = (e) => {
-  const el = getPosition(e)
+const inline = (e, container) => {
+  const el = getPosition(e, container)
   el.popWidth += 10
   adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth])
   adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height])
