@@ -73,7 +73,7 @@ export default class BibleUp {
      * This method destoys BibleUp creation and removes the links and popup from the page
      */
   destroy () {
-    const links = this.#popup.link
+    const links = document.querySelectorAll(`.bu-link-${this.#buid}`)
     for (const link of links) {
       link.closest('cite').replaceWith(...link.childNodes)
     }
@@ -97,7 +97,6 @@ export default class BibleUp {
       if (this.#popup.container) {
         this.#popup.container.remove()
       }
-      console.log('style')
       trigger.popup = true
       trigger.style = true
     }
@@ -135,9 +134,8 @@ export default class BibleUp {
       if (popup.includes(options.popup)) {
         ConstructPopup.build(options, this.#buid)
         this.#popup = {
-          link: document.querySelectorAll(`.bu-link-${this.#buid}`),
           container: document.getElementById(`bu-popup-${this.#buid}`),
-          header: document.querySelector(`#bu-popup-${this.#buid}` > '.bu-popup-header'),
+          header: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-header`),
           ref: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-ref`),
           version: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-version`),
           content: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-content`),
