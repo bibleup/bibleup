@@ -26,7 +26,7 @@ const bibleupp = new BibleUp(body, {
   darkTheme: false,
 })
 
-bibleup.create()
+//bibleup.create()
 bibleupp.create()
 // console.log(bibleup.getOptions)
 

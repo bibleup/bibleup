@@ -231,25 +231,6 @@ export default class BibleUp {
   #generateRegex (bibleData) {
     let refGroup = ''
     const versions = 'KJV|ASV|LSV|WEB'
-    const numberBooks = [
-      '1 Samuel',
-      '2 Samuel',
-      '1 Kings',
-      '2 Kings',
-      '1 Chronicles',
-      '2 Chronicles',
-      '1 Corinthians',
-      '2 Corinthians',
-      '1 Thessalonians',
-      '2 Thessalonians',
-      '1 Timothy',
-      '2 Timothy',
-      '1 Peter',
-      '2 Peter',
-      '1 John',
-      '2 John',
-      '3 John'
-    ]
     const numberBooksRef = []
 
     for (const book of bibleData) {
@@ -259,7 +240,7 @@ export default class BibleUp {
         refGroup += book.book + '|' + book.abbr.join('|') + '|'
       }
 
-      if (numberBooks.includes(book.book)) {
+      if (book.multipart) {
         numberBooksRef.push(book.book, ...book.abbr)
       }
     }
