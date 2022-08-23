@@ -84,7 +84,7 @@ export default class BibleUp {
 
   refresh (options = {}, element = this.#element) {
     const old = this.#options
-    this.#options = { ...this.#defaultOptions, ...options }
+    this.#options = { ...this.#defaultOptions, ...this.#options, ...options }
     const trigger = { version: false, popup: false, style: false }
 
     // set trigger version
