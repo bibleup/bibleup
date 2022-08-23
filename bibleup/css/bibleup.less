@@ -5,7 +5,6 @@
 
 [id^='bu-popup-'] {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-	box-sizing: border-box;
 	margin: 0;
 	font-size: 15px;
 	font-weight: 400;
@@ -14,10 +13,15 @@
 	-webkit-text-size-adjust: 100%;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	z-index: 1070; //bootstrap default for popovers
+	
 
 	.bu-popup-content ol li {
 		font-size: 15px;
 	}
+}
+
+[id^='bu-popup-'] * {
+	box-sizing: border-box;
 }
 
 .bu-popup-hide {
