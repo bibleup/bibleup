@@ -1,5 +1,5 @@
 // import BibleUp from '../dist/esm/bibleup.esm.js';
-import BibleUp from '../bibleup/js/bibleup.js'
+//import BibleUp from '../bibleup/js/bibleup.js'
 
 const testPanel = document.querySelector('#test-panel')
 const body = document.querySelector('body')
@@ -37,7 +37,8 @@ btn.onclick = () => {
 
 const btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-  bibleupp.refresh({popup: 'inline', darkTheme: false})
+  bibleupp.refresh({popup: 'inline', darkTheme: true})
+  bibleupp.refresh()
 }
 
 const add = document.querySelector('#add')
