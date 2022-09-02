@@ -65,7 +65,7 @@ export default class BibleUp {
    *
    */
   create () {
-    this.#searchNode(this.#element, this.#regex)
+    this.#searchNode(this.#element, this.#regex.main)
     this.#manageEvents(this.#options)
   }
 
@@ -106,7 +106,7 @@ export default class BibleUp {
       trigger.style = true
     }
 
-    this.#searchNode(element, this.#regex)
+    this.#searchNode(element, this.#regex.main)
     if (trigger.version || trigger.popup || trigger.style) {
       this.#init(this.#options, trigger)
     }
@@ -227,29 +227,29 @@ export default class BibleUp {
    * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
    */
   #generateRegex (bibleData) {
-    let refGroup = ''
+    let allBooks = ''
     const versions = 'KJV|ASV|LSV|WEB'
-    const numberBooksRef = []
+    const allMultipart = []
 
     for (const book of bibleData) {
       if (book.id === 66) {
-        refGroup += book.book + '|' + book.abbr.join('|')
+        allBooks += book.book + '|' + book.abbr.join('|')
       } else {
-        refGroup += book.book + '|' + book.abbr.join('|') + '|'
+        allBooks += book.book + '|' + book.abbr.join('|') + '|'
       }
 
       if (book.multipart) {
-        numberBooksRef.push(book.book, ...book.abbr)
+        allMultipart.push(book.book, ...book.abbr)
       }
     }
 
-    const regex = [
-      `(?:(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
-      `(?<=(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})(?:\\.?)\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12:5)
-    ]
+    const main = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${allMultipart.join('|')})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
+    const verse = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
 
-    const bibleRegex = new RegExp(regex.join('|'), 'g')
-    return bibleRegex
+    return {
+      main: new RegExp(main, 'g'),
+      verse: new RegExp(verse, 'g')
+    }
   }
 
   /**
@@ -303,7 +303,7 @@ export default class BibleUp {
    */
   #createLink (node) {
     const newNode = document.createElement('div')
-    newNode.innerHTML = node.nodeValue.replace(this.#regex, this.#setLinkMarkup.bind(this))
+    newNode.innerHTML = node.nodeValue.replace(this.#regex.main, this.#setLinkMarkup.bind(this))
 
     if (node.nodeValue !== newNode.innerHTML) {
       while (newNode.firstChild) {
@@ -322,59 +322,78 @@ export default class BibleUp {
    * The remaining three capturing groups matches the look-behind Bible reference (John 3:16,27,3-5 = matches 27 and 3-5)
    * returns <cite[data-*]>john 3:16</cite>
    */
-  #setLinkMarkup (match, p1, p2, p3, p4, p5, p6, p7) {
+  #setLinkMarkup (match, book, chapter, verse, version) {
     const bible = {
-      book: undefined,
-      chapter: undefined,
-      verse: undefined,
-      version: undefined
+      book,
+      chapter,
+      verse: verse || '1',
+      version
     }
 
+    const isChapterLevel = verse === undefined
+
+    // Get `chapter` and `verse` from standalone verses - e.g multi-chaper references
+    // multi-chapter references will overwrite bible chapter for subsequent standalone verses.
     const vesreContext = (verse) => {
       const result = {}
       if ((verse.includes(':') && verse.includes('-')) || verse.includes(':')) {
         // (in-line chapter with range) or (in-line chapter only)
         result.chapter = verse.slice(0, verse.lastIndexOf(':'))
         result.verse = verse.slice(verse.lastIndexOf(':') + 1)
-        this.#inlineChapter = result.chapter
-      } else if (this.#inlineChapter) {
-        result.chapter = this.#inlineChapter
+        bible.chapter = result.chapter
+      } else if (isChapterLevel) {
+        result.chapter = verse
+        result.verse = '1'
+      } else {
+        result.verse = verse
       }
-
       return result
     }
 
-    if (p1 !== undefined) {
-      // standard Bible regex
-      bible.book = p1
-      bible.chapter = p2
-      bible.verse = p3 || '1'
-      if (p4 !== undefined) {
-        bible.version = p4
+    // Get `bible` object of each regex.verse match
+    const getBible = (args) => {
+      const res = {}
+      if (args[0] !== undefined) {
+        // standard Bible regex
+        res.book = bible.book
+        res.chapter = bible.chapter
+        res.verse = bible.verse
+        res.version = bible.version || false
+      } else {
+        // verse only regex groups
+        const { chapter, verse } = vesreContext(args[4])
+        res.book = bible.book
+        res.chapter = chapter || bible.chapter
+        res.verse = verse || bible.verse
+        res.version = args[5] || false
       }
-      this.#inlineChapter = undefined
-    } else {
-      // look-behind Bible regex
-      const { chapter, verse } = vesreContext(p7)
-      bible.book = p5
-      bible.chapter = chapter || p6
-      bible.verse = verse || p7
+      return res
     }
 
-    const buData = this.#validateBible(bible)
-    if (buData === false) {
-      return match
+    const getMarkup = (match, bibleData) => {
+      const buData = this.#validateBible(bibleData)
+      if (buData === false) {
+        return match
+      }
+
+      return (`
+      <cite>
+      <a href='#' class='bu-link bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
+      </cite>
+        `)
     }
 
-    const result = `
-		<cite>
-		<a href='#' class='bu-link bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
-		</cite>`
-    return result
+    const str = match.replace(this.#regex.verse, (match, ...args) => {
+      const bibleData = getBible(args)
+      const result = getMarkup(match, bibleData)
+      return result
+    })
+
+    return str
   }
 
   /*
-   * @param match - match is an object with reference breakdown
+   * @param bible - bible is an object {book, chapter, verse, version}
    * Returns stringified object containing valid, complete reference (bu-data) if reference is valid else returns false
    * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
