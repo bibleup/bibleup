@@ -32,7 +32,7 @@ bibleupp.create()
 
 const btn = document.querySelector('#remove')
 btn.onclick = () => {
-  bibleup.destroy()
+  bibleupp.destroy()
 }
 
 const btn2 = document.querySelector('#refresh')
