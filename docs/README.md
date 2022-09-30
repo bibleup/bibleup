@@ -48,3 +48,22 @@ Seting A Bible Citation Standard to remove citation ambiguity.
 	}
 }
 ```
+
+### Figma Style 
+```js
+{
+	version: 'kjv',
+	popup: 'classic',
+	darkTheme: false,
+	styles: {
+		primary: ' #fff',
+		secondary: '#fff',
+		tertiary: '#f2f2f2',
+		headerColor: '#0d1216',
+		color: ['#0d1216','#0d1216','#0d1216'],
+		borderRadius: '4px',
+		boxShadow: '0 0 0 1px rgba(64,87,109,0.07),0 2px 12px rgba(53,71,90,0.2)'
+	}
+}
+
+```
