@@ -3,15 +3,14 @@ import BibleUp from '../bibleup/js/bibleup.js'
 
 const testPanel = document.querySelector('#test-panel')
 const body = document.querySelector('body')
-const refList = document.querySelector('#ref-list')
 
-const bibleup = new BibleUp(refList, {
+const bibleup = new BibleUp(body, {
   version: 'kjv',
   popup: 'classic',
   darkTheme: false,
   styles: {
     primary: ' #fff',
-    secondary: '#fff',
+    secondary: 'blue',
     tertiary: '#f2f2f2',
     headerColor: '#24292f',
     color: ['#24292f', '#24292f'],
@@ -26,19 +25,17 @@ const bibleupp = new BibleUp(body, {
   darkTheme: false,
 })
 
-//bibleup.create()
-bibleupp.create()
-// console.log(bibleup.getOptions)
+bibleup.create()
+//bibleupp.create()
 
 const btn = document.querySelector('#remove')
 btn.onclick = () => {
-  bibleupp.destroy()
+  bibleup.destroy(false)
 }
 
 const btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-  bibleupp.refresh({popup: 'inline', darkTheme: true})
-  bibleupp.refresh()
+  bibleup.refresh({popup: 'inline', darkTheme: true})
 }
 
 const add = document.querySelector('#add')

@@ -71,7 +71,7 @@ button {
   width: 90%;
 }
 
-.bu-link {
+.bu-link a {
   text-decoration: underline;
   color: orange;
 }
