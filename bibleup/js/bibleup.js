@@ -70,19 +70,28 @@ export default class BibleUp {
   }
 
   /**
-     * This method destoys BibleUp creation and removes the links and popup from the page
-     */
-  destroy () {
+   * This method destoys BibleUp creation and removes the links and popup from the page
+   * @param force - Specify whether to totally delete bibleup, and refresh() won't work anymore. This will also remove popup
+   * container; or to keep popup container and bibleup tagging can be resumed with refresh() method - when set to false
+   *
+   */
+  destroy (force = true) {
     const links = document.querySelectorAll(`.bu-link-${this.#buid}`)
     for (const link of links) {
-      link.closest('cite').replaceWith(...link.childNodes)
+      const ref = link.closest('cite').getAttribute('bu-ref')
+      link.closest('cite').replaceWith(ref)
     }
-    if (this.#popup.container) {
+    if (force === true && this.#popup.container) {
       this.#popup.container.remove()
+      this.#buid = undefined
     }
   }
 
   refresh (options = {}, element = this.#element) {
+    if (!this.#buid) {
+      this.#error('cannot call refresh() on an uncreated or destroyed BibleUp instance.')
+    }
+
     const old = this.#options
     this.#options = { ...this.#defaultOptions, ...this.#options, ...options }
     const trigger = { version: false, popup: false, style: false }
@@ -184,11 +193,10 @@ export default class BibleUp {
     }
 
     if (this.#options.popup === 'wiki') {
-      real.primary = 'white'
       real.secondary = 'white'
       if (this.#options.darkTheme === true) {
-        real.primary = '#3d4245'
-        real.color[0] = '#f2f2f2'
+        real.primary = real.secondary = '#3d4245'
+        real.color[0] = real.color[2] = real.headerColor = '#f2f2f2'
         real.color[1] = '#333'
       }
     }
@@ -376,11 +384,9 @@ export default class BibleUp {
         return match
       }
 
-      return (`
-      <cite>
-      <a href='#' class='bu-link bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
-      </cite>
-        `)
+      return `
+      <a href='#' class='bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
+        `
     }
 
     const str = match.replace(this.#regex.verse, (match, ...args) => {
@@ -389,7 +395,7 @@ export default class BibleUp {
       return result
     })
 
-    return str
+    return `<cite class='bu-link' bu-ref='${match}'>${str}</cite>`
   }
 
   /*
