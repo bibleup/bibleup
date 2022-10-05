@@ -87,14 +87,26 @@ export default class BibleUp {
     }
   }
 
-  refresh (options = {}, element = this.#element) {
+  /**
+   *
+   * @param options New BibleUp Options
+   * @param element The new element to search, if specified; else, the element specified during BibleUp
+   * instantiation will be searched again
+   * @param force If false, previous BibleUp options will be merged with new options passed to the method on refresh.
+   * If force is set to true, the options passed into this method will totally overwrite previous options
+   */
+  refresh (options = {}, force = false, element = this.#element) {
     if (!this.#buid) {
-      this.#error('cannot call refresh() on an uncreated or destroyed BibleUp instance.')
+      this.#error('cannot call refresh() on an uncreated or destroyed BibleUp instance')
     }
-
     const old = this.#options
-    this.#options = { ...this.#defaultOptions, ...this.#options, ...options }
     const trigger = { version: false, popup: false, style: false }
+
+    if (force === true) {
+      this.#options = { ...this.#defaultOptions, ...options }
+    } else {
+      this.#options = { ...this.#defaultOptions, ...this.#options, ...options }
+    }
 
     // set trigger version
     if (old.version !== this.#options.version) {
@@ -103,9 +115,7 @@ export default class BibleUp {
 
     // set trigger build popup
     if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
-      if (this.#popup.container) {
-        this.#popup.container.remove()
-      }
+      this.#popup.container?.remove()
       trigger.popup = true
       trigger.style = true
     }
