@@ -251,7 +251,9 @@ export default class BibleUp {
       }
     }
 
-    const main = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${allMultipart.join('|')})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
+    const main = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${allMultipart.join(
+      '|'
+    )})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
     const verse = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
 
     return {
@@ -323,12 +325,9 @@ export default class BibleUp {
   }
 
   /**
-   * param(match) is the actual matched string. Check replace() on MDN
-   * param(p1) is value of first capturing group. Pn is the capturing group for 'n'. Check replace() on MDN
-   * The first three capturing groups (p1 - p3) matches a standard Bible reference (Romans 3:23-25)
-   * p4 matches verse-level references for only single references
-   * The remaining three capturing groups matches the look-behind Bible reference (John 3:16,27,3-5 = matches 27 and 3-5)
-   * returns <cite[data-*]>john 3:16</cite>
+   * @param match This is the full match string
+   * @param {...args} This is the main reference capture groups (p1-pN) - Check replace() on MDN
+   * @returns A complete BibleUp Link
    */
   #setLinkMarkup (match, book, chapter, verse, version) {
     const bible = {
@@ -338,10 +337,14 @@ export default class BibleUp {
       version
     }
 
+    // reference with only chapter and no verse (Romans 8)
     const isChapterLevel = verse === undefined
 
-    // Get `chapter` and `verse` from standalone verses - e.g multi-chaper references
-    // multi-chapter references will overwrite bible chapter for subsequent standalone verses.
+    /**
+     * Resolves actual chapter and verse number for reference parts
+     * References with multiple chapters will overwrite the chapter that will be used for subsequent verses
+     * @param verse verse number of main reference
+     */
     const vesreContext = (verse) => {
       const result = {}
       if ((verse.includes(':') && verse.includes('-')) || verse.includes(':')) {
@@ -358,17 +361,17 @@ export default class BibleUp {
       return result
     }
 
-    // Get `bible` object of each regex.verse match
+    // Get `bible` object of main reference and each reference parts
     const getBible = (args) => {
       const res = {}
       if (args[0] !== undefined) {
-        // standard Bible regex
+        // main reference
         res.book = bible.book
         res.chapter = bible.chapter
         res.verse = bible.verse
         res.version = bible.version || false
       } else {
-        // verse only regex groups
+        // reference parts
         const { chapter, verse } = vesreContext(args[4])
         res.book = bible.book
         res.chapter = chapter || bible.chapter
@@ -378,24 +381,28 @@ export default class BibleUp {
       return res
     }
 
-    const getMarkup = (match, bibleData) => {
-      const buData = this.#validateBible(bibleData)
-      if (buData === false) {
-        return match
-      }
-
-      return `
-      <a href='#' class='bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
-        `
-    }
-
+    /**
+     * @desc This breaks the entire string and matches the main reference and every verse, ranges and parts separately.
+     * Each match is wrapped with an anchor element. The match regex is `this.#regex.verse`
+     * Invalid chapter/verse is returned as is.
+     * Example: Jn 3:16,17 to <a>Jn 3:16</a>,<a>17</a>
+     */
     const str = match.replace(this.#regex.verse, (match, ...args) => {
       const bibleData = getBible(args)
-      const result = getMarkup(match, bibleData)
-      return result
+      const buData = this.#validateBible(bibleData)
+      if (buData === false) {
+        // invalid chapter/verse
+        return match
+      } else {
+        return `<a href='#' class='bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>`
+      }
     })
 
-    return `<cite class='bu-link' bu-ref='${match}'>${str}</cite>`
+    if (str === match) {
+      return match
+    } else {
+      return `<cite class='bu-link' bu-ref='${match}'>${str}</cite>`
+    }
   }
 
   /*
