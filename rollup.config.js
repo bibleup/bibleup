@@ -3,14 +3,14 @@ import less from 'rollup-plugin-less'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
-import compiler from '@ampproject/rollup-plugin-closure-compiler'
+import license from 'rollup-plugin-license'
 
 const babelConfig = babel({
   presets: [
     [
       '@babel/preset-env',
       {
-        targets: '>= 0.5%, last 2 versions, safari >=12, ios_saf >=12, not dead',
+        targets: '>= 0.5%, not dead',
         useBuiltIns: 'usage',
         corejs: '3.23.4'
       }
@@ -19,6 +19,15 @@ const babelConfig = babel({
   plugins: ['@babel/plugin-transform-runtime'],
   exclude: '/node_modules/**',
   babelHelpers: 'runtime'
+})
+
+const addLicense = license({
+  banner: `
+  BibleUp v<%= pkg.version %>
+  Copyright 2022 BibleUp and contributors
+  Repository URL: https://github.com/Bibleup/bibleup.js.git
+  Date: <%= moment().format('DD-MM-YYYY') %>
+  `
 })
 
 export default [
@@ -30,13 +39,6 @@ export default [
         format: 'es',
         name: 'BibleUp'
       }
-    ],
-    plugins: [
-      // no minified, no css
-      nodeResolve(),
-      commonjs({
-        include: 'node_modules/**'
-      })
     ]
   },
 
@@ -83,7 +85,7 @@ export default [
       }),
       babelConfig,
       terser(),
-      compiler()
+      addLicense
     ]
   }
 ]
