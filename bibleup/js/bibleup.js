@@ -18,7 +18,6 @@ export default class BibleUp {
   #popup
   #ispopupOpen
   #events
-  #inlineChapter
   #buid // unique bibleup instance key
 
   constructor (element, options) {
@@ -73,7 +72,6 @@ export default class BibleUp {
    * This method destoys BibleUp creation and removes the links and popup from the page
    * @param force - Specify whether to totally delete bibleup, and refresh() won't work anymore. This will also remove popup
    * container; or to keep popup container and bibleup tagging can be resumed with refresh() method - when set to false
-   *
    */
   destroy (force = true) {
     const links = document.querySelectorAll(`.bu-link-${this.#buid}`)
@@ -88,7 +86,6 @@ export default class BibleUp {
   }
 
   /**
-   *
    * @param options New BibleUp Options
    * @param element The new element to search, if specified; else, the element specified during BibleUp
    * instantiation will be searched again
@@ -122,6 +119,7 @@ export default class BibleUp {
 
     // set trigger styles
     if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
+      console.log('trigger style')
       trigger.style = true
     }
 
@@ -133,7 +131,6 @@ export default class BibleUp {
   }
 
   /**
-   *
    * @param {Object} options BibleUp Options
    * @param {*} trigger Optional - define what to trigger init on
    */
@@ -179,7 +176,9 @@ export default class BibleUp {
       secondary: '#e6e6e6',
       tertiary: '#f2f2f2',
       headerColor: '#212529',
-      color: ['#212529', '#212529', '#212529'],
+      fontColor: '#212529',
+      versionColor: '#212529',
+      closeColor: '#212529',
       borderRadius: '0',
       boxShadow: '0px 0px 3px 0.7px #a6a6a6'
     }
@@ -188,7 +187,7 @@ export default class BibleUp {
       if (this.#options.darkTheme === true) {
         real.primary = '#595959'
         real.secondary = '#d9d9d9'
-        real.color[0] = '#f2f2f2'
+        real.fontColor = '#f2f2f2'
         real.headerColor = '#333'
       }
     }
@@ -198,7 +197,7 @@ export default class BibleUp {
       real.boxShadow = '0px 0px 2px 0.5px #ccc'
       if (this.#options.darkTheme === true) {
         real.primary = '#3d4245'
-        real.color[0] = '#f2f2f2'
+        real.fontColor = '#f2f2f2'
       }
     }
 
@@ -206,8 +205,8 @@ export default class BibleUp {
       real.secondary = 'white'
       if (this.#options.darkTheme === true) {
         real.primary = real.secondary = '#3d4245'
-        real.color[0] = real.color[2] = real.headerColor = '#f2f2f2'
-        real.color[1] = '#333'
+        real.fontColor = real.closeColor = real.headerColor = '#f2f2f2'
+        real.versionColor = '#333'
       }
     }
 
@@ -221,15 +220,15 @@ export default class BibleUp {
       this.#popup.header.style.color = styles.headerColor
     }
     // font color
-    this.#popup.container.style.color = styles.color[0]
+    this.#popup.container.style.color = styles.fontColor
     // version background and color
     if (this.#popup.version) {
       this.#popup.version.style.background = styles.tertiary
-      this.#popup.version.style.color = styles.color[1]
+      this.#popup.version.style.color = styles.versionColor
     }
     // close color
     if (this.#popup.close) {
-      this.#popup.close.style.color = styles.color[2]
+      this.#popup.close.style.color = styles.closeColor
     }
     this.#popup.container.style.borderRadius = styles.borderRadius
     this.#popup.container.style.boxShadow = styles.boxShadow
@@ -523,7 +522,7 @@ export default class BibleUp {
       const res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version)
 
       if (this.#currentRef === res.ref) {
-        // only when cursor is on same link
+        // only when cursor is still on same link
         this.#updatePopup(res, false)
         positionPopup(e, this.#options.popup, this.#popup.container)
         if (this.#loadingTimer) {

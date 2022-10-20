@@ -9,21 +9,20 @@ const bibleup = new BibleUp(body, {
   popup: 'classic',
   darkTheme: false,
   styles: {
-    primary: ' #fff',
-    secondary: 'blue',
+    primary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
+    secondary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
     tertiary: '#f2f2f2',
-    headerColor: '#24292f',
-    color: ['#24292f', '#24292f'],
+    headerColor: '#fff',
     boxShadow: '0 0 0 1px #d0d7de, 0 8px 24px rgba(140,149,159,0.2)',
     fontSize: ''
   }
 })
 
-const bibleupp = new BibleUp(body, {
+/* const bibleupp = new BibleUp(body, {
   version: 'kjv',
-  popup: 'classic',
+  popup: 'wiki',
   darkTheme: false,
-})
+}) */
 
 bibleup.create()
 //bibleupp.create()
@@ -35,7 +34,7 @@ btn.onclick = () => {
 
 const btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-  bibleup.refresh({popup: 'inline', darkTheme: true})
+  bibleup.refresh({popup: 'wiki', darkTheme: true, styles: {}})
 }
 
 const add = document.querySelector('#add')

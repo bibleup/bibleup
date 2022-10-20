@@ -3,7 +3,7 @@ import apiKey from './config.js'
 export default class Search {
   /**
    * get scripture Text from bible reference
-   * if text = 404, the Bible reference was INVALID
+   * if text = null, there was problem fetching the Bible text, else text is an array with Bible texts
    */
   static async getScripture (bible, version) {
     let text
@@ -32,7 +32,6 @@ export default class Search {
 
   static #getVersionId (version) {
     let id
-
     switch (version) {
       case 'KJV':
         id = 'de4e12af7f28f599-01'
@@ -54,7 +53,7 @@ export default class Search {
   }
 
   static async #getText (ref, versionId) {
-    let result = []
+    const result = []
     const url = `https://api.scripture.api.bible/v1/bibles/${versionId}/verses/${ref}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false&include-verse-spans=false&use-org-id=false`
 
     try {
@@ -67,8 +66,7 @@ export default class Search {
       })
 
       if (!res.ok) {
-        result = null
-        return result
+        throw new Error('A problem occured while fetching data')
       }
 
       const content = await res.json()
@@ -76,8 +74,7 @@ export default class Search {
       result.push(text)
       return result
     } catch (error) {
-      result = null
-      return result
+      return null
     }
   }
 
@@ -85,7 +82,6 @@ export default class Search {
    * Get range of verses - ACT.1.8-ACT.1.10
    **/
   static async #getPassage (ref, versionId) {
-    let result = []
     const url = `https://api.scripture.api.bible/v1/bibles/${versionId}/passages/${ref}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false&include-verse-spans=true&use-org-id=false`
 
     try {
@@ -98,16 +94,13 @@ export default class Search {
       })
 
       if (!res.ok) {
-        result = null
-        return result
+        throw new Error('A problem occured while fetching data')
       }
 
       const content = await res.json()
-      const text = this.#processBibleText(content, 'passage')
-      return text
+      return this.#processBibleText(content, 'passage')
     } catch (error) {
-      result = null
-      return result
+      return null
     }
   }
 
@@ -117,19 +110,17 @@ export default class Search {
    * returns text e.g 'Jesus be Glorified' if type is 'text'
    * returns array e.g ['Jesus be Glorified', 'Forever'] if type is 'passage'
    */
-  static #processBibleText (obj, type) {
+  static #processBibleText (res, type) {
     if (type === 'text') {
-      const content = obj.data.content
       const parser = new DOMParser()
-      const doc = parser.parseFromString(content, 'text/html')
+      const doc = parser.parseFromString(res.data.content, 'text/html')
       const p = doc.querySelectorAll('p')
       return p[0].textContent || p[1].textContent
     }
 
     if (type === 'passage') {
-      const content = obj.data.content
       const parser = new DOMParser()
-      const doc = parser.parseFromString(content, 'text/html')
+      const doc = parser.parseFromString(res.data.content, 'text/html')
       const span = doc.getElementsByClassName('verse-span')
       const passage = []
       let lastVerse
