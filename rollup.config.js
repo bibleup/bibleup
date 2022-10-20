@@ -59,7 +59,8 @@ export default [
         include: 'node_modules/**'
       }),
       babelConfig,
-      terser()
+      terser(),
+      addLicense
     ]
   },
 
