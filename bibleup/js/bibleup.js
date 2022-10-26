@@ -119,7 +119,6 @@ export default class BibleUp {
 
     // set trigger styles
     if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
-      console.log('trigger style')
       trigger.style = true
     }
 
@@ -211,28 +210,28 @@ export default class BibleUp {
     }
 
     styles = { ...real, ...styles }
+    const { container, header, version, close } = this.#popup
 
-    this.#popup.container.style.background = styles.primary
-    if (this.#popup.header) {
-      this.#popup.header.style.background = styles.secondary
+    // popup background and color
+    container.style.background = styles.primary
+    container.style.color = styles.fontColor
+    // header background and color
+    if (header) {
+      header.style.background = styles.secondary
+      header.style.color = styles.headerColor
     }
-    if (this.#popup.header) {
-      this.#popup.header.style.color = styles.headerColor
-    }
-    // font color
-    this.#popup.container.style.color = styles.fontColor
     // version background and color
-    if (this.#popup.version) {
-      this.#popup.version.style.background = styles.tertiary
-      this.#popup.version.style.color = styles.versionColor
+    if (version) {
+      version.style.background = styles.tertiary
+      version.style.color = styles.versionColor
     }
     // close color
-    if (this.#popup.close) {
-      this.#popup.close.style.color = styles.closeColor
+    if (close) {
+      close.style.color = styles.closeColor
     }
-    this.#popup.container.style.borderRadius = styles.borderRadius
-    this.#popup.container.style.boxShadow = styles.boxShadow
-    this.#popup.container.style.fontSize = styles.fontSize
+    container.style.borderRadius = styles.borderRadius
+    container.style.boxShadow = styles.boxShadow
+    container.style.fontSize = styles.fontSize
   }
 
   /**
