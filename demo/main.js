@@ -42,5 +42,5 @@ add.onclick = () => {
   const para = document.createElement('p')
   const textNode = document.createTextNode('Proverbs 6:6')
   para.appendChild(textNode)
-  testPanel.appendChild(para)
+  testPanel?.appendChild(para)
 }
