@@ -1,8 +1,8 @@
 import bibleData from './helper/bible-data.js'
-import Bible from './helper/bible.js'
+import * as Bible from './helper/bible.js'
 import ConstructPopup from './construct-popup.js'
 import positionPopup from './position-popup.js'
-import Search from './helper/search.js'
+import * as Search from './helper/search.js'
 
 export default class BibleUp {
   // PRIVATE_FIELD
