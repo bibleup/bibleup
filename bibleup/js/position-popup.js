@@ -5,7 +5,7 @@
  * use classic() to set position on custom syled popups
  */
 
-const positionPopup = (e, popup, container) => {
+export const positionPopup = (e, popup, container) => {
   if (popup === 'classic') {
     classic(e, container)
   }
@@ -84,5 +84,3 @@ const inline = (e, container) => {
   adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth])
   adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height])
 }
-
-export default positionPopup

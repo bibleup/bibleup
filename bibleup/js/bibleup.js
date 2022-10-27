@@ -1,7 +1,7 @@
 import bibleData from './helper/bible-data.js'
 import * as Bible from './helper/bible.js'
-import ConstructPopup from './construct-popup.js'
-import positionPopup from './position-popup.js'
+import * as ConstructPopup from './construct-popup.js'
+import { positionPopup } from './position-popup.js'
 import * as Search from './helper/search.js'
 
 export default class BibleUp {
