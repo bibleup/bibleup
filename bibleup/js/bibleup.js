@@ -18,7 +18,7 @@ export default class BibleUp {
   #popup
   #ispopupOpen
   #events
-  #buid // unique bibleup instance key
+  #randomKey // unique bibleup instance key
 
   constructor (element, options) {
     this.#element = element
@@ -28,6 +28,7 @@ export default class BibleUp {
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
       bu_allow: [],
+      bu_id: false,
       styles: {}
     }
 
@@ -37,7 +38,7 @@ export default class BibleUp {
       this.#options = this.#defaultOptions
     }
 
-    this.#buid = Math.floor(100000 + Math.random() * 999999)
+    this.#randomKey = Math.floor(100000 + Math.random() * 999999)
     this.#init(this.#options)
     this.#regex = this.#generateRegex(bibleData)
     this.#mouseOnPopup = false
@@ -56,6 +57,10 @@ export default class BibleUp {
    */
   get getOptions () {
     return this.#options
+  }
+
+  get #buid () {
+    return this.#options.bu_id || this.#randomKey
   }
 
   /**
@@ -86,10 +91,36 @@ export default class BibleUp {
   }
 
   /**
+   * If force is true, it merges defaultOptions and newOptions to form a new BibleUp.options Object,
+   * else it updates BibleUp.options with any changes in newOptions.
+   * @param {*} force
+   * @param {*} defaultOptions
+   * @param {*} new0ptions
+   * @returns new BibleUp.#options
+   */
+  #mergeOptions (force, defaultOptions, new0ptions) {
+    if (force === true) {
+      return { ...defaultOptions, ...new0ptions }
+    } else {
+      const merge = { ...this.#options, ...new0ptions }
+      for (const [key, value] of Object.entries(new0ptions)) {
+        if (Array.isArray(value)) {
+          merge[key] = [...this.#options[key], ...value]
+        } else if (value && typeof value === 'object') {
+          merge[key] = { ...this.#options[key], ...value }
+        } else {
+          merge[key] = value
+        }
+      }
+      return merge
+    }
+  }
+
+  /**
    * @param options New BibleUp Options
    * @param element The new element to search, if specified; else, the element specified during BibleUp
    * instantiation will be searched again
-   * @param force If false, previous BibleUp options will be merged with new options passed to the method on refresh.
+   * @param force If false, previous BibleUp options will be merged with new options passed.
    * If force is set to true, the options passed into this method will totally overwrite previous options
    */
   refresh (options = {}, force = false, element = this.#element) {
@@ -98,26 +129,23 @@ export default class BibleUp {
     }
     const old = this.#options
     const trigger = { version: false, popup: false, style: false }
+    this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
 
-    if (force === true) {
-      this.#options = { ...this.#defaultOptions, ...options }
-    } else {
-      this.#options = { ...this.#defaultOptions, ...this.#options, ...options }
-    }
-
-    // set trigger version
+    // trigger version
     if (old.version !== this.#options.version) {
       trigger.version = true
     }
 
-    // set trigger build popup
-    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
+    // trigger build popup
+    if (old.popup !== this.#options.popup ||
+      old.darkTheme !== this.#options.darkTheme ||
+      old.bu_id !== this.#options.bu_id) {
       this.#popup.container?.remove()
       trigger.popup = true
       trigger.style = true
     }
 
-    // set trigger styles
+    // trigger styles
     if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
       trigger.style = true
     }
@@ -132,7 +160,7 @@ export default class BibleUp {
   /**
    * @param {Object} options BibleUp Options
    * @param {*} trigger Optional - define what to trigger init on
-   */
+  */
   #init (options, trigger = {}) {
     const definetrigger = { version: true, popup: true, style: true }
     trigger = { ...definetrigger, ...trigger }
@@ -163,83 +191,60 @@ export default class BibleUp {
     }
 
     if (trigger.style) {
-      if (this.#options.styles) {
+      if (this.#options.styles &&
+        Object.keys(this.#options.styles).length !== 0) {
         this.#setStyles(this.#options.styles)
       }
     }
   }
 
   #setStyles (styles) {
-    const real = {
-      primary: 'white',
-      secondary: '#e6e6e6',
-      tertiary: '#f2f2f2',
-      headerColor: '#212529',
-      fontColor: '#212529',
-      versionColor: '#212529',
-      closeColor: '#212529',
-      borderRadius: '0',
-      boxShadow: '0px 0px 3px 0.7px #a6a6a6'
-    }
-
-    if (this.#options.popup === 'classic') {
-      if (this.#options.darkTheme === true) {
-        real.primary = '#595959'
-        real.secondary = '#d9d9d9'
-        real.fontColor = '#f2f2f2'
-        real.headerColor = '#333'
-      }
-    }
-
-    if (this.#options.popup === 'inline') {
-      real.borderRadius = '5px'
-      real.boxShadow = '0px 0px 2px 0.5px #ccc'
-      if (this.#options.darkTheme === true) {
-        real.primary = '#3d4245'
-        real.fontColor = '#f2f2f2'
-      }
-    }
-
-    if (this.#options.popup === 'wiki') {
-      real.secondary = 'white'
-      if (this.#options.darkTheme === true) {
-        real.primary = real.secondary = '#3d4245'
-        real.fontColor = real.closeColor = real.headerColor = '#f2f2f2'
-        real.versionColor = '#333'
-      }
-    }
-
-    styles = { ...real, ...styles }
     const { container, header, version, close } = this.#popup
+    const props = ['borderRadius', 'boxShadow', 'fontSize']
 
-    // popup background and color
-    container.style.background = styles.primary
-    container.style.color = styles.fontColor
-    // header background and color
+    for (const prop of props) {
+      if (styles[prop]) {
+        container.style[prop] = styles[prop]
+      }
+    }
+
+    if (styles.primary) {
+      container.style.background = styles.primary
+    }
+
+    if (styles.fontColor) {
+      container.style.color = styles.fontColor
+    }
+
     if (header) {
-      header.style.background = styles.secondary
-      header.style.color = styles.headerColor
+      if (styles.secondary) {
+        header.style.background = styles.secondary
+      }
+
+      if (styles.headerColor) {
+        header.style.color = styles.headerColor
+      }
     }
-    // version background and color
+
     if (version) {
-      version.style.background = styles.tertiary
-      version.style.color = styles.versionColor
+      if (styles.tertiary) {
+        version.style.background = styles.tertiary
+      }
+
+      if (styles.versionColor) {
+        version.style.color = styles.versionColor
+      }
     }
-    // close color
-    if (close) {
+
+    if (close && styles.closeColor) {
       close.style.color = styles.closeColor
     }
-    container.style.borderRadius = styles.borderRadius
-    container.style.boxShadow = styles.boxShadow
-    container.style.fontSize = styles.fontSize
   }
 
   /**
    * method: BibleUp Scripture Regex
-   * param(refGroup) get all abbreviations and append each with '|' to construct a regex capturing group.
-   * This regex is a combination of two regular expressions (standard Bible reference and look-behind Bible reference) using the or '|' operator
-   * Contains a total of six capturing groups. 3 for the first regex and the remaining 3 for the look-behind
-   * one set of the capturing group returns 'undefined' when the other regex is matched
+   * @param {Object} bibleData containing bible books data
+   * This regex is a combination of two regular expressions: standard Bible reference and reference parts
    * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
    */
   #generateRegex (bibleData) {
