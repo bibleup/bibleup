@@ -10,39 +10,39 @@ body {
 }
 
 #container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #header {
-	text-align: center;
+  text-align: center;
 }
 
 button {
-	padding: 5px 15px;
-	font-size: 17px;
+  padding: 5px 15px;
+  font-size: 17px;
 }
 
 #box-wrapper {
-	width: 100%;
-	margin-top: 30px;
-	display: grid;
-	grid-template-columns: auto;
-	gap: 20px 100px;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 20px 100px;
+  justify-content: center;
+  align-items: center;
 }
 
 @media only screen and (min-width: 800px) {
-	#box-wrapper {
-		grid-template-columns: auto auto;
-	}
+  #box-wrapper {
+    grid-template-columns: auto auto;
+  }
 }
 
 .box {
-	max-height: 400px;
+  max-height: 400px;
   margin-top: 20px;
   padding: 10px 15px;
   border: 2px solid #2d2f3d;
@@ -56,10 +56,10 @@ button {
 }
 
 .box ul {
-	list-style-type: none;
-	margin: 0;
-	margin-top: 20px;
-	padding: 0;
+  list-style-type: none;
+  margin: 0;
+  margin-top: 20px;
+  padding: 0;
 }
 
 #test {
@@ -78,4 +78,14 @@ button {
 
 .ref {
   background: red;
+}
+
+#bu-popup-custom1 {
+  background: #636363; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #a2ab58, #636363); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #a2ab58,
+    #636363
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }

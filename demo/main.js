@@ -7,7 +7,6 @@ const body = document.querySelector('body')
 const bibleup = new BibleUp(body, {
   version: 'kjv',
   popup: 'classic',
-  darkTheme: false,
   styles: {
     primary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
     secondary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
@@ -34,7 +33,7 @@ btn.onclick = () => {
 
 const btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-  bibleup.refresh({popup: 'wiki', darkTheme: true, styles: {}})
+  bibleup.refresh({popup: 'inline', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'})
 }
 
 const add = document.querySelector('#add')
