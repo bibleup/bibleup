@@ -18,7 +18,7 @@ export default class BibleUp {
   #popup
   #ispopupOpen
   #events
-  #randomKey // unique bibleup instance key
+  #initKey // unique bibleup instance key
 
   constructor (element, options) {
     this.#element = element
@@ -38,7 +38,7 @@ export default class BibleUp {
       this.#options = this.#defaultOptions
     }
 
-    this.#randomKey = Math.floor(100000 + Math.random() * 999999)
+    this.#initKey = Math.floor(100000 + Math.random() * 999999)
     this.#init(this.#options)
     this.#regex = this.#generateRegex(bibleData)
     this.#mouseOnPopup = false
@@ -60,7 +60,7 @@ export default class BibleUp {
   }
 
   get #buid () {
-    return this.#options.bu_id || this.#randomKey
+    return this.#options.bu_id || this.#initKey
   }
 
   /**
@@ -84,9 +84,10 @@ export default class BibleUp {
       const ref = link.closest('cite').getAttribute('bu-ref')
       link.closest('cite').replaceWith(ref)
     }
+
     if (force === true && this.#popup.container) {
       this.#popup.container.remove()
-      this.#buid = undefined
+      this.#initKey = undefined
     }
   }
 
@@ -124,8 +125,8 @@ export default class BibleUp {
    * If force is set to true, the options passed into this method will totally overwrite previous options
    */
   refresh (options = {}, force = false, element = this.#element) {
-    if (!this.#buid) {
-      this.#error('cannot call refresh() on an uncreated or destroyed BibleUp instance')
+    if (!this.#initKey) {
+      this.#error('cannot call refresh on an uncreated or destroyed BibleUp instance')
     }
     const old = this.#options
     const trigger = { version: false, popup: false, style: false }
@@ -141,6 +142,14 @@ export default class BibleUp {
       old.darkTheme !== this.#options.darkTheme ||
       old.bu_id !== this.#options.bu_id) {
       this.#popup.container?.remove()
+      // change link class if buid changes
+      if (old.bu_id !== this.#options.bu_id) {
+        const oldKey = old.bu_id || this.#initKey
+        const bulink = document.querySelectorAll(`.bu-link-${oldKey}`)
+        bulink.forEach((link) => {
+          link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#options.bu_id}`)
+        })
+      }
       trigger.popup = true
       trigger.style = true
     }
