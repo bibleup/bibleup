@@ -33,7 +33,7 @@ btn.onclick = () => {
 
 const btn2 = document.querySelector('#refresh')
 btn2.onclick = () => {
-  bibleup.refresh({popup: 'inline', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'})
+  bibleup.refresh({popup: 'wiki', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'})
 }
 
 const add = document.querySelector('#add')
