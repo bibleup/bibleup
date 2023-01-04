@@ -128,6 +128,7 @@ export default class BibleUp {
     if (!this.#initKey) {
       this.#error('cannot call refresh on an uncreated or destroyed BibleUp instance')
     }
+
     const old = this.#options
     const trigger = { version: false, popup: false, style: false }
     this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
@@ -138,20 +139,23 @@ export default class BibleUp {
     }
 
     // trigger build popup
-    if (old.popup !== this.#options.popup ||
+    if (
+      old.popup !== this.#options.popup ||
       old.darkTheme !== this.#options.darkTheme ||
-      old.bu_id !== this.#options.bu_id) {
+      old.bu_id !== this.#options.bu_id
+    ) {
       this.#popup.container?.remove()
-      // change link class if buid changes
-      if (old.bu_id !== this.#options.bu_id) {
-        const oldKey = old.bu_id || this.#initKey
-        const bulink = document.querySelectorAll(`.bu-link-${oldKey}`)
-        bulink.forEach((link) => {
-          link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#options.bu_id}`)
-        })
-      }
       trigger.popup = true
       trigger.style = true
+    }
+
+    // change link class if buid changes
+    if (old.bu_id !== this.#options.bu_id) {
+      const oldKey = old.bu_id || this.#initKey
+      const bulink = document.querySelectorAll(`.bu-link-${oldKey}`)
+      bulink.forEach((link) => {
+        link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#options.bu_id}`)
+      })
     }
 
     // trigger styles
@@ -160,7 +164,11 @@ export default class BibleUp {
     }
 
     this.#searchNode(element, this.#regex.main)
-    if (trigger.version || trigger.popup || trigger.style) {
+    // call init() for changes
+    if (force) {
+      this.#popup.container?.remove()
+      this.#init(this.#options)
+    } else if (trigger.version || trigger.popup || trigger.style) {
       this.#init(this.#options, trigger)
     }
     this.#manageEvents(this.#options)
@@ -171,8 +179,8 @@ export default class BibleUp {
    * @param {*} trigger Optional - define what to trigger init on
   */
   #init (options, trigger = {}) {
-    const definetrigger = { version: true, popup: true, style: true }
-    trigger = { ...definetrigger, ...trigger }
+    const initTrigger = { version: true, popup: true, style: true }
+    trigger = { ...initTrigger, ...trigger }
 
     if (trigger.version) {
       const versions = ['KJV', 'ASV', 'LSV', 'WEB']
