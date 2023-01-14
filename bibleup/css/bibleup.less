@@ -1,23 +1,22 @@
 //import popup styles
+@import "./_root.less";
 @import "./classic.less";
 @import "./wiki.less";
 @import "./inline.less";
 
 [id^='bu-popup-'] {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	font-family: var(--bu-font-family);
 	margin: 0;
-	font-size: 15px;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #212529;
+	font-size: var(--bu-font-size);
+	font-weight: var(--bu-font-weight);
+	line-height: var(--bu-line-height);
 	-webkit-text-size-adjust: 100%;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 	z-index: 1070; //bootstrap default for popovers
+}
 
-
-	.bu-popup-content ol li {
-		font-size: 15px;
-	}
+.bu-popup-content ol li {
+	font-size: var(--bu-font-size);
 }
 
 [id^='bu-popup-'] * {
