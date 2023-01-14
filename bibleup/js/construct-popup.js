@@ -29,7 +29,7 @@ export const build = (options, buid) => {
   }
 
   if (darkTheme === true) {
-    popup.classList.add('bu-theme-dark')
+    popup.setAttribute('data-bu-theme', 'dark')
   }
 
   document.body.appendChild(popup)

@@ -23,24 +23,23 @@ const bibleup = new BibleUp(body, {
 
 /* const bibleupp = new BibleUp(body, {
   version: 'kjv',
-  popup: 'wiki',
-  darkTheme: false,
+  popup: 'classic',
+  darkTheme: false
 }) */
 
 bibleup.create()
-//bibleupp.create()
 
 removeBtn.onclick = () => {
   bibleup.destroy(false)
 }
 
 refreshBtn.onclick = () => {
-  bibleup.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
-  /* bibleup.refresh({
+  //bibleup.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
+  bibleup.refresh({
     version: 'kjv',
-    popup: 'classic',
-    darkTheme: false,
-  }, true) */
+    popup: 'wiki',
+    darkTheme: true,
+  }, true)
 }
 
 addBtn.onclick = () => {
