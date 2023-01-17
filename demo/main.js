@@ -30,7 +30,7 @@ const bibleup = new BibleUp(body, {
 bibleup.create()
 
 removeBtn.onclick = () => {
-  bibleup.destroy(false)
+  bibleup.destroy(true)
 }
 
 refreshBtn.onclick = () => {
