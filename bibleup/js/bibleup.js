@@ -26,7 +26,7 @@ export default class BibleUp {
       version: 'KJV',
       popup: 'classic',
       darkTheme: false,
-      bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
+      bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
       bu_allow: [],
       bu_id: false,
       styles: {}
@@ -328,7 +328,7 @@ export default class BibleUp {
   #validateNode (e) {
     const forbiddenTags = this.#options.bu_ignore
     const allowedTags = this.#options.bu_allow
-    const privateIgnore = [...forbiddenTags, 'SCRIPT', 'STYLE', 'SVG', 'INPUT', 'TEXTAREA', 'SELECT']
+    const privateIgnore = [...forbiddenTags, 'SCRIPT', 'STYLE', 'SVG', 'IMG', 'INPUT', 'TEXTAREA', 'SELECT']
     if (privateIgnore.includes(e.tagName) && !allowedTags.includes(e.tagName)) {
       return false
     } else if (e.classList.contains('bu-ignore') === false) {
