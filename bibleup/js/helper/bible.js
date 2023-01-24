@@ -69,8 +69,10 @@ const getAPIBook = (book) => {
    * e.g Jn or jn returns John, gen returns Genesis
    */
 const realBook = (abbr) => {
+  abbr = abbr.toLowerCase()
   for (const data of bibleData) {
-    if (data.abbr.includes(abbr) || data.book === abbr) {
+    const abbrList = data.abbr.map(element => element.toLowerCase())
+    if (abbrList.includes(abbr) || data.book.toLowerCase() === abbr) {
       return data.book
     }
   }
