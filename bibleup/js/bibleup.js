@@ -29,6 +29,7 @@ export default class BibleUp {
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
       bu_allow: [],
       bu_id: false,
+      ignoreCase: false,
       styles: {}
     }
 
@@ -40,7 +41,7 @@ export default class BibleUp {
 
     this.#initKey = Math.floor(100000 + Math.random() * 999999)
     this.#init(this.#options)
-    this.#regex = this.#generateRegex(bibleData)
+    this.#regex = this.#generateRegex()
     this.#mouseOnPopup = false
     this.#ispopupOpen = false
 
@@ -163,6 +164,11 @@ export default class BibleUp {
       trigger.style = true
     }
 
+    // change this.#regex if ignoreCase changes
+    if (JSON.stringify(old.ignoreCase) !== JSON.stringify(this.#options.ignoreCase)) {
+      this.#regex = this.#generateRegex()
+    }
+
     this.#searchNode(element, this.#regex.main)
     // call init() for changes
     if (force) {
@@ -264,7 +270,7 @@ export default class BibleUp {
    * This regex is a combination of two regular expressions: standard Bible reference and reference parts
    * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
    */
-  #generateRegex (bibleData) {
+  #generateRegex () {
     let allBooks = ''
     const versions = 'KJV|ASV|LSV|WEB'
     const allMultipart = []
@@ -285,6 +291,13 @@ export default class BibleUp {
       '|'
     )})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
     const verse = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
+
+    if (this.#options.ignoreCase === true) {
+      return {
+        main: new RegExp(main, 'gi'),
+        verse: new RegExp(verse, 'gi')
+      }
+    }
 
     return {
       main: new RegExp(main, 'g'),
