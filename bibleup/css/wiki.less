@@ -6,13 +6,14 @@
   position: fixed;
   bottom: 0;
   left: 50%;
-  width: 90%;
-  max-width: 400px;
+  width: var(--bu-wiki-width);
+  max-width: var(--bu-wiki-max-width);
   height: auto;
   max-height: 220px;
   transform: translate(-50%, -20%);
-  background: white;
-  box-shadow: 0px 0px 3px 0.7px #a6a6a6;
+  background: var(--bu-wiki-bg);
+  color: var(--bu-wiki-color);
+  box-shadow: var(--bu-wiki-box-shadow);
   overflow: hidden;
 
   p {
@@ -20,23 +21,26 @@
   }
 
   .bu-popup-header {
+	background: var(--bu-wiki-header-bg);
+    color: var(--bu-wiki-header-color);
 	display: grid;
 	grid-template-columns: auto auto 1fr;
 	align-items: center;
 	padding: 10px;
-  
+
 	.bu-popup-ref {
 	  font-weight: bold;
 	  padding: 2px 0;
 	}
-  
+
 	.bu-popup-version {
-	  background: '#f2f2f2';
+	  background: var(--bu-wiki-version-bg);
+      color: var(--bu-wiki-version-color);
 	  padding: 0px 10px;
 	  border-radius: 3px;
 	  margin-left: 5px;
 	}
-  
+
 	.bu-popup-close {
 	  text-align: right;
 	  margin-right: 5px;
@@ -47,28 +51,27 @@
 	  background: none;
 	  outline: none;
 	  border: none;
-  
-	  &:focus {
-		outline: 2px solid #b3b3b3;
-		border-radius: 100px;
+
+	  &:hover {
+		outline: 1.5px solid #b3b3b3;
 	  }
 	}
   }
-  
+
   .bu-popup-content {
 	max-height: 100px;
 	overflow-x: auto;
 	padding: 10px 15px;
 	padding-bottom: 0;
-  
+
 	ol {
 	  padding: 0 20px;
 	  margin: 0;
 	}
-  
+
 	li {
 	  margin: 0;
-  
+
 	  &:not(:last-child) {
 		padding-bottom: 10px;
 	  }
@@ -76,15 +79,21 @@
   }
 }
 
-#bu-popup.bu-wiki.bu-theme-dark {
-  background: #3d4245;
-  color: #f2f2f2;
+.bu-wiki[data-bu-theme='dark'] {
+  background: var(--bu-wiki-bg);
+  color: var(--bu-wiki-color);
+
+  .bu-popup-header {
+	background: var(--bu-wiki-header-bg);
+    color: var(--bu-wiki-header-color);
+  }
 
   .bu-popup-version {
-    color: #333;
+	background: var(--bu-wiki-version-bg);
+    color: var(--bu-wiki-version-color);
   }
 
   .bu-popup-close {
-    color: #fff;
+    color: var(--bu-wiki-close-color);
   }
 }

@@ -1,22 +1,21 @@
-
 /* INLINE POPUP
    BIBLEUP 📖💡
 */
 
 .bu-inline {
-	@bg-color: #ffffff;
 	position: absolute;
-	width: 80%;
-	max-width: 350px;
+	width: var(--bu-inline-width);
+	max-width: var(--bu-inline-max-width);
 	height: auto;
 	max-height: 220px;
 	padding-top: 10px;
-	background: @bg-color;
+	background: var(--bu-inline-bg);
+	color: var(--bu-inline-color);
 	//box-shadow: 0px 0px 3px 0.7px #cccccc;
-	box-shadow: 0px 0px 2px 0.5px #ccc;
-	border-radius: 5px;
+	box-shadow: var(--bu-inline-box-shadow);
+	border-radius: var(--bu-inline-border-radius);
 	overflow: hidden;
-	
+
 	p {
 		margin: 0;
 	}
@@ -27,15 +26,17 @@
 		overflow-x: auto;
 		padding: 10px 15px;
 		padding-bottom: 0;
-		
-		
+
+
 		ol {
 			padding: 0 20px;
 			margin: 0;
 		}
+
 		li {
 			padding: 0 5px;
 			margin: 0;
+
 			&:not(:last-child) {
 				padding-bottom: 10px;
 			}
@@ -43,7 +44,7 @@
 	}
 }
 
-[id^='bu-popup-'].bu-inline.bu-theme-dark {
-	background: #3d4245;
-	color: #f2f2f2;
+.bu-inline[data-bu-theme='dark'] {
+	background: var(--bu-inline-bg);
+	color: var(--bu-inline-color);
 }

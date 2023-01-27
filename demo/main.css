@@ -1,39 +1,95 @@
 html {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-	height: 100%;
-	padding-bottom: 10px;
-	}
-
-#test-panel {
-	margin-top: 20px;
-	color: #2D2F3D;
-	padding: 0 20px;
-	font-family: "Source Sans Pro", sans-serif;
+  height: 100%;
+  font-family: 'Source Sans Pro', sans-serif;
+  color: #2d2f3d;
 }
 
-#test-panel h3 {
-	text-align: center;
-	font-weight: 700;
+#container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#header {
+  text-align: center;
+}
+
+button {
+  padding: 5px 15px;
+  font-size: 17px;
+}
+
+#box-wrapper {
+  width: 100%;
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 20px 100px;
+  justify-content: center;
+  align-items: center;
+}
+
+@media only screen and (min-width: 800px) {
+  #box-wrapper {
+    grid-template-columns: auto auto;
+  }
+}
+
+.box {
+  max-height: 400px;
+  margin-top: 20px;
+  padding: 10px 15px;
+  border: 2px solid #2d2f3d;
+  border-radius: 5px;
+}
+
+.box h3 {
+  text-align: center;
+  font-weight: 700;
+  margin: 0;
+}
+
+.box ul {
+  list-style-type: none;
+  margin: 0;
+  margin-top: 20px;
+  padding: 0;
 }
 
 #test {
-	padding: 15px;
-	height: 150px;
-	overflow-x: auto;
-	overflow-y: hidden;
-	white-space: nowrap;
-	width: 100%;
+  padding: 15px;
+  height: 150px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  width: 90%;
 }
 
-.bu-link {
-	text-decoration: underline;
-	color: orange;
+.bu-link a {
+  text-decoration: underline;
+  color: orange;
 }
 
 .ref {
   background: red;
+}
+
+#bu-popup-custom1 {
+  background: #636363; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #a2ab58, #636363); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #a2ab58,
+    #636363
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+:root {
+  --bu-wiki-dark-version-color: red;
 }
