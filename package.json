@@ -42,6 +42,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs"
+    },
+    "github": {
+      "release": true
+    }
+  },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
