@@ -1,8 +1,8 @@
 import bibleData from './helper/bible-data.js'
-import Bible from './helper/bible.js'
-import ConstructPopup from './construct-popup.js'
-import positionPopup from './position-popup.js'
-import Search from './helper/search.js'
+import * as Bible from './helper/bible.js'
+import * as ConstructPopup from './construct-popup.js'
+import { positionPopup } from './position-popup.js'
+import * as Search from './helper/search.js'
 
 export default class BibleUp {
   // PRIVATE_FIELD
@@ -18,8 +18,7 @@ export default class BibleUp {
   #popup
   #ispopupOpen
   #events
-  #inlineChapter
-  #buid // unique bibleup instance key
+  #initKey // unique bibleup instance key
 
   constructor (element, options) {
     this.#element = element
@@ -27,8 +26,10 @@ export default class BibleUp {
       version: 'KJV',
       popup: 'classic',
       darkTheme: false,
-      bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'IMG', 'A'],
+      bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
       bu_allow: [],
+      bu_id: false,
+      ignoreCase: false,
       styles: {}
     }
 
@@ -38,9 +39,9 @@ export default class BibleUp {
       this.#options = this.#defaultOptions
     }
 
-    this.#buid = Math.floor(100000 + Math.random() * 999999)
+    this.#initKey = Math.floor(100000 + Math.random() * 999999)
     this.#init(this.#options)
-    this.#regex = this.#generateRegex(bibleData)
+    this.#regex = this.#generateRegex()
     this.#mouseOnPopup = false
     this.#ispopupOpen = false
 
@@ -59,69 +60,133 @@ export default class BibleUp {
     return this.#options
   }
 
+  get #buid () {
+    return this.#options.bu_id || this.#initKey
+  }
+
   /**
    * {desc} class entry point.
    * create instances for entire app func
    *
    */
   create () {
-    this.#searchNode(this.#element, this.#regex)
+    this.#searchNode(this.#element, this.#regex.main)
     this.#manageEvents(this.#options)
   }
 
   /**
-     * This method destoys BibleUp creation and removes the links and popup from the page
-     */
-  destroy () {
-    const links = this.#popup.link
+   * This method destoys BibleUp creation and removes the links and popup from the page
+   * @param force - Specify whether to totally delete bibleup, and refresh() won't work anymore. This will also remove popup
+   * container; or to keep popup container and bibleup tagging can be resumed with refresh() method - when set to false
+   */
+  destroy (force = true) {
+    const links = document.querySelectorAll(`.bu-link-${this.#buid}`)
     for (const link of links) {
-      link.closest('cite').replaceWith(...link.childNodes)
+      const ref = link.closest('cite').getAttribute('bu-ref')
+      link.closest('cite').replaceWith(ref)
     }
-    if (this.#popup.container) {
+
+    if (force === true && this.#popup.container) {
       this.#popup.container.remove()
+      this.#initKey = undefined
     }
   }
 
-  refresh (options = {}, element = this.#element) {
-    const old = this.#options
-    this.#options = { ...this.#defaultOptions, ...options }
-    const trigger = { version: false, popup: false, style: false }
+  /**
+   * If force is true, it merges defaultOptions and newOptions to form a new BibleUp.options Object,
+   * else it updates BibleUp.options with any changes in newOptions.
+   * @param {*} force
+   * @param {*} defaultOptions
+   * @param {*} new0ptions
+   * @returns new BibleUp.#options
+   */
+  #mergeOptions (force, defaultOptions, new0ptions) {
+    if (force === true) {
+      return { ...defaultOptions, ...new0ptions }
+    } else {
+      const merge = { ...this.#options, ...new0ptions }
+      for (const [key, value] of Object.entries(new0ptions)) {
+        if (Array.isArray(value)) {
+          merge[key] = [...this.#options[key], ...value]
+        } else if (value && typeof value === 'object') {
+          merge[key] = { ...this.#options[key], ...value }
+        } else {
+          merge[key] = value
+        }
+      }
+      return merge
+    }
+  }
 
-    // set trigger version
+  /**
+   * @param options New BibleUp Options
+   * @param element The new element to search, if specified; else, the element specified during BibleUp
+   * instantiation will be searched again
+   * @param force If false, previous BibleUp options will be merged with new options passed.
+   * If force is set to true, the options passed into this method will totally overwrite previous options
+   */
+  refresh (options = {}, force = false, element = this.#element) {
+    if (!this.#initKey) {
+      this.#error('cannot call refresh on an uncreated or destroyed BibleUp instance')
+    }
+
+    const old = this.#options
+    const trigger = { version: false, popup: false, style: false }
+    this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
+
+    // trigger version
     if (old.version !== this.#options.version) {
       trigger.version = true
     }
 
-    // set trigger build popup
-    if (old.popup !== this.#options.popup || old.darkTheme !== this.#options.darkTheme) {
-      if (this.#popup.container) {
-        this.#popup.container.remove()
-      }
-      console.log('style')
+    // trigger build popup
+    if (
+      old.popup !== this.#options.popup ||
+      old.darkTheme !== this.#options.darkTheme ||
+      old.bu_id !== this.#options.bu_id
+    ) {
+      this.#popup.container?.remove()
       trigger.popup = true
       trigger.style = true
     }
 
-    // set trigger styles
+    // change link class if buid changes
+    if (old.bu_id !== this.#options.bu_id) {
+      const oldKey = old.bu_id || this.#initKey
+      const bulink = document.querySelectorAll(`.bu-link-${oldKey}`)
+      bulink.forEach((link) => {
+        link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#options.bu_id}`)
+      })
+    }
+
+    // trigger styles
     if (JSON.stringify(old.styles) !== JSON.stringify(this.#options.styles)) {
       trigger.style = true
     }
 
-    this.#searchNode(element, this.#regex)
-    if (trigger.version || trigger.popup || trigger.style) {
+    // change this.#regex if ignoreCase changes
+    if (JSON.stringify(old.ignoreCase) !== JSON.stringify(this.#options.ignoreCase)) {
+      this.#regex = this.#generateRegex()
+    }
+
+    this.#searchNode(element, this.#regex.main)
+    // call init() for changes
+    if (force) {
+      this.#popup.container?.remove()
+      this.#init(this.#options)
+    } else if (trigger.version || trigger.popup || trigger.style) {
       this.#init(this.#options, trigger)
     }
     this.#manageEvents(this.#options)
   }
 
   /**
-   *
    * @param {Object} options BibleUp Options
    * @param {*} trigger Optional - define what to trigger init on
-   */
+  */
   #init (options, trigger = {}) {
-    const definetrigger = { version: true, popup: true, style: true }
-    trigger = { ...definetrigger, ...trigger }
+    const initTrigger = { version: true, popup: true, style: true }
+    trigger = { ...initTrigger, ...trigger }
 
     if (trigger.version) {
       const versions = ['KJV', 'ASV', 'LSV', 'WEB']
@@ -135,9 +200,8 @@ export default class BibleUp {
       if (popup.includes(options.popup)) {
         ConstructPopup.build(options, this.#buid)
         this.#popup = {
-          link: document.querySelectorAll(`.bu-link-${this.#buid}`),
           container: document.getElementById(`bu-popup-${this.#buid}`),
-          header: document.querySelector(`#bu-popup-${this.#buid}` > '.bu-popup-header'),
+          header: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-header`),
           ref: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-ref`),
           version: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-version`),
           content: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-content`),
@@ -150,127 +214,95 @@ export default class BibleUp {
     }
 
     if (trigger.style) {
-      if (this.#options.styles) {
+      if (this.#options.styles &&
+        Object.keys(this.#options.styles).length !== 0) {
         this.#setStyles(this.#options.styles)
       }
     }
   }
 
   #setStyles (styles) {
-    const real = {
-      primary: 'white',
-      secondary: '#e6e6e6',
-      tertiary: '#f2f2f2',
-      headerColor: '#212529',
-      color: ['#212529', '#212529', '#212529'],
-      borderRadius: '0',
-      boxShadow: '0px 0px 3px 0.7px #a6a6a6'
-    }
+    const { container, header, version, close } = this.#popup
+    const props = ['borderRadius', 'boxShadow', 'fontSize']
 
-    if (this.#options.popup === 'classic') {
-      if (this.#options.darkTheme === true) {
-        real.primary = '#595959'
-        real.secondary = '#d9d9d9'
-        real.color[0] = '#f2f2f2'
-        real.headerColor = '#333'
+    for (const prop of props) {
+      if (styles[prop]) {
+        container.style[prop] = styles[prop]
       }
     }
 
-    if (this.#options.popup === 'inline') {
-      real.borderRadius = '5px'
-      real.boxShadow = '0px 0px 2px 0.5px #ccc'
-      if (this.#options.darkTheme === true) {
-        real.primary = '#3d4245'
-        real.color[0] = '#f2f2f2'
+    if (styles.primary) {
+      container.style.background = styles.primary
+    }
+
+    if (styles.fontColor) {
+      container.style.color = styles.fontColor
+    }
+
+    if (header) {
+      if (styles.secondary) {
+        header.style.background = styles.secondary
+      }
+
+      if (styles.headerColor) {
+        header.style.color = styles.headerColor
       }
     }
 
-    if (this.#options.popup === 'wiki') {
-      real.primary = 'white'
-      real.secondary = 'white'
-      if (this.#options.darkTheme === true) {
-        real.primary = '#3d4245'
-        real.color[0] = '#f2f2f2'
-        real.color[1] = '#333'
+    if (version) {
+      if (styles.tertiary) {
+        version.style.background = styles.tertiary
+      }
+
+      if (styles.versionColor) {
+        version.style.color = styles.versionColor
       }
     }
 
-    styles = { ...real, ...styles }
-
-    this.#popup.container.style.background = styles.primary
-    if (this.#popup.header) {
-      this.#popup.header.style.background = styles.secondary
+    if (close && styles.closeColor) {
+      close.style.color = styles.closeColor
     }
-    if (this.#popup.header) {
-      this.#popup.header.style.color = styles.headerColor
-    }
-    // font color
-    this.#popup.container.style.color = styles.color[0]
-    // version background and color
-    if (this.#popup.version) {
-      this.#popup.version.style.background = styles.tertiary
-      this.#popup.version.style.color = styles.color[1]
-    }
-    // close color
-    if (this.#popup.close) {
-      this.#popup.close.style.color = styles.color[2]
-    }
-    this.#popup.container.style.borderRadius = styles.borderRadius
-    this.#popup.container.style.boxShadow = styles.boxShadow
-    this.#popup.container.style.fontSize = styles.fontSize
   }
 
   /**
    * method: BibleUp Scripture Regex
-   * param(refGroup) get all abbreviations and append each with '|' to construct a regex capturing group.
-   * This regex is a combination of two regular expressions (standard Bible reference and look-behind Bible reference) using the or '|' operator
-   * Contains a total of six capturing groups. 3 for the first regex and the remaining 3 for the look-behind
-   * one set of the capturing group returns 'undefined' when the other regex is matched
+   * @param {Object} bibleData containing bible books data
+   * This regex is a combination of two regular expressions: standard Bible reference and reference parts
    * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
    */
-  #generateRegex (bibleData) {
-    let refGroup = ''
+  #generateRegex () {
+    let allBooks = ''
     const versions = 'KJV|ASV|LSV|WEB'
-    const numberBooks = [
-      '1 Samuel',
-      '2 Samuel',
-      '1 Kings',
-      '2 Kings',
-      '1 Chronicles',
-      '2 Chronicles',
-      '1 Corinthians',
-      '2 Corinthians',
-      '1 Thessalonians',
-      '2 Thessalonians',
-      '1 Timothy',
-      '2 Timothy',
-      '1 Peter',
-      '2 Peter',
-      '1 John',
-      '2 John',
-      '3 John'
-    ]
-    const numberBooksRef = []
+    const allMultipart = []
 
     for (const book of bibleData) {
       if (book.id === 66) {
-        refGroup += book.book + '|' + book.abbr.join('|')
+        allBooks += book.book + '|' + book.abbr.join('|')
       } else {
-        refGroup += book.book + '|' + book.abbr.join('|') + '|'
+        allBooks += book.book + '|' + book.abbr.join('|') + '|'
       }
 
-      if (numberBooks.includes(book.book)) {
-        numberBooksRef.push(book.book, ...book.abbr)
+      if (book.multipart) {
+        allMultipart.push(book.book, ...book.abbr)
       }
     }
 
-    const regex = [
-      `(?:(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:(?=\\:)\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)|)(?:[a-zA-Z])?(?:\\s(${versions}))?)`, // main regex
-      `(?<=(?:(${refGroup})(?:\\.?)\\s?(\\d{1,3}))(?:\\:\\s?\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?)(?:[a-zA-Z])?(?:\\s(?:${versions}))?\\s?(?:\\,|\\;|\\&)\\s?(?:(?:\\s?\\d{1,3}|\\s?\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\s?\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?)(?:[a-zA-Z])?(?:\\,|\\;|\\&))*)(?!\\s?(?:${numberBooksRef.join('|')})(?:\\.?)\\b)\\s?(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?` // match all seperated verse and ranges if it comes after main regex (eg- 5,2-7,12:5)
-    ]
+    const main = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${allMultipart.join(
+      '|'
+    )})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
+    const verse = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
 
-    const bibleRegex = new RegExp(regex.join('|'), 'g')
-    return bibleRegex
+    if (this.#options.ignoreCase === true) {
+      return {
+        main: new RegExp(main, 'gi'),
+        verse: new RegExp(verse, 'gi')
+      }
+    }
+
+    return {
+      main: new RegExp(main, 'g'),
+      verse: new RegExp(verse, 'g')
+    }
   }
 
   /**
@@ -309,7 +341,7 @@ export default class BibleUp {
   #validateNode (e) {
     const forbiddenTags = this.#options.bu_ignore
     const allowedTags = this.#options.bu_allow
-    const privateIgnore = [...forbiddenTags, 'SCRIPT', 'STYLE', 'SVG', 'INPUT', 'TEXTAREA', 'SELECT']
+    const privateIgnore = [...forbiddenTags, 'SCRIPT', 'STYLE', 'SVG', 'IMG', 'INPUT', 'TEXTAREA', 'SELECT']
     if (privateIgnore.includes(e.tagName) && !allowedTags.includes(e.tagName)) {
       return false
     } else if (e.classList.contains('bu-ignore') === false) {
@@ -324,7 +356,7 @@ export default class BibleUp {
    */
   #createLink (node) {
     const newNode = document.createElement('div')
-    newNode.innerHTML = node.nodeValue.replace(this.#regex, this.#setLinkMarkup.bind(this))
+    newNode.innerHTML = node.nodeValue.replace(this.#regex.main, this.#setLinkMarkup.bind(this))
 
     if (node.nodeValue !== newNode.innerHTML) {
       while (newNode.firstChild) {
@@ -336,66 +368,88 @@ export default class BibleUp {
   }
 
   /**
-   * param(match) is the actual matched string. Check replace() on MDN
-   * param(p1) is value of first capturing group. Pn is the capturing group for 'n'. Check replace() on MDN
-   * The first three capturing groups (p1 - p3) matches a standard Bible reference (Romans 3:23-25)
-   * p4 matches verse-level references for only single references
-   * The remaining three capturing groups matches the look-behind Bible reference (John 3:16,27,3-5 = matches 27 and 3-5)
-   * returns <cite[data-*]>john 3:16</cite>
+   * @param match This is the full match string
+   * @param {...args} This is the main reference capture groups (p1-pN) - Check replace() on MDN
+   * @returns A complete BibleUp Link
    */
-  #setLinkMarkup (match, p1, p2, p3, p4, p5, p6, p7) {
+  #setLinkMarkup (match, book, chapter, verse, version) {
     const bible = {
-      book: undefined,
-      chapter: undefined,
-      verse: undefined,
-      version: undefined
+      book,
+      chapter,
+      verse: verse || '1',
+      version
     }
 
+    // reference with only chapter and no verse (Romans 8)
+    const isChapterLevel = verse === undefined
+
+    /**
+     * Resolves actual chapter and verse number for reference parts
+     * References with multiple chapters will overwrite the chapter that will be used for subsequent verses
+     * @param verse verse number of main reference
+     */
     const vesreContext = (verse) => {
       const result = {}
       if ((verse.includes(':') && verse.includes('-')) || verse.includes(':')) {
         // (in-line chapter with range) or (in-line chapter only)
         result.chapter = verse.slice(0, verse.lastIndexOf(':'))
         result.verse = verse.slice(verse.lastIndexOf(':') + 1)
-        this.#inlineChapter = result.chapter
-      } else if (this.#inlineChapter) {
-        result.chapter = this.#inlineChapter
+        bible.chapter = result.chapter
+      } else if (isChapterLevel) {
+        result.chapter = verse
+        result.verse = '1'
+      } else {
+        result.verse = verse
       }
-
       return result
     }
 
-    if (p1 !== undefined) {
-      // standard Bible regex
-      bible.book = p1
-      bible.chapter = p2
-      bible.verse = p3 || '1'
-      if (p4 !== undefined) {
-        bible.version = p4
+    // Get `bible` object of main reference and each reference parts
+    const getBible = (args) => {
+      const res = {}
+      if (args[0] !== undefined) {
+        // main reference
+        res.book = bible.book
+        res.chapter = bible.chapter
+        res.verse = bible.verse
+        res.version = bible.version || false
+      } else {
+        // reference parts
+        const { chapter, verse } = vesreContext(args[4])
+        res.book = bible.book
+        res.chapter = chapter || bible.chapter
+        res.verse = verse || bible.verse
+        res.version = args[5] || false
       }
-      this.#inlineChapter = undefined
-    } else {
-      // look-behind Bible regex
-      const { chapter, verse } = vesreContext(p7)
-      bible.book = p5
-      bible.chapter = chapter || p6
-      bible.verse = verse || p7
+      return res
     }
 
-    const buData = this.#validateBible(bible)
-    if (buData === false) {
+    /**
+     * @desc This breaks the entire string and matches the main reference and every verse, ranges and parts separately.
+     * Each match is wrapped with an anchor element. The match regex is `this.#regex.verse`
+     * Invalid chapter/verse is returned as is.
+     * Example: Jn 3:16,17 to <a>Jn 3:16</a>,<a>17</a>
+     */
+    const str = match.replace(this.#regex.verse, (match, ...args) => {
+      const bibleData = getBible(args)
+      const buData = this.#validateBible(bibleData)
+      if (buData === false) {
+        // invalid chapter/verse
+        return match
+      } else {
+        return `<a href='#' class='bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>`
+      }
+    })
+
+    if (str === match) {
       return match
+    } else {
+      return `<cite class='bu-link' bu-ref='${match}'>${str}</cite>`
     }
-
-    const result = `
-		<cite>
-		<a href='#' class='bu-link bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>
-		</cite>`
-    return result
   }
 
   /*
-   * @param match - match is an object with reference breakdown
+   * @param bible - bible is an object {book, chapter, verse, version}
    * Returns stringified object containing valid, complete reference (bu-data) if reference is valid else returns false
    * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
@@ -502,7 +556,7 @@ export default class BibleUp {
       const res = await Search.getScripture(bibleRef, bibleRef.version ?? this.#options.version)
 
       if (this.#currentRef === res.ref) {
-        // only when cursor is on same link
+        // only when cursor is still on same link
         this.#updatePopup(res, false)
         positionPopup(e, this.#options.popup, this.#popup.container)
         if (this.#loadingTimer) {

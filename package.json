@@ -1,6 +1,6 @@
 {
   "name": "@bibleup/bibleup",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0",
   "description": "A tool for converting Bible references on a webpage to links with an accessible popup",
   "type": "module",
   "browser": "./dist/umd/bibleup.min.js",
@@ -16,9 +16,9 @@
   ],
   "scripts": {
     "test": "echo \"No test specified\"",
-    "build": "npm run clean && rollup --config",
-    "lint": "eslint --fix --ext .js,.jsx ./bibleup",
-    "clean": "rd /s /q dist"
+    "build": "npm run lint && npm run clean && rollup --config",
+    "lint": "eslint --fix --ext .js,.ts ./bibleup",
+    "clean": "rimraf dist"
   },
   "repository": {
     "type": "git",
@@ -30,8 +30,8 @@
     "tooltip",
     "popup",
     "references",
-    "browser",
-    "es6"
+    "popover",
+    "javascript"
   ],
   "author": "BibleUp",
   "license": "MIT",
@@ -42,8 +42,16 @@
   "publishConfig": {
     "access": "public"
   },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release v${version}",
+      "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs"
+    },
+    "github": {
+      "release": true
+    }
+  },
   "devDependencies": {
-    "@ampproject/rollup-plugin-closure-compiler": "^0.27.0",
     "@babel/plugin-transform-runtime": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
     "@rollup/plugin-babel": "^5.3.1",
@@ -53,10 +61,11 @@
     "eslint": "^8.19.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-n": "^15.2.4",
-    "eslint-plugin-promise": "^6.0.0",
+    "eslint-plugin-promise": "^6.1.1",
     "rollup": "^2.45.2",
     "rollup-plugin-less": "^1.1.3",
-    "rollup-plugin-terser": "^7.0.2"
+    "rollup-plugin-license": "^2.8.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.8.4"
   }
 }
