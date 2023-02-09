@@ -28,13 +28,13 @@ export default class BibleUp {
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
       bu_allow: [],
-      bu_id: false,
+      buid: false,
       ignoreCase: false,
       styles: {}
     }
 
     if (typeof options === 'object' && options !== null) {
-      this.#options = { ...this.#defaultOptions, ...options }
+      this.#options = this.#DEPRECATE_bu_id({ ...this.#defaultOptions, ...options })
     } else {
       this.#options = this.#defaultOptions
     }
@@ -61,7 +61,22 @@ export default class BibleUp {
   }
 
   get #buid () {
-    return this.#options.bu_id || this.#initKey
+    return this.#options.buid || this.#initKey
+  }
+
+  /**
+   * The method removes the `bu_id` property and replaces it with `buid` to match documentation.
+   * DEPRECATES `bu_id` and Enforces `buid`
+   * @param {*} BibleUp options
+   * @returns 0bject
+   */
+  #DEPRECATE_bu_id (options) {
+    if (Object.prototype.hasOwnProperty.call(options, 'bu_id')) {
+      options.buid = options.bu_id
+      delete options.bu_id
+      // console.log('replaced bu_id')
+    }
+    return options
   }
 
   /**
@@ -102,7 +117,7 @@ export default class BibleUp {
    */
   #mergeOptions (force, defaultOptions, new0ptions) {
     if (force === true) {
-      return { ...defaultOptions, ...new0ptions }
+      return this.#DEPRECATE_bu_id({ ...defaultOptions, ...new0ptions })
     } else {
       const merge = { ...this.#options, ...new0ptions }
       for (const [key, value] of Object.entries(new0ptions)) {
@@ -114,7 +129,7 @@ export default class BibleUp {
           merge[key] = value
         }
       }
-      return merge
+      return this.#DEPRECATE_bu_id(merge)
     }
   }
 
@@ -143,7 +158,7 @@ export default class BibleUp {
     if (
       old.popup !== this.#options.popup ||
       old.darkTheme !== this.#options.darkTheme ||
-      old.bu_id !== this.#options.bu_id
+      old.buid !== this.#options.buid
     ) {
       this.#popup.container?.remove()
       trigger.popup = true
@@ -151,11 +166,11 @@ export default class BibleUp {
     }
 
     // change link class if buid changes
-    if (old.bu_id !== this.#options.bu_id) {
-      const oldKey = old.bu_id || this.#initKey
+    if (old.buid !== this.#options.buid) {
+      const oldKey = old.buid || this.#initKey
       const bulink = document.querySelectorAll(`.bu-link-${oldKey}`)
       bulink.forEach((link) => {
-        link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#options.bu_id}`)
+        link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#options.buid}`)
       })
     }
 

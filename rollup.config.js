@@ -23,8 +23,8 @@ const babelConfig = babel({
 
 const addLicense = license({
   banner: `
-  BibleUp v<%= pkg.version %>
-  Copyright 2022 BibleUp and contributors
+  BibleUp
+  Copyright 2023 BibleUp and contributors
   Repository URL: https://github.com/Bibleup/bibleup.js.git
   Date: <%= moment().format('DD-MM-YYYY') %>
   `
