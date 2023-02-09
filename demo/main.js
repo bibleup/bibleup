@@ -34,12 +34,12 @@ removeBtn.onclick = () => {
 }
 
 refreshBtn.onclick = () => {
-  //bibleup.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
-  bibleup.refresh({
+  bibleup.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
+  /* bibleup.refresh({
     version: 'kjv',
     popup: 'wiki',
     darkTheme: true,
-  }, true)
+  }, true) */
 }
 
 addBtn.onclick = () => {
