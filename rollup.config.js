@@ -1,4 +1,4 @@
-import { terser } from 'rollup-plugin-terser'
+import terser from '@rollup/plugin-terser'
 import less from 'rollup-plugin-less'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
@@ -12,7 +12,7 @@ const babelConfig = babel({
       {
         targets: '>= 0.5%, not dead',
         useBuiltIns: 'usage',
-        corejs: '3.23.4'
+        corejs: '3.30.0'
       }
     ]
   ],
