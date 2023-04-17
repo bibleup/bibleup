@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    /* JavaScript Support */
+    "allowJs": true,
+    "checkJs": true,
+    /* Type Checking */
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  },
+  "include": ["bibleup/**/*"],
+  "exclude": ["**/node_modules/**", "dist/**/*"]
+}
+
