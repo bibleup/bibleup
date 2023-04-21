@@ -1,10 +1,11 @@
-import terser from '@rollup/plugin-terser';
-import less from 'rollup-plugin-less';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
-import babel from '@rollup/plugin-babel';
-import license from 'rollup-plugin-license';
-import typescript from '@rollup/plugin-typescript';
+import terser from '@rollup/plugin-terser'
+import less from 'rollup-plugin-less'
+import { nodeResolve } from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import babel from '@rollup/plugin-babel'
+import license from 'rollup-plugin-license'
+import typescript from '@rollup/plugin-typescript'
+import dts from 'rollup-plugin-dts'
 
 const babelConfig = babel({
   presets: [
@@ -94,4 +95,10 @@ export default [
       addLicense,
     ],
   },
+
+  {
+    input: "./dist/esm/types/bibleup.d.ts",
+    output: [{ file: "./dist/esm/bibleup.d.ts", format: "es" }],
+    plugins: [dts()]
+  }
 ];
