@@ -24,7 +24,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "ignorePatterns": ["rollup.config.js", "dist/**/*", "demo/**/*"],
+  "ignorePatterns": ["rollup.config.ts", "dist/**/*", "demo/**/*"],
   "plugins": [
     "@typescript-eslint"
   ],

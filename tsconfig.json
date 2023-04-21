@@ -6,6 +6,10 @@
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "dist/types",
+    "outDir": "./",
     /* JavaScript Support */
     "allowJs": true,
     "checkJs": true,
