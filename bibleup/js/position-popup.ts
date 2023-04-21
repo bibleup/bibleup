@@ -5,7 +5,7 @@
  * use classic() to set position on custom syled popups
  */
 
-export const positionPopup = (e, popup, container) => {
+export const positionPopup = (e: MouseEvent, popup: string, container: HTMLElement) => {
   if (popup === 'classic') {
     classic(e, container)
   }
@@ -18,20 +18,20 @@ export const positionPopup = (e, popup, container) => {
 /**
  * Adjust popup to left or right of click
  */
-const adjustPopupToLeft = (pos) => {
-  const [width, rectLeft, popup, popWidth] = pos
+const adjustPopupToLeft = (el: HTMLElement, pos: number[]) => {
+  const [width, rectLeft, popWidth] = pos
   const remainingSpace = width - rectLeft
 
   if (remainingSpace > popWidth) {
     if (rectLeft < 0) {
-      popup.style.left = `${0 + 'px'}`
+      el.style.left = `${0}px`
     } else {
-      popup.style.left = `${rectLeft + 'px'}`
+      el.style.left = `${rectLeft}px`
     }
   } else {
     const offsetBy = popWidth - remainingSpace
     const adjust = rectLeft - offsetBy
-    popup.style.left = `${adjust + 'px'}`
+    el.style.left = `${adjust}px`
   }
 }
 
@@ -39,22 +39,22 @@ const adjustPopupToLeft = (pos) => {
  * adjust popup to bottom or top of link according to space remaining
  * Popup positions to top of link by default and fallbacks to bottom if there is no space.
  */
-const adjustPopupToBottom = (pos) => {
-  const [height, rectBottom, popup, popHeight, realTop, rectHeight] = pos
+const adjustPopupToBottom = (el: HTMLElement, pos: number[]) => {
+  const [height, rectBottom, popHeight, realTop, rectHeight] = pos
   const bottomSpace = height - rectBottom
   const topSpace = height - bottomSpace
 
   if (topSpace > popHeight + 50) {
     const adjust = realTop - popHeight
-    popup.style.top = `${adjust - 5 + 'px'}`
+    el.style.top = `${adjust - 5}px`
   } else {
-    popup.style.top = `${realTop + (rectHeight + 5) + 'px'}`
+    el.style.top = `${realTop + (rectHeight + 5)}px`
   }
 }
 
-const getPosition = (e, container) => {
+const getPosition = (e: MouseEvent, container: HTMLElement) => {
   // get window dimensions
-  const rect = e.target.getBoundingClientRect()
+  const rect = (e.target as HTMLElement).getBoundingClientRect()
   const popup = container
   const rectTop = rect.top
 
@@ -72,15 +72,15 @@ const getPosition = (e, container) => {
   }
 }
 
-const classic = (e, container) => {
+const classic = (e: MouseEvent, container: HTMLElement) => {
   const el = getPosition(e, container)
-  adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth])
-  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height])
+  adjustPopupToLeft(el.popup, [el.width, el.rectLeft, el.popWidth])
+  adjustPopupToBottom(el.popup, [el.height, el.rectBottom, el.popHeight, el.realTop, el.rect.height])
 }
 
-const inline = (e, container) => {
+const inline = (e: MouseEvent, container: HTMLElement) => {
   const el = getPosition(e, container)
   el.popWidth += 10
-  adjustPopupToLeft([el.width, el.rectLeft, el.popup, el.popWidth])
-  adjustPopupToBottom([el.height, el.rectBottom, el.popup, el.popHeight, el.realTop, el.rect.height])
+  adjustPopupToLeft(el.popup, [el.width, el.rectLeft, el.popWidth])
+  adjustPopupToBottom(el.popup, [el.height, el.rectBottom, el.popHeight, el.realTop, el.rect.height])
 }

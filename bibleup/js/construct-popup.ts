@@ -1,5 +1,6 @@
+import { Options } from './helper/interfaces'
 
-export const build = (options, buid) => {
+export const build = (options: Options, buid: string) => {
   const popup = document.createElement('div')
   popup.id = `bu-popup-${buid}`
   popup.classList.add('bu-popup-hide', 'bu-ignore')
@@ -35,7 +36,7 @@ export const build = (options, buid) => {
   document.body.appendChild(popup)
 }
 
-const classic = () => {
+const classic = (): string => {
   const markup = `
 		<div class='bu-popup-header'>
 		<p class='bu-popup-ref'></p>
@@ -53,7 +54,7 @@ const classic = () => {
   return markup
 }
 
-const wiki = () => {
+const wiki = (): string => {
   const markup = `
 	 <div class='bu-popup-header'>
 	  <p class='bu-popup-ref'></p>
@@ -72,7 +73,7 @@ const wiki = () => {
   return markup
 }
 
-const inline = () => {
+const inline = (): string => {
   const markup = `
 		<div class='bu-popup-content'>
   			<ol class='bu-popup-text'></ol>
