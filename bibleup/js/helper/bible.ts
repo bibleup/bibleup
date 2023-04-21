@@ -1,12 +1,13 @@
 import bibleData from './bible-data.js'
+import { BibleRef } from './interfaces.js'
 
 /**
    * extracts bible passages from a string
    * returns array of objects [{<ref>,<book>,<chapter>,<verse>,<verseEnd><apiBook>}]
    */
-export const extractPassage = (txt) => {
+export const extractPassage = (txt: string): BibleRef|false => {
   txt = txt.trim()
-  let result = {}
+  let result: BibleRef|false = false
   const bibleRegex = regex()
   const bible = [...txt.matchAll(bibleRegex)]
 
@@ -56,19 +57,29 @@ const regex = () => {
  * returns abbr book for API/URL - 'PSA'
  * The result is from 'bibleData', so it doesn't send a request to the API
  */
-const getAPIBook = (book) => {
-  for (const data of bibleData) {
+const getAPIBook = (book: string) => {
+  /* for (const data of bibleData) {
     if (data.book === book) {
       return data.api
     }
-  }
+  } */
+
+  let res = ''
+  bibleData.some((bible) => {
+    if (bible.book === book) {
+      res = bible.api
+      return true
+    }
+  })
+
+  return res
 }
 
 /**
    * get real standard book name from an abbreviation
    * e.g Jn or jn returns John, gen returns Genesis
    */
-const realBook = (abbr) => {
+const realBook = (abbr: string): string => {
   abbr = abbr.toLowerCase()
   for (const data of bibleData) {
     const abbrList = data.abbr.map(element => element.toLowerCase())
@@ -76,13 +87,15 @@ const realBook = (abbr) => {
       return data.book
     }
   }
+
+  return 'safeguard'
 }
 
 /**
  * accepts bible array like ['rom 2 23',rom,2,23], [jn 3:16 17, jn, 3,16,17]
  * returns object {<ref>,<chapter><verse><verseEnd><...>}
  */
-const structureRef = (bibleRef) => {
+const structureRef = (bibleRef: string[]): BibleRef => {
   const book = realBook(bibleRef[1])
   let apiBook = getAPIBook(book)
   const chapter = parseInt(bibleRef[2])
@@ -90,7 +103,7 @@ const structureRef = (bibleRef) => {
   let verseEnd = parseInt(bibleRef[4]) || undefined
 
   // swap value of verse and verseEnd
-  if (verse > verseEnd) {
+  if (verseEnd !== undefined && verse > verseEnd) {
     const temp = verse
     verse = verseEnd
     verseEnd = temp
