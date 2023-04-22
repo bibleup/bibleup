@@ -6,13 +6,13 @@
   "browser": "./dist/umd/bibleup.min.js",
   "unpkg": "./dist/umd/bibleup.min.js",
   "module": "./dist/esm/bibleup.esm.js",
+  "types": "./dist/bibleup.d.ts",
   "exports": {
-    ".": "./bibleup/js/bibleup.js",
+    ".": "./dist/esm/bibleup.esm.js",
     "./css": "./dist/css/bibleup.css"
   },
   "files": [
-    "dist",
-    "bibleup"
+    "dist"
   ],
   "scripts": {
     "test": "echo \"No test specified\"",
@@ -63,6 +63,7 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "core-js": "^3.30.0",
+    "del": "^6.1.1",
     "eslint": "^8.38.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
