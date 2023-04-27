@@ -1,13 +1,13 @@
-// import BibleUp from '../dist/esm/bibleup.esm.js';
-import BibleUp from '../bibleup/js/bibleup.js'
+//import BibleUp from '../dist/esm/bibleup.esm.js';
+import BibleUp from '../bibleup/js/bibleup.ts'
 
-const testPanel = document.querySelector('#test-panel')
+const test = document.querySelector('#test2')
 const body = document.querySelector('body')
 const addBtn = document.querySelector('#add')
 const removeBtn = document.querySelector('#remove')
 const refreshBtn = document.querySelector('#refresh')
 
-const bibleup = new BibleUp(body, {
+const bibleup = new BibleUp(test, {
   version: 'kjv',
   popup: 'classic',
   darkTheme: false,

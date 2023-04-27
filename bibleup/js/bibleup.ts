@@ -186,7 +186,7 @@ export default class BibleUp {
     }
 
     // change this.#regex if ignoreCase changes
-    if (JSON.stringify(old.ignoreCase) !== JSON.stringify(this.#options.ignoreCase)) {
+    if (old.ignoreCase !== this.#options.ignoreCase) {
       this.#regex = this.#generateRegex();
     }
 
@@ -243,7 +243,7 @@ export default class BibleUp {
 
   #setStyles(styles: Partial<Styles>) {
     const { container, header, version, close } = this.#popup;
-    const props: ['borderRadius', 'boxShadow', 'fontSize'] = ['borderRadius', 'boxShadow', 'fontSize'];
+    const props = ['borderRadius', 'boxShadow', 'fontSize'] as const;
 
     for (const prop of props) {
       const value = styles[prop];
@@ -331,36 +331,26 @@ export default class BibleUp {
    * This function traverse all nodes and child nodes in the `e` parameter and calls #createLink on all text nodes that matches the Bible regex
    * The function performs a self call on element child nodes until all matches are found
    */
-  #searchNode(e: Node, regex: RegExp) {
+  #searchNode(e: Element, regex: RegExp) {
     if (!e) {
       this.#error('Element does not exist in the DOM');
     }
-    let type = e.nodeType;
-    const match = e.textContent?.match(regex) || false;
-    let next: ChildNode | null;
 
-    if (type === 3 && match) {
-      this.#createLink(e);
-    } else if (type === 1 && match) {
-      // element node
-      let reE = e.firstChild; // (e = e.firstChild) // ok baba, ok mama -> type 3
-      if (reE) {
-        do {
-          next = reE.nextSibling; // (e = next) breks if next is null; else e is assigned
-          type = reE.nodeType;
+    const childNodes = Array.from(e.childNodes);
 
-          if (type === 1) {
-            if (this.#validateNode(reE as HTMLElement)) {
-              this.#searchNode(reE, regex);
-            }
-          } else {
-            this.#searchNode(reE, regex);
-          }
+    childNodes.forEach((node) => {
+      const type = node.nodeType;
+      const match = node.textContent?.match(regex) || false;
 
-          reE = next;
-        } while (reE);
+      if (type === 3 && match) {
+        this.#createLink(node);
+      } else if (type === 1 && match) {
+        // element node
+        if (this.#validateNode(node as HTMLElement)) {
+          this.#searchNode(node as Element, regex);
+        }
       }
-    }
+    });
   }
 
   /**
