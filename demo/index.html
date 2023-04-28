@@ -1,142 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Vite + TS</title>
+  </head>
+  <body>
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>BibleUp Test</title>
+    <div id="container">
 
-	<!--Google Fonts -->
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<!-- <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap" rel="stylesheet"> -->
+      <div id="header">
+        <h3>BIBLEUP 📖💡</h3>
+        <button id="remove">remove</button>
+        <button id="refresh">refresh</button>
+        <button id="add">add verse</button>
+      </div>
 
-	<!--BIBLEUP CSS FILES -->
-	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modern-css-reset/dist/reset.min.css"> -->
-	<link rel="stylesheet/less" type="text/css" href="../bibleup/css/bibleup.less" />
-	<link rel="stylesheet" href="./main.css" />
-	<script src="https://cdn.jsdelivr.net/npm/less@4"></script>
-</head>
+      <div id="box-wrapper">
+        <div class="box">
+          <h3>Single References</h3>
+          <ul>
+            <li>ROMANS 6</li>
+            <li>PsALm 119:109b</li>
+            <li>Rev 1:1 ASV</li>
+            <li>1 John. 4:7 - 8 KJV</li>
+            <i>Acts 9:39</i>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Multiple References</h3>
+          <ul>
+            <li>John 3:16; 5; 25-26</li>
+            <li>Romans 8:34, 3-5, 3-6,5 KJV</li>
+            <li>Psalm 119:109b, 105</li>
+            <li>2 Thessalonians 2:1, 5, 6</li>
+            <li>Romans. 3:3, 4, 7, 5-8b, 4</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Chapter-Level References</h3>
+          <ul>
+            <li>John 3, 5, 6:2</li>
+            <li>Romans 8:34, 3:5, 6-8</li>
+            <li>Psalm 119:109b, 1:1-3</li>
+            <li>2 Thessalonians 2:1, 5, 1:4-5, 6</li>
+            <li>Romans. 3:3, 4, 4:5, 7, 10:9-10, 5-8b, 4</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Version Tagging</h3>
+          <ul>
+            <li>Romans 8:34 ASV</li>
+            <li>Psalm 119:109b LSV, 105</li>
+            <li>2 Thessalonians 2:1, 5 LSV, 1:4-5</li>
+            <li>John 3:16 KJV; 5 ASV; 25-26 WEB, 34 KJV</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>Smart Tagging (Abbr.)</h3>
+          <ul>
+            <li>Ro 8:34-30</li>
+            <li>Ps. 119:109b LSV & 105-90</li>
+            <li>2Thess 2:1; 5; 12</li>
+            <li>Jhn 3:16 KJV; 5 & 25-26, 34</li>
+            <li>Lev. 10:5-70, 5-7 (ignore invalid references)</li>
+          </ul>
+        </div>
+        <div class="box scroll">
+          <h3>Smart Tagging (Abbr.)</h3>
+          <ul>
+            <li>Ro 8:34-30</li>
+            <li>Ps. 119:109b LSV & 105-90</li>
+            <li>2Thess 2:1; 5; 12</li>
+            <li>Jhn 3:16 KJV; 5 & 25-26, 34</li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-<body>
-
-	<div id="container">
-
-		<div id="header">
-			<h3>BIBLEUP 📖💡</h3>
-			<button id="remove">remove</button>
-			<button id="refresh">refresh</button>
-			<button id="add">add verse</button>
-		</div>
-
-		<div id="box-wrapper">
-			<div class="box">
-				<h3>Single References</h3>
-				<ul>
-					<li>ROMANS 6</li>
-					<li>PsALm 119:109b</li>
-					<li>Rev 1:1 ASV</li>
-					<li>1 John. 4:7 - 8 KJV</li>
-					<i>Acts 9:39</i>
-				</ul>
-			</div>
-			<div class="box">
-				<h3>Multiple References</h3>
-				<ul>
-					<li>John 3:16; 5; 25-26</li>
-					<li>Romans 8:34, 3-5, 3-6,5 KJV</li>
-					<li>Psalm 119:109b, 105</li>
-					<li>2 Thessalonians 2:1, 5, 6</li>
-					<li>Romans. 3:3, 4, 7, 5-8b, 4</li>
-				</ul>
-			</div>
-			<div class="box">
-				<h3>Chapter-Level References</h3>
-				<ul>
-					<li>John 3, 5, 6:2</li>
-					<li>Romans 8:34, 3:5, 6-8</li>
-					<li>Psalm 119:109b, 1:1-3</li>
-					<li>2 Thessalonians 2:1, 5, 1:4-5, 6</li>
-					<li>Romans. 3:3, 4, 4:5, 7, 10:9-10, 5-8b, 4</li>
-				</ul>
-			</div>
-			<div class="box">
-				<h3>Version Tagging</h3>
-				<ul>
-					<li>Romans 8:34 ASV</li>
-					<li>Psalm 119:109b LSV, 105</li>
-					<li>2 Thessalonians 2:1, 5 LSV, 1:4-5</li>
-					<li>John 3:16 KJV; 5 ASV; 25-26 WEB, 34 KJV</li>
-				</ul>
-			</div>
-			<div class="box">
-				<h3>Smart Tagging (Abbr.)</h3>
-				<ul>
-					<li>Ro 8:34-30</li>
-					<li>Ps. 119:109b LSV & 105-90</li>
-					<li>2Thess 2:1; 5; 12</li>
-					<li>Jhn 3:16 KJV; 5 & 25-26, 34</li>
-					<li>Lev. 10:5-70, 5-7 (ignore invalid references)</li>
-				</ul>
-			</div>
-			<div class="box scroll">
-				<h3>Smart Tagging (Abbr.)</h3>
-				<ul>
-					<li>Ro 8:34-30</li>
-					<li>Ps. 119:109b LSV & 105-90</li>
-					<li>2Thess 2:1; 5; 12</li>
-					<li>Jhn 3:16 KJV; 5 & 25-26, 34</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-
-	<div id="test">
-		<h3>BIBLEUP 📖💡</h3>
-		<p>Salvation is the permanent solution Jesus gave for our reconciliation back to the Father.
-			<b data-test='{"hello":"world"}'>Test</b>
-			Salvation reconciles us back to the initial communion and fellowship the first man lost has a result sin
-			through disobedience 2Cor 5:18, Col 1:1922, Romans 5:10 Salvation breach the gap/ separation sin caused, and
-			it brings us to our rightful place in Christ with GOD.
-		</p>
-		<p>What then is SIN?<br>
-			Sin is a willing disobedience to the will of GOD. Sin is going against God's commandment, and this have
-			great consequences which includes spiritual death Romans 6: 23, separation from God.
-			<br><br>
-			Isaiah 59:. But your iniquities have separated between you and your God, and your sins have hid his face
-			from you, that he will not hear.
-			Fellowship and communion was lost Gen 3:8. Finally the dominion we once had over all things was rolled over
-			to the devil Luke 4:6
-			<br><br>
-			Where did sin originate from?<br>
-			Adam (the first man) was the pioneer of sin Romans 5:12,14. He and eve disobeyed God and were sent out of
-			the presence of God. Ever since then as atonement been made by animal sacrifices Lev 4:1-2000 which
-			obviously wasn't a permanent solution to reconciling the sinful nature of man and Holiness of God until
-			JESUS came.
-			<br><br>
-			What must I do to be saved?<br>
-			Out of His abundant love He freely gave us his only begotten son Jesus, The Rev 3:16, Romans 5:8,
-			matt 1: 21, Roms. 8:30, 1 cor 5:17-18, 1tim 1:15, 1thes 1: 10, 2corinthians 5:21, 'for He had made him to be
-			sin for us, who knew no sin; that we might be made the righteousness of God in him 2Peter4:5.'
-		</p>
-	</div>
+    <div id="test">
+      <h3>BIBLEUP 📖💡</h3>
+      <p>Salvation is the permanent solution Jesus gave for our reconciliation back to the Father.
+        <b data-test='{"hello":"world"}'>Test</b>
+        Salvation reconciles us back to the initial communion and fellowship the first man lost has a result sin
+        through disobedience 2Cor 5:18, Col 1:1922, Romans 5:10 Salvation breach the gap/ separation sin caused, and
+        it brings us to our rightful place in Christ with GOD.
+      </p>
+      <p>What then is SIN?<br>
+        Sin is a willing disobedience to the will of GOD. Sin is going against God's commandment, and this have
+        great consequences which includes spiritual death Romans 6: 23, separation from God.
+        <br><br>
+        Isaiah 59:. But your iniquities have separated between you and your God, and your sins have hid his face
+        from you, that he will not hear.
+        Fellowship and communion was lost Gen 3:8. Finally the dominion we once had over all things was rolled over
+        to the devil Luke 4:6
+        <br><br>
+        Where did sin originate from?<br>
+        Adam (the first man) was the pioneer of sin Romans 5:12,14. He and eve disobeyed God and were sent out of
+        the presence of God. Ever since then as atonement been made by animal sacrifices Lev 4:1-2000 which
+        obviously wasn't a permanent solution to reconciling the sinful nature of man and Holiness of God until
+        JESUS came.
+        <br><br>
+        What must I do to be saved?<br>
+        Out of His abundant love He freely gave us his only begotten son Jesus, The Rev 3:16, Romans 5:8,
+        matt 1: 21, Roms. 8:30, 1 cor 5:17-18, 1tim 1:15, 1thes 1: 10, 2corinthians 5:21, 'for He had made him to be
+        sin for us, who knew no sin; that we might be made the righteousness of God in him 2Peter4:5.'
+      </p>
+    </div>
 
 
-	<div id="test2">
-		hello world
-		<div c>
-			something
-			<div>John 3:16, 5 : 5</div>
-		</div>
-		<div c>
-			John 3:16
-			<span>John 3:16</span>
-		</div>
-	</div>
+    <div id="test2">
+      hello world
+      <div c>
+        something
+        <div>John 3:16, 5 : 5</div>
+      </div>
+      <div c>
+        John 3:16
+        <span>John 3:16</span>
+      </div>
+    </div>
 
 
-	<!-- Custom Script -->
-	<script type="module" src="./main.js"></script>
-	<!-- <script src="../dist/umd/bibleup.min.js"></script> -->
-</body>
 
+
+    <script type="module" src="./main.ts"></script>
+  </body>
 </html>
