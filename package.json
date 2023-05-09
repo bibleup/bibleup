@@ -4,11 +4,15 @@
   "description": "A tool for converting Bible references on a webpage to links with an accessible popup",
   "type": "module",
   "browser": "./dist/umd/bibleup.min.js",
-  "unpkg": "./dist/umd/bibleup.min.js",
   "module": "./dist/esm/bibleup.esm.js",
+  "unpkg": "./dist/umd/bibleup.min.js",
   "types": "./dist/bibleup.d.ts",
+  "style": "./dist/css/bibleup.css",
   "exports": {
-    ".": "./dist/esm/bibleup.esm.js",
+    ".": {
+      "types": "./dist/bibleup.d.ts",
+      "import": "./dist/esm/bibleup.esm.js"
+    },
     "./css": "./dist/css/bibleup.css"
   },
   "files": [
@@ -18,7 +22,8 @@
     "test": "echo \"No test specified\"",
     "build": "npm run lint && npm run clean && rollup --config",
     "lint": "eslint --fix --ext .js,.ts ./bibleup",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "dev": "pnpm --filter demo run dev"
   },
   "repository": {
     "type": "git",
