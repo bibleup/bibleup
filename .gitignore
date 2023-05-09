@@ -3,3 +3,4 @@ dist/
 docs/
 **/config.js
 .vscode
+bibleup.code-workspace

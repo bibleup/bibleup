@@ -383,14 +383,8 @@ export default class BibleUp {
 
     if (node.nodeValue !== newNode.innerHTML) {
       const parent = node.parentNode;
-      while (newNode.firstChild) {
-        // console.log(newNode.firstChild.textContent);
-        if (parent) {
-          parent.insertBefore(newNode.firstChild, node);
-        }
-      }
       if (parent) {
-        parent.removeChild(node);
+        parent.replaceChild(newNode.firstChild as Node, node)
       }
     }
   }

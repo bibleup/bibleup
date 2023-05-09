@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "📁 Root",
+			"path": "."
+		},
+		{
+			"name": "🎯 BibleUp Source",
+			"path": "bibleup"
+		},
+		{
+			"name": "📺 Demo",
+			"path": "demo"
+		},
+	],
+	"settings": {}
+}
