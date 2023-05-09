@@ -1,17 +1,33 @@
 {
 	"folders": [
 		{
-			"name": "📁 Root",
-			"path": "."
+			"name": "Root 📁",
+			"path": ".",
 		},
 		{
-			"name": "🎯 BibleUp Source",
+			"name": "Source 🎯",
 			"path": "bibleup"
 		},
 		{
-			"name": "📺 Demo",
+			"name": "Demo 📺",
 			"path": "demo"
 		},
+		{
+			"name": "__Dist__ 📦",
+			"path": "dist"
+		},
 	],
-	"settings": {}
+	"settings": {
+		"files.exclude": {
+			"**/.git": true, // this is a default value
+			"**/.DS_Store": true, // this is a default value
+			"**/node_modules": true,
+			".github": true,
+			".vscode": true,
+			"node_modules": true, // only from the root
+			"bibleup": true,
+			"demo": true,
+			"dist": true,
+		}
+	}
 }
