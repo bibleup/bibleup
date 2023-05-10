@@ -468,7 +468,7 @@ export default class BibleUp {
     if (str === match) {
       return match;
     } else {
-      return `<cite class='bu-link' bu-ref='${match}'>${str}</cite>`;
+      return `<cite class='bu-link bu-ignore' bu-ref='${match}'>${str}</cite>`;
     }
   }
 
