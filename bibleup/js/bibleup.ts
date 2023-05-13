@@ -377,15 +377,17 @@ export default class BibleUp {
    */
   #createLink(node: Node) {
     const newNode = document.createElement('div');
+    const frag = document.createDocumentFragment();
     if (node.nodeValue) {
       newNode.innerHTML = node.nodeValue.replace(this.#regex.main, this.#setLinkMarkup.bind(this));
     }
 
     if (node.nodeValue !== newNode.innerHTML) {
       const parent = node.parentNode;
-      if (parent) {
-        parent.replaceChild(newNode.firstChild as Node, node)
+      while (newNode.firstChild) {
+        frag.appendChild(newNode.firstChild);
       }
+      parent?.replaceChild(frag, node);
     }
   }
 
@@ -496,20 +498,15 @@ export default class BibleUp {
           data.chapters[bibleRef.chapter - 1] !== undefined &&
           bibleRef.verse <= data.chapters[bibleRef.chapter - 1]
         ) {
-          if (bibleRef.verseEnd === undefined) {
+          if (bibleRef.verseEnd === undefined || bibleRef.verseEnd <= data.chapters[bibleRef.chapter - 1]) {
             return JSON.stringify(bibleRef);
-          } else if (bibleRef.verseEnd <= data.chapters[bibleRef.chapter - 1]) {
-            return JSON.stringify(bibleRef);
-          } else {
-            return false;
           }
-        } else {
-          return false;
         }
       }
     }
 
-    return 'safeguard';
+    //console.log('falsee')
+    return false;
   }
 
   #manageEvents() {
@@ -603,7 +600,7 @@ export default class BibleUp {
    * @param res res.ref, res.text, res.chapter, res.verse, res.version - a complete res object
    * (description) update popup data
    */
-  #updatePopup (...args: [BibleRef, true] | [BibleFetch, false]) {
+  #updatePopup(...args: [BibleRef, true] | [BibleFetch, false]) {
     const [res, isLoading] = args;
     if (isLoading) {
       if (this.#popup.ref) {

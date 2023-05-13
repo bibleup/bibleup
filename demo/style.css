@@ -65,12 +65,15 @@ button {
 }
 
 #test {
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  margin: 40px auto;
   padding: 15px;
-  height: 150px;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  width: 90%;
+  background: #f2f2f2;
 }
 
 .bu-link a {
