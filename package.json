@@ -1,7 +1,7 @@
 {
   "name": "@bibleup/bibleup",
   "version": "1.0.1",
-  "description": "A tool for converting Bible references on a webpage to links with an accessible popup",
+  "description": "A tool for converting Bible references on a webpage to links with an accessible popover",
   "type": "module",
   "browser": "./dist/umd/bibleup.min.js",
   "module": "./dist/esm/bibleup.esm.js",
