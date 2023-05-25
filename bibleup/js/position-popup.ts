@@ -5,7 +5,11 @@
  * use classic() to set position on custom syled popups
  */
 
-export const positionPopup = (e: MouseEvent, popup: string, container: HTMLElement) => {
+export const positionPopup = (
+  e: MouseEvent,
+  popup: string,
+  container: HTMLElement
+) => {
   if (popup === 'classic') {
     classic(e, container)
   }
@@ -75,12 +79,24 @@ const getPosition = (e: MouseEvent, container: HTMLElement) => {
 const classic = (e: MouseEvent, container: HTMLElement) => {
   const el = getPosition(e, container)
   adjustPopupToLeft(el.popup, [el.width, el.rectLeft, el.popWidth])
-  adjustPopupToBottom(el.popup, [el.height, el.rectBottom, el.popHeight, el.realTop, el.rect.height])
+  adjustPopupToBottom(el.popup, [
+    el.height,
+    el.rectBottom,
+    el.popHeight,
+    el.realTop,
+    el.rect.height
+  ])
 }
 
 const inline = (e: MouseEvent, container: HTMLElement) => {
   const el = getPosition(e, container)
   el.popWidth += 10
   adjustPopupToLeft(el.popup, [el.width, el.rectLeft, el.popWidth])
-  adjustPopupToBottom(el.popup, [el.height, el.rectBottom, el.popHeight, el.realTop, el.rect.height])
+  adjustPopupToBottom(el.popup, [
+    el.height,
+    el.rectBottom,
+    el.popHeight,
+    el.realTop,
+    el.rect.height
+  ])
 }

@@ -6,7 +6,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "prettier"
   ],
   "rules": {
     "@typescript-eslint/no-misused-promises": [
@@ -17,16 +18,17 @@
         }
       }
     ]
+    //"semi-spacing": ["error", {"before": false, "after": true}]
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "tsconfigRootDir": "../"
   },
   "ignorePatterns": ["rollup.config.ts", "dist/**/*", "demo/**/*"],
   "plugins": [
     "@typescript-eslint"
-  ],
-  "root": true
+  ]
 }

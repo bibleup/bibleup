@@ -2,12 +2,12 @@ import bibleData from './bible-data.js'
 import { BibleRef } from './interfaces.js'
 
 /**
-   * extracts bible passages from a string
-   * returns array of objects [{<ref>,<book>,<chapter>,<verse>,<verseEnd><apiBook>}]
-   */
-export const extractPassage = (txt: string): BibleRef|false => {
+ * extracts bible passages from a string
+ * returns array of objects [{<ref>,<book>,<chapter>,<verse>,<verseEnd><apiBook>}]
+ */
+export const extractPassage = (txt: string): BibleRef | false => {
   txt = txt.trim()
-  let result: BibleRef|false = false
+  let result: BibleRef | false = false
   const bibleRegex = regex()
   const bible = [...txt.matchAll(bibleRegex)]
 
@@ -23,9 +23,9 @@ export const extractPassage = (txt: string): BibleRef|false => {
 }
 
 /**
-   * @return All bible abbreviations separated by '|'
-   * This used in creating bibleRegex
-   */
+ * @return All bible abbreviations separated by '|'
+ * This used in creating bibleRegex
+ */
 const allAbbreviations = () => {
   let result = ''
 
@@ -41,9 +41,9 @@ const allAbbreviations = () => {
 }
 
 /**
-   * returns bible regex expression
-   * /(john|jn|rom|...)\s?(\d{1,3})(?:(?:\s|\:)(\d{1,3})(?:\-(\d{1,3}))?)?/gi;
-   */
+ * returns bible regex expression
+ * /(john|jn|rom|...)\s?(\d{1,3})(?:(?:\s|\:)(\d{1,3})(?:\-(\d{1,3}))?)?/gi;
+ */
 const regex = () => {
   const booksAbbr = allAbbreviations()
   const regexVar = `(${booksAbbr})\\s?(\\d{1,3})(?:(?:\\s|\\:|\\:\\s)(\\d{1,3})(?:\\-(\\d{1,3}))?)?`
@@ -76,13 +76,13 @@ const getAPIBook = (book: string) => {
 }
 
 /**
-   * get real standard book name from an abbreviation
-   * e.g Jn or jn returns John, gen returns Genesis
-   */
+ * get real standard book name from an abbreviation
+ * e.g Jn or jn returns John, gen returns Genesis
+ */
 const realBook = (abbr: string): string => {
   abbr = abbr.toLowerCase()
   for (const data of bibleData) {
-    const abbrList = data.abbr.map(element => element.toLowerCase())
+    const abbrList = data.abbr.map((element) => element.toLowerCase())
     if (abbrList.includes(abbr) || data.book.toLowerCase() === abbr) {
       return data.book
     }
