@@ -26,18 +26,21 @@ export const extractPassage = (txt: string): BibleRef | false => {
  * @return All bible abbreviations separated by '|'
  * This used in creating bibleRegex
  */
-const allAbbreviations = () => {
-  let result = ''
+export const allAbbreviations = () => {
+  const result = []
+  const multipart: string[] = []
 
   for (const book of bibleData) {
-    if (book.id === 66) {
-      result += book.book + '|' + book.abbr.join('|')
-    } else {
-      result += book.book + '|' + book.abbr.join('|') + '|'
+    result.push(book.book, ...book.abbr)
+    if (book.multipart) {
+      multipart.push(book.book, ...book.abbr)
     }
   }
 
-  return result
+  return {
+    all: result.join('|'),
+    multipart: multipart.join('|')
+  }
 }
 
 /**
@@ -45,7 +48,7 @@ const allAbbreviations = () => {
  * /(john|jn|rom|...)\s?(\d{1,3})(?:(?:\s|\:)(\d{1,3})(?:\-(\d{1,3}))?)?/gi;
  */
 const regex = () => {
-  const booksAbbr = allAbbreviations()
+  const booksAbbr = allAbbreviations().all
   const regexVar = `(${booksAbbr})\\s?(\\d{1,3})(?:(?:\\s|\\:|\\:\\s)(\\d{1,3})(?:\\-(\\d{1,3}))?)?`
   const regex = new RegExp(regexVar, 'gi')
   return regex
@@ -88,7 +91,7 @@ const realBook = (abbr: string): string => {
     }
   }
 
-  return 'safeguard'
+  return 'undefined'
 }
 
 /**

@@ -348,37 +348,22 @@ export default class BibleUp {
    * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
    */
   #generateRegex(): Regex {
-    let allBooks = ''
     const versions = 'KJV|ASV|LSV|WEB'
-    const allMultipart = []
+    const bookNames = Bible.allAbbreviations()
 
-    for (const book of bibleData) {
-      if (book.id === 66) {
-        allBooks += book.book + '|' + book.abbr.join('|')
-      } else {
-        allBooks += book.book + '|' + book.abbr.join('|') + '|'
-      }
-
-      if (book.multipart) {
-        allMultipart.push(book.book, ...book.abbr)
-      }
-    }
-
-    const main = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${allMultipart.join(
-      '|'
-    )})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
-    const verse = `(?:(?:(${allBooks})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
+    const main = `(?:(?:(${bookNames.all})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${bookNames.multipart})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
+    const verse = `(?:(?:(${bookNames.all})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
 
     if (this.#options.ignoreCase === true) {
       return {
         main: new RegExp(main, 'gi'),
         verse: new RegExp(verse, 'gi')
       }
-    }
-
-    return {
-      main: new RegExp(main, 'g'),
-      verse: new RegExp(verse, 'g')
+    } else {
+      return {
+        main: new RegExp(main, 'g'),
+        verse: new RegExp(verse, 'g')
+      }
     }
   }
 
