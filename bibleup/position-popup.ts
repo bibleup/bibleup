@@ -1,8 +1,7 @@
 /**
- * positionPopup() calls positional codes for the type of popup and sets the popup new positions
+ * positionPopup() calls positional codes for popup and sets the popup new positions
  * NOTE - the popup dimensions(height, width) can only be gotten when using 'visibility:hidden' and not
  * 'display:none'
- * use classic() to set position on custom syled popups
  */
 
 export const positionPopup = (
@@ -10,13 +9,18 @@ export const positionPopup = (
   popup: string,
   container: HTMLElement
 ) => {
-  if (popup === 'classic') {
-    classic(e, container)
-  }
+  const el = getPosition(e, container)
   if (popup === 'inline') {
-    inline(e, container)
+    el.popWidth += 10
   }
-  return false
+  adjustPopupToLeft(container, [el.width, el.rectLeft, el.popWidth])
+  adjustPopupToBottom(container, [
+    el.height,
+    el.rectBottom,
+    el.popHeight,
+    el.realTop,
+    el.rect.height
+  ])
 }
 
 /**
@@ -63,7 +67,6 @@ const getPosition = (e: MouseEvent, container: HTMLElement) => {
   const rectTop = rect.top
 
   return {
-    popup,
     rect,
     rectTop,
     height: window.innerHeight,
@@ -74,29 +77,4 @@ const getPosition = (e: MouseEvent, container: HTMLElement) => {
     rectLeft: Math.round(rect.left),
     realTop: window.scrollY + rectTop
   }
-}
-
-const classic = (e: MouseEvent, container: HTMLElement) => {
-  const el = getPosition(e, container)
-  adjustPopupToLeft(el.popup, [el.width, el.rectLeft, el.popWidth])
-  adjustPopupToBottom(el.popup, [
-    el.height,
-    el.rectBottom,
-    el.popHeight,
-    el.realTop,
-    el.rect.height
-  ])
-}
-
-const inline = (e: MouseEvent, container: HTMLElement) => {
-  const el = getPosition(e, container)
-  el.popWidth += 10
-  adjustPopupToLeft(el.popup, [el.width, el.rectLeft, el.popWidth])
-  adjustPopupToBottom(el.popup, [
-    el.height,
-    el.rectBottom,
-    el.popHeight,
-    el.realTop,
-    el.rect.height
-  ])
 }
