@@ -32,6 +32,7 @@ export interface BibleData {
   book: string
   chapter: string
   verse: string
+  verseEnd: string
   version?: string | false
 }
 

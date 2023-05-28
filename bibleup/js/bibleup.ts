@@ -444,7 +444,8 @@ export default class BibleUp {
   }
 
   /**
-   * @param match This is the full match string
+   * covert regex match (main) into cite element and regex verse into anchor links
+   * Note that the args of this function is from all matches captured by the regex and named accordingly
    * @param {...args} This is the main reference capture groups (p1-pN) - Check replace() on MDN
    * @returns A complete BibleUp Link
    */
@@ -505,7 +506,15 @@ export default class BibleUp {
         res.verse = verse || bible.verse
         res.version = args[5] || false
       }
-      return res
+
+      const splitedVerse: string[] = res.verse
+        .split('-')
+        .map((item) => item.trim())
+      return {
+        ...res,
+        verse: splitedVerse[0],
+        verseEnd: splitedVerse[1]
+      }
     }
 
     /**
@@ -517,14 +526,11 @@ export default class BibleUp {
     const str = match.replace(this.#regex.verse, (match, ...args: string[]) => {
       const bibleData = getBible(args)
       const buData = this.#validateBible(bibleData)
-      if (buData === false) {
-        // invalid chapter/verse
-        return match
-      } else {
-        return `<a href='#' class='bu-link-${
-          this.#buid
-        }' bu-data='${buData}'>${match}</a>`
-      }
+      return buData === false
+        ? match
+        : `<a href='#' class='bu-link-${
+            this.#buid
+          }' bu-data='${buData}'>${match}</a>`
     })
 
     if (str === match) {
@@ -540,11 +546,7 @@ export default class BibleUp {
    * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
   #validateBible(bible: BibleData): string | false {
-    const bibleStr = `${bible.book} ${bible.chapter}:${bible.verse.replaceAll(
-      ' ',
-      ''
-    )}`
-    const bibleRef = Bible.extractPassage(bibleStr)
+    const bibleRef = Bible.extractPassage(bible)
     if (!bibleRef) {
       return false
     }

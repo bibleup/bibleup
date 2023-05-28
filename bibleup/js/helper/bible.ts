@@ -1,26 +1,5 @@
 import bibleData from './bible-data.js'
-import { BibleRef } from './interfaces.js'
-
-/**
- * extracts bible passages from a string
- * returns array of objects [{<ref>,<book>,<chapter>,<verse>,<verseEnd><apiBook>}]
- */
-export const extractPassage = (txt: string): BibleRef | false => {
-  txt = txt.trim()
-  let result: BibleRef | false = false
-  const bibleRegex = regex()
-  const bible = [...txt.matchAll(bibleRegex)]
-
-  if (bible.length > 0) {
-    bible.forEach((bibleRef) => {
-      result = structureRef(bibleRef)
-    })
-  } else {
-    result = false
-  }
-
-  return result
-}
+import { BibleData, BibleRef } from './interfaces.js'
 
 /**
  * @return All bible abbreviations separated by '|'
@@ -44,45 +23,21 @@ export const allAbbreviations = () => {
 }
 
 /**
- * returns bible regex expression
- * /(john|jn|rom|...)\s?(\d{1,3})(?:(?:\s|\:)(\d{1,3})(?:\-(\d{1,3}))?)?/gi;
- */
-const regex = () => {
-  const booksAbbr = allAbbreviations().all
-  const regexVar = `(${booksAbbr})\\s?(\\d{1,3})(?:(?:\\s|\\:|\\:\\s)(\\d{1,3})(?:\\-(\\d{1,3}))?)?`
-  const regex = new RegExp(regexVar, 'gi')
-  return regex
-}
-
-/**
  * Get abbr book for api.bible
  * accepts standard book - 'Psalm'
  * returns abbr book for API/URL - 'PSA'
  * The result is from 'bibleData', so it doesn't send a request to the API
  */
 const getAPIBook = (book: string) => {
-  /* for (const data of bibleData) {
-    if (data.book === book) {
-      return data.api
-    }
-  } */
-
-  let res = ''
-  bibleData.some((bible) => {
-    if (bible.book === book) {
-      res = bible.api
-      return true
-    }
-  })
-
-  return res
+  const bible = bibleData.find((bible) => bible.book === book)
+  return bible ? bible.api : undefined
 }
 
 /**
  * get real standard book name from an abbreviation
  * e.g Jn or jn returns John, gen returns Genesis
  */
-const realBook = (abbr: string): string => {
+const realBook = (abbr: string) => {
   abbr = abbr.toLowerCase()
   for (const data of bibleData) {
     const abbrList = data.abbr.map((element) => element.toLowerCase())
@@ -95,29 +50,28 @@ const realBook = (abbr: string): string => {
 }
 
 /**
- * accepts bible array like ['rom 2 23',rom,2,23], [jn 3:16 17, jn, 3,16,17]
- * returns object {<ref>,<chapter><verse><verseEnd><...>}
+ * extracts full Bible from object Type BibleData
+ * returns object Type BibleRef
  */
-const structureRef = (bibleRef: string[]): BibleRef => {
-  const book = realBook(bibleRef[1])
+export const extractPassage = (bibleData: BibleData): BibleRef | false => {
+  const book = realBook(bibleData.book)
   let apiBook = getAPIBook(book)
-  const chapter = parseInt(bibleRef[2])
-  let verse = parseInt(bibleRef[3]) || 1
-  let verseEnd = parseInt(bibleRef[4]) || undefined
+  const chapter = parseInt(bibleData.chapter)
+  let verse = parseInt(bibleData.verse) || 1
+  let verseEnd = parseInt(bibleData.verseEnd) || undefined
+
+  if (apiBook === undefined) {
+    return false
+  }
 
   // swap value of verse and verseEnd
   if (verseEnd !== undefined && verse > verseEnd) {
-    const temp = verse
-    verse = verseEnd
-    verseEnd = temp
+    [verse, verseEnd] = [verseEnd, verse]
   }
 
   // complete reference
   let ref
-  if (verse === undefined) {
-    ref = `${book} ${chapter}`
-    apiBook = `${apiBook}.${chapter}`
-  } else if (verseEnd === undefined) {
+  if (verseEnd === undefined) {
     ref = `${book} ${chapter}:${verse}`
     apiBook = `${apiBook}.${chapter}.${verse}`
   } else {
