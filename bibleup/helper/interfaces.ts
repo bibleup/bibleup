@@ -69,6 +69,8 @@ export interface Popup {
   close: HTMLElement | null
 }
 
+export type Trigger = Partial<{ version: boolean; popup: boolean; style: boolean }>
+
 export interface ApiResponse {
   data: {
     content: string

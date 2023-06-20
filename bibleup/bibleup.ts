@@ -1,6 +1,6 @@
 import bibleData from './helper/bible-data'
 import * as Bible from './helper/bible'
-import * as ConstructPopup from './construct-popup'
+import * as constructPopup from './construct-popup'
 import { positionPopup } from './position-popup'
 import * as Search from './helper/search'
 import {
@@ -10,7 +10,8 @@ import {
   Options,
   Popup,
   Regex,
-  Styles
+  Styles,
+  Trigger
 } from './helper/interfaces'
 
 export default class BibleUp {
@@ -240,11 +241,8 @@ export default class BibleUp {
    */
   #init(
     options: Options,
-    trigger: Partial<{ version: boolean; popup: boolean; style: boolean }> = {}
+    trigger: Trigger = { version: true, popup: true, style: true }
   ) {
-    const initTrigger = { version: true, popup: true, style: true }
-    trigger = { ...initTrigger, ...trigger }
-
     if (trigger.version && options.version) {
       const versions = ['KJV', 'ASV', 'LSV', 'WEB']
       if (versions.includes(options.version.toUpperCase()) === false) {
@@ -257,28 +255,7 @@ export default class BibleUp {
     if (trigger.popup && options.popup) {
       const popup = ['classic', 'inline', 'wiki']
       if (popup.includes(options.popup)) {
-        ConstructPopup.build(options, this.#buid)
-        this.#popup = {
-          container: document.getElementById(
-            `bu-popup-${this.#buid}`
-          ) as HTMLElement,
-          header: document.querySelector(
-            `#bu-popup-${this.#buid} .bu-popup-header`
-          ),
-          ref: document.querySelector(`#bu-popup-${this.#buid} .bu-popup-ref`),
-          version: document.querySelector(
-            `#bu-popup-${this.#buid} .bu-popup-version`
-          ),
-          content: document.querySelector(
-            `#bu-popup-${this.#buid} .bu-popup-content`
-          ),
-          text: document.querySelector(
-            `#bu-popup-${this.#buid} .bu-popup-text`
-          ) as HTMLElement,
-          close:
-            document.querySelector(`#bu-popup-${this.#buid} .bu-popup-close`) ||
-            null
-        }
+        this.#popup = constructPopup.build(options, this.#buid)
       } else {
         this.#error(
           "BibleUp was unable to construct popup. Check to see if 'popup' option is correct"
@@ -286,13 +263,9 @@ export default class BibleUp {
       }
     }
 
-    if (trigger.style) {
-      if (
-        this.#options.styles &&
-        Object.keys(this.#options.styles).length !== 0
-      ) {
+    if (trigger.style && this.#options.styles &&
+      Object.keys(this.#options.styles).length !== 0) {
         this.#setStyles(this.#options.styles)
-      }
     }
   }
 
