@@ -52,7 +52,7 @@ export default class BibleUp {
       this.#options = this.#defaultOptions
     }
 
-    this.#initKey = Math.floor(100000 + Math.random() * 999999).toString()
+    this.#initKey = Math.floor(Math.random() * (999999 - 100000) + 100000).toString()
     this.#init(this.#options)
     this.#regex = this.#generateRegex()
     this.#mouseOnPopup = false
