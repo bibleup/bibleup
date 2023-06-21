@@ -3,7 +3,8 @@ import { ApiResponse, BibleFetch, BibleRef } from './interfaces.js'
 
 /**
  * get scripture Text from bible reference
- * if text = null, there was problem fetching the Bible text, else text is an array with Bible texts
+ * - @returns BibleFetch
+ * - if text returns null, there was problem fetching the Bible text, else text is an array with Bible texts
  */
 export const getScripture = async (bible: BibleRef, version: string) => {
   let text: string[] | null
@@ -109,9 +110,8 @@ const getPassage = async (
 
 /**
  * parses HTML response from the fetch API and extract the verses.
- * WARN: The HTML responses are tricky and had to be parsed based on observations from manual testing
- * returns text e.g 'Jesus be Glorified' if type is 'text'
- * returns array e.g ['Jesus be Glorified', 'Forever'] if type is 'passage'
+ * - WARNING: The HTML responses are tricky and had to be parsed based on observations from manual testing
+ * - returns array e.g ['Jesus be Glorified', 'Forever'] if type is 'passage'
  */
 const processBibleText = (
   res: ApiResponse,

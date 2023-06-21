@@ -2,8 +2,8 @@ import bibleData from './bible-data.js'
 import { BibleData, BibleRef } from './interfaces.js'
 
 /**
- * @return All bible abbreviations separated by '|'
- * This used in creating bibleRegex
+ * @return All book names and abbreviations separated by '|'
+ * - Multipart books include 1st John, 2nd John, etc.
  */
 export const allAbbreviations = () => {
   const result = []
@@ -23,10 +23,9 @@ export const allAbbreviations = () => {
 }
 
 /**
- * Get abbr book for api.bible
- * accepts standard book - 'Psalm'
- * returns abbr book for API/URL - 'PSA'
- * The result is from 'bibleData', so it doesn't send a request to the API
+ * @returns The abbreviated book name recognised by api.bible
+ * - accepts standard book - 'Psalm'
+ * - returns abbr book for API/URL - 'PSA'
  */
 const getAPIBook = (book: string) => {
   const bible = bibleData.find((bible) => bible.book === book)
@@ -34,7 +33,7 @@ const getAPIBook = (book: string) => {
 }
 
 /**
- * get real standard book name from an abbreviation
+ * @returns The real standard book name from an abbreviation
  * e.g Jn or jn returns John, gen returns Genesis
  */
 const realBook = (abbr: string) => {
@@ -50,8 +49,8 @@ const realBook = (abbr: string) => {
 }
 
 /**
- * extracts full Bible from object Type BibleData
- * returns object Type BibleRef
+ * Converts object of Type BibleData into a complete Bible props object
+ * @Returns BibleRef or false
  */
 export const extractPassage = (bibleData: BibleData): BibleRef | false => {
   const book = realBook(bibleData.book)

@@ -53,7 +53,9 @@ export default class BibleUp {
       this.#options = this.#defaultOptions
     }
 
-    this.#initKey = Math.floor(Math.random() * (999999 - 100000) + 100000).toString()
+    this.#initKey = Math.floor(
+      Math.random() * (999999 - 100000) + 100000
+    ).toString()
     this.#init(this.#options)
     this.#regex = this.#generateRegex()
     this.#mouseOnPopup = false
@@ -96,9 +98,7 @@ export default class BibleUp {
   }
 
   /**
-   * {desc} class entry point.
-   * create instances for entire app func
-   *
+   * Activates a BibleUp instance.
    */
   create() {
     this.#searchNode(this.#element, this.#regex.main)
@@ -106,9 +106,8 @@ export default class BibleUp {
   }
 
   /**
-   * This method destoys BibleUp creation and removes the links and popup from the page
-   * @param force - Specify whether to totally delete bibleup, and refresh() won't work anymore. This will also remove popup
-   * container; or to keep popup container and bibleup tagging can be resumed with refresh() method - when set to false
+   * This method destoys BibleUp instance and removes the links and popup from the page
+   * @param force - Specify whether to totally destroy bibleup instance, and refresh() won't work anymore. when set to false, this will preserve popup container and bibleup tagging can be resumed with refresh() method
    */
   destroy(force = true) {
     const links = document.querySelectorAll(`.bu-link-${this.#buid}`)
@@ -127,12 +126,11 @@ export default class BibleUp {
   }
 
   /**
-   * If force is true, it merges defaultOptions and newOptions to form a new BibleUp.options Object,
+   * Returns a new merged BibleUp Options
+   * @param {*} force - If force is true, it merges defaultOptions and newOptions to form a new BibleUp.options Object,
    * else it updates BibleUp.options with any changes in newOptions.
-   * @param {*} force
    * @param {*} defaultOptions
    * @param {*} new0ptions
-   * @returns new BibleUp.#options
    */
   #mergeOptions(
     force: boolean,
@@ -165,6 +163,7 @@ export default class BibleUp {
   }
 
   /**
+   * Modifies the options of a BibleUp instance
    * @param options New BibleUp Options
    * @param element The new element to search, if specified; else, the element specified during BibleUp
    * instantiation will be searched again
@@ -263,9 +262,12 @@ export default class BibleUp {
       }
     }
 
-    if (trigger.style && this.#options.styles &&
-      Object.keys(this.#options.styles).length !== 0) {
-        this.#setStyles(this.#options.styles)
+    if (
+      trigger.style &&
+      this.#options.styles &&
+      Object.keys(this.#options.styles).length !== 0
+    ) {
+      this.#setStyles(this.#options.styles)
     }
   }
 
@@ -314,11 +316,7 @@ export default class BibleUp {
   }
 
   /**
-
-   * method: BibleUp Scripture Regex
-   * @param {Object} bibleData containing bible books data
-   * This regex is a combination of two regular expressions: standard Bible reference and reference parts
-   * Regex matches: john 3:16-17, 1 Tim 5:2,5&10
+   * @returns Object of Type `Regex` containing main regex and standalone verse regex
    */
   #generateRegex(): Regex {
     const versions = 'KJV|ASV|LSV|WEB'
@@ -341,8 +339,9 @@ export default class BibleUp {
   }
 
   /**
-   * This function traverse all nodes and child nodes in the `e` parameter and calls #createLink on all text nodes that matches the Bible regex
-   * The function performs a self call on element child nodes until all matches are found
+   * This function traverse all nodes and child nodes in the `e` parameter
+   * - It calls `#createLink()` on all text nodes descendants that matches the Bible regex
+   * - The function performs a self call on element child nodes until all matches are found
    */
   #searchNode(e: Element, regex: RegExp) {
     if (!e) {
@@ -367,7 +366,7 @@ export default class BibleUp {
   }
 
   /**
-   * {desc} This function validates elements node before running #searchNode() on subsequent child elements
+   * This function validates elements node.
    * Returns true after successful validation else returns false
    */
   #validateNode(e: HTMLElement): boolean {
@@ -393,9 +392,9 @@ export default class BibleUp {
   }
 
   /**
-   * {desc} This function returns: appends <cite> on text nodes with a scripture match
-   * It replaces 'This text is john 3.16' with 'This text is <cite attr>John 3:16</cite>'
-   * param(node) is a text node
+   * Wraps text nodes which matches scripture Regex with `<cite>` element
+   * - It replaces 'This text is john 3.16' with 'This text is `<cite>John 3:16</cite>`'
+   * @param node - text node
    */
   #createLink(node: Node) {
     const newNode = document.createElement('div')
@@ -417,7 +416,7 @@ export default class BibleUp {
   }
 
   /**
-   * covert regex match (main) into cite element and regex verse into anchor links
+   * converts regex match (main) into cite element and regex verse into anchor links
    * Note that the args of this function is from all matches captured by the regex and named accordingly
    * @param {...args} This is the main reference capture groups (p1-pN) - Check replace() on MDN
    * @returns A complete BibleUp Link
@@ -461,7 +460,9 @@ export default class BibleUp {
       return result
     }
 
-    // Get `bible` object of main reference and each reference parts
+    /**
+     * Returns `bible` object of main reference and each reference parts
+     */
     const getBible = (args: string[]): BibleData => {
       const res = {} as BibleData
 
@@ -513,9 +514,9 @@ export default class BibleUp {
     }
   }
 
-  /*
+  /**
+   * Returns stringified object Type BibleRef, if reference is valid else returns false
    * @param bible - bible is an object {book, chapter, verse, version}
-   * Returns stringified object containing valid, complete reference (bu-data) if reference is valid else returns false
    * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
   #validateBible(bible: BibleData): string | false {
@@ -550,6 +551,9 @@ export default class BibleUp {
     return false
   }
 
+  /**
+   * Handles Event listener logic on popup
+   */
   #manageEvents() {
     const bulink: NodeListOf<HTMLElement> = document.querySelectorAll(
       `.bu-link-${this.#buid}`
@@ -594,10 +598,8 @@ export default class BibleUp {
   }
 
   /**
-   * {type} Event Handler for mouseEnter and click events
-   * calls series of methods and updates popup
+   * Executes event Handler for mouseEnter and click events
    */
-
   async #clickHandler(e: MouseEvent) {
     this.#clearTimer()
     const currentTarget = e.currentTarget as HTMLElement
@@ -644,10 +646,9 @@ export default class BibleUp {
   }
 
   /**
-   * @param res contains bu-data content of a link, and the full text (if isLoading is false)
-   * @param isLoading a boolean that makes popup show 'loading' before the bible text is updated
-   * @param res res.ref, res.text, res.chapter, res.verse, res.version - a complete res object
-   * (description) update popup data
+   * Updates popup texts and content
+   * @param res Can either be Type BibleRef or BibleFetch depending on isLoading
+   * @param isLoading a boolean that makes popup show 'loading' before the bible text is updated. if false, res is Type BibleRef, else, res is Type BibleFetch
    */
   #updatePopup(...args: [BibleRef, true] | [BibleFetch, false]) {
     const [res, isLoading] = args
@@ -698,7 +699,7 @@ export default class BibleUp {
   }
 
   /**
-   * closePopup() is for mouse events which needs timeout
+   * This attaches a timeout before closing popup
    */
   #closePopup(e: MouseEvent) {
     if (!this.#popupTimer) {
@@ -717,6 +718,9 @@ export default class BibleUp {
     }
   }
 
+  /**
+   * This closes a popup without a timer
+   */
   #exitPopup() {
     this.#popup.container.classList.add('bu-popup-hide')
     this.#mouseOnPopup = false

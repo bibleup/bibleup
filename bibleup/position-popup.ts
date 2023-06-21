@@ -1,6 +1,6 @@
 /**
  * positionPopup() calls positional codes for popup and sets the popup new positions
- * NOTE - the popup dimensions(height, width) can only be gotten when using 'visibility:hidden' and not
+ * - NOTE - the popup dimensions(height, width) can only be gotten when using 'visibility:hidden' and not
  * 'display:none'
  */
 
@@ -44,8 +44,8 @@ const adjustPopupToLeft = (el: HTMLElement, pos: number[]) => {
 }
 
 /**
- * adjust popup to bottom or top of link according to space remaining
- * Popup positions to top of link by default and fallbacks to bottom if there is no space.
+ * Adjust popup to bottom or top of link according to space remaining
+ * - Popup appears on top of link by default and fallbacks to bottom if there is no space.
  */
 const adjustPopupToBottom = (el: HTMLElement, pos: number[]) => {
   const [height, rectBottom, popHeight, realTop, rectHeight] = pos

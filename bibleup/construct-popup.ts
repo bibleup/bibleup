@@ -1,5 +1,11 @@
 import { Options, Popup } from './helper/interfaces'
 
+/**
+ * Constructs BibleUp popup according to options and append to Dom
+ * @param options BibleUp Option
+ * @param buid BibleUp ID
+ * @type Popup
+ */
 export const build = (options: Options, buid: string): Popup => {
   const popup = document.createElement('div')
   popup.id = `bu-popup-${buid}`
