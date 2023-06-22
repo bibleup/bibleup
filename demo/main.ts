@@ -12,6 +12,7 @@ const bibleup = new BibleUp(body, {
   version: 'kjv',
   popup: 'classic',
   darkTheme: false,
+  //bu_ignore: ['I'],
   styles: {
     primary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
     secondary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',

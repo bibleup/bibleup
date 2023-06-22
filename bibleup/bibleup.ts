@@ -370,10 +370,10 @@ export default class BibleUp {
    * Returns true after successful validation else returns false
    */
   #validateNode(e: HTMLElement): boolean {
-    const forbiddenTags = this.#options.bu_ignore
+    const buIgnore = this.#options.bu_ignore
     const allowedTags = this.#options.bu_allow
-    const privateIgnore = [
-      ...forbiddenTags,
+    const forbiddenTags = [
+      ...buIgnore,
       'SCRIPT',
       'STYLE',
       'SVG',
@@ -382,12 +382,13 @@ export default class BibleUp {
       'TEXTAREA',
       'SELECT'
     ]
-    if (privateIgnore.includes(e.tagName) && !allowedTags.includes(e.tagName)) {
+
+    if (forbiddenTags.includes(e.tagName) && !allowedTags.includes(e.tagName)) {
       return false
-    } else if (e.classList.contains('bu-ignore') === false) {
-      return true
+    } else if (e.classList.contains('bu-ignore')) {
+      return false
     } else {
-      return false
+      return true
     }
   }
 
