@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-A tool for converting Bible references on a webpage to links with an accessible popover.
+<strong>A tool for converting Bible references on a webpage to links with an accessible popover.</strong>
 </p>
 
 
@@ -23,10 +23,13 @@ A tool for converting Bible references on a webpage to links with an accessible 
 </div>
 
 <p align="center">
-  <a href="https://bibleup.netlify.app">Home</a> ∙
-  <a href="https://bibleup.netlify.app/demo">Demo</a> ∙
-  <a href="https://stackblitz.com/edit/bibleup">Code Playground</a> ∙
-  <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
+  <strong>
+    <a href="https://bibleup.netlify.app">Home</a> ∙
+    <a href="https://bibleup.netlify.app/demo">Demo</a> ∙
+    <a href="https://bibleup.netlify.app/docs">Documentation</a> ∙
+    <a href="https://wordpress.org/plugins/bibleup/">WordPress</a> ∙
+    <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
+  </strong>
 </p>
 
 <br>
@@ -62,7 +65,6 @@ const page = new BibleUp(document.body, {
   version: 'KJV',
   popup: 'classic',
   darkTheme: true,
-  ignoreCase: false,
   styles: {
     fontSize: '15px',
     borderRadius: '20px 15px',
