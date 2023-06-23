@@ -325,16 +325,10 @@ export default class BibleUp {
     const main = `(?:(?:(${bookNames.all})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${bookNames.multipart})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
     const verse = `(?:(?:(${bookNames.all})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)|(\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?`
 
-    if (this.#options.ignoreCase === true) {
-      return {
-        main: new RegExp(main, 'gi'),
-        verse: new RegExp(verse, 'gi')
-      }
-    } else {
-      return {
-        main: new RegExp(main, 'g'),
-        verse: new RegExp(verse, 'g')
-      }
+    const flags = this.#options.ignoreCase ? 'gi' : 'g'
+    return {
+      main: new RegExp(main, flags),
+      verse: new RegExp(verse, flags)
     }
   }
 
@@ -370,8 +364,7 @@ export default class BibleUp {
    * Returns true after successful validation else returns false
    */
   #validateNode(e: HTMLElement): boolean {
-    const buIgnore = this.#options.bu_ignore
-    const allowedTags = this.#options.bu_allow
+    const { bu_ignore: buIgnore, bu_allow: allowedTags } = this.#options;
     const forbiddenTags = [
       ...buIgnore,
       'SCRIPT',
@@ -692,9 +685,7 @@ export default class BibleUp {
   #openPopup() {
     if (!this.#ispopupOpen) {
       this.#popup.container.classList.remove('bu-popup-hide')
-      if (this.#popup.close) {
-        this.#popup.close.focus()
-      }
+      this.#popup.close?.focus()
       this.#ispopupOpen = true
     }
   }
