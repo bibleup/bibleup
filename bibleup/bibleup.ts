@@ -69,13 +69,17 @@ export default class BibleUp {
   }
 
   /**
-   * {type} getter
-   * {return} all options for present class instance
+   * Returns BibleUp Options for present class instance
+   * @returns {Options}
    */
   get getOptions() {
     return this.#options
   }
 
+  /**
+   * Returns buid for a BibleUp Instance. This can either be the buid specified in Options or private initKey of instance
+   * @returns {string}
+   */
   get #buid(): string {
     return this.#options.buid || this.#initKey
   }
