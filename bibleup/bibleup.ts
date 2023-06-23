@@ -208,7 +208,7 @@ export default class BibleUp {
       bulink.forEach((link) => {
         link.classList.replace(
           `bu-link-${oldKey}`,
-          `bu-link-${this.#options.buid}`
+          `bu-link-${this.#buid}`
         )
       })
     }
