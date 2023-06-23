@@ -29,5 +29,8 @@
 			"demo": true,
 			"dist": true,
 		}
-	}
+	},
+	"extensions": {
+		"recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
+	  }
 }
