@@ -1,36 +1,28 @@
 {
 	"folders": [
 		{
-			"name": "Root 📁",
-			"path": ".",
-		},
-		{
-			"name": "Source 🎯",
-			"path": "bibleup"
-		},
-		{
-			"name": "Demo 📺",
-			"path": "demo"
-		},
-		{
-			"name": "__Dist__ 📦",
-			"path": "dist"
-		},
+			"path": "."
+		}
 	],
 	"settings": {
-		"files.exclude": {
-			"**/.git": true, // this is a default value
-			"**/.DS_Store": true, // this is a default value
-			"**/node_modules": true,
-			".github": true,
-			".vscode": true,
-			"node_modules": true, // only from the root
-			"bibleup": true,
-			"demo": true,
-			"dist": true,
-		}
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": true
+		},
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+		"eslint.validate": [
+			"javascript",
+			"typescript"
+		],
+		"eslint.nodePath": "/c/Users/Hp/AppData/Roaming/npm/pnpm",
+		"eslint.workingDirectories": [
+			"./bibleup"
+		]
 	},
 	"extensions": {
-		"recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
-	  }
+		"recommendations": [
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode"
+		]
+	}
 }
