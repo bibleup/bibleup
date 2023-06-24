@@ -65,7 +65,7 @@ export const extractPassage = (bibleData: BibleData): BibleRef | false => {
 
   // swap value of verse and verseEnd
   if (verseEnd !== undefined && verse > verseEnd) {
-    [verse, verseEnd] = [verseEnd, verse]
+    ;[verse, verseEnd] = [verseEnd, verse]
   }
 
   // complete reference

@@ -210,10 +210,7 @@ export default class BibleUp {
       const oldKey = old.buid || this.#initKey
       const bulink = document.querySelectorAll(`.bu-link-${oldKey}`)
       bulink.forEach((link) => {
-        link.classList.replace(
-          `bu-link-${oldKey}`,
-          `bu-link-${this.#buid}`
-        )
+        link.classList.replace(`bu-link-${oldKey}`, `bu-link-${this.#buid}`)
       })
     }
 
@@ -368,7 +365,7 @@ export default class BibleUp {
    * Returns true after successful validation else returns false
    */
   #validateNode(e: HTMLElement): boolean {
-    const { bu_ignore: buIgnore, bu_allow: allowedTags } = this.#options;
+    const { bu_ignore: buIgnore, bu_allow: allowedTags } = this.#options
     const forbiddenTags = [
       ...buIgnore,
       'SCRIPT',

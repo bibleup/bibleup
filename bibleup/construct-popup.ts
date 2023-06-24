@@ -40,18 +40,18 @@ export const build = (options: Options, buid: string): Popup => {
   }
 
   document.body.appendChild(popup)
-  return referenceDOM(buid);
+  return referenceDOM(buid)
 }
 
 const referenceDOM = (buid: string) => {
   return {
-    container: document.getElementById(
-      `bu-popup-${buid}`
-    ) as HTMLElement,
+    container: document.getElementById(`bu-popup-${buid}`) as HTMLElement,
     header: document.querySelector(
       `#bu-popup-${buid} .bu-popup-header`
     ) as HTMLElement,
-    ref: document.querySelector(`#bu-popup-${buid} .bu-popup-ref`)  as HTMLElement,
+    ref: document.querySelector(
+      `#bu-popup-${buid} .bu-popup-ref`
+    ) as HTMLElement,
     version: document.querySelector(
       `#bu-popup-${buid} .bu-popup-version`
     ) as HTMLElement,
@@ -62,8 +62,9 @@ const referenceDOM = (buid: string) => {
       `#bu-popup-${buid} .bu-popup-text`
     ) as HTMLElement,
     close:
-      document.querySelector(`#bu-popup-${buid} .bu-popup-close`) as HTMLElement ||
-      null
+      (document.querySelector(
+        `#bu-popup-${buid} .bu-popup-close`
+      ) as HTMLElement) || null
   }
 }
 
