@@ -19,7 +19,7 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-  "include": ["bibleup/**/*"],
+  "include": ["bibleup"],
   "exclude": ["**/node_modules/**", "dist/**/*"]
 }
 

@@ -48,7 +48,7 @@ export default [
 
   // BibleUp UMD - Minified and CSS
   {
-    input: './bibleup/js/main.ts',
+    input: './bibleup/main.ts',
     output: [
       {
         file: pkg.browser,
@@ -75,7 +75,7 @@ export default [
 
   // BibleUp ESM module - Without CSS
   {
-    input: './bibleup/js/bibleup.ts',
+    input: './bibleup/bibleup.ts',
     output: [
       {
         file: pkg.module,
@@ -89,7 +89,7 @@ export default [
 
   //  BibleUp Core - Without CSS
   {
-    input: './bibleup/js/bibleup.ts',
+    input: './bibleup/bibleup.ts',
     output: [
       {
         file: './dist/umd/bibleup-core.min.js', // ./dist/umd/bibleup-core.min.js
