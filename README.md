@@ -4,9 +4,9 @@
   </a>
 </p>
 
-<h4 align="center">
-<strong>A tool for converting Bible references on a webpage to accessible popovers.</strong><br>
-</h4>
+<p align="center">
+<strong>A tool for converting Bible references on a webpage to links with an accessible popover.</strong>
+</p>
 
 
 <div align="center">
@@ -17,20 +17,20 @@
     <img src='https://img.shields.io/github/v/release/Bibleup/bibleup?include_prereleases&logo=Github&style=flat-square' />
   </a>
   <a href="">
-    <img src='https://img.shields.io/github/languages/top/Bibleup/bibleup?logo=Javascript&style=flat-square' />
+    <img src='https://img.shields.io/github/languages/top/Bibleup/bibleup?logo=typescript&style=flat-square' />
   </a>
-  <a href="https://openbase.com/js/@bibleup/bibleup?utm_source=embedded&amp;utm_medium=badge&amp;utm_campaign=rate-badge"><img src="https://badges.openbase.com/js/featured/@bibleup/bibleup.svg?token=NjtAIf4fk+5e5Xw3xIKavilPZP4fZsNjqmEEL7mGm30=&style=flat-square" alt="Featured on Openbase"></a>
   <a href="https://www.jsdelivr.com/package/npm/@bibleup/bibleup"><img src="https://img.shields.io/jsdelivr/npm/hm/@bibleup/bibleup?color=blue&label=JSDelivr%20Hits&logo=jsdelivr&logoColor=yellow&style=flat-square" alt="JSDelivr Hits/month"></a>
 </div>
 
-<h4 align="center">
-<strong>
-  <a href="https://bibleup.netlify.app">Home</a> ∙
-  <a href="https://bibleup.netlify.app/demo">Demo</a> ∙
-  <a href="https://stackblitz.com/edit/bibleup">Code Playground</a> ∙
-  <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
-</strong>
-</h4>
+<p align="center">
+  <strong>
+    <a href="https://bibleup.netlify.app">Home</a> ∙
+    <a href="https://bibleup.netlify.app/demo">Demo</a> ∙
+    <a href="https://bibleup.netlify.app/docs">Documentation</a> ∙
+    <a href="https://wordpress.org/plugins/bibleup/">WordPress</a> ∙
+    <a href="https://github.com/Bibleup/bibleup/issues">Get Support</a>
+  </strong>
+</p>
 
 <br>
 <div align="center">
@@ -39,10 +39,10 @@
 </div>
 <hr>
 
-## Introduction
+## What is BibleUp?
 
 BibleUp makes Bible references on a webpage easily accessible without the need of leaving the page.<br>
-It searches for all Bible references on a page and transforms each one to a link. Hovering on these links will make the Bible text accessible via a feature-rich and flexible popover.
+This tool converts Bible references found on a webpage into clickable links, and upon hovering over these links, a feature-rich and flexible popover appears, providing the relevant Bible text.
 <br><br>
 BibleUp is a blend of an internal API and a display interface.
 
@@ -53,10 +53,31 @@ BibleUp is a blend of an internal API and a display interface.
 - **Highly customizable popover** - style according to your site theme.
 - **Robust Configuration** - configure behaviour as you want.
 - **Supports different Bible versions** - KJV, ASV, LSV and WEB with much more to come.
-- **Fast and performant** - efficient and snappy without site bloats
+- **Fast and performant** - no site bloats
 - **Extensive browsers support** - works on all your favourite browsers.
 - **Follows WAI-ARAI accessibility guidelines** - for screen readers and keyboard navigation.
-- [**BibleUp Editor**](https://bibleup.netlify.app/demo/editor) - easily style popover in real-time.
+- [**BibleUp Editor**](https://bibleup.netlify.app/demo/editor) - style popover in real-time and export options
+
+## Example
+This is a minimal example of BibleUp options and usage (check the docs for full options):
+```js
+const page = new BibleUp(document.body, {
+  version: 'KJV',
+  popup: 'classic',
+  darkTheme: true,
+  styles: {
+    fontSize: '15px',
+    borderRadius: '20px 15px',
+  }
+});
+
+// activate BibleUp 💡
+page.create();
+```
+
+## Documentation
+
+Installing and configuring BibleUp is as simple as it can get.<br> See the [docs](https://bibleup.netlify.app/docs) for guides on installation, usage and how to get started with Bibleup.
 
 ## Plugin and Extension
 
@@ -65,9 +86,6 @@ BibleUp is available as a plugin for WordPress sites and a browser extension tha
 -  [Wordpress plugin](https://github.com/bibleup/wordpress)
 -  [Browser Extension](https://github.com/bibleup/browser-extension)
 
-## Documentation
-
-Installing and configuring BibleUp is as simple as it can get.<br> See the [docs](https://bibleup.netlify.app/docs) for guides on installation, usage and how to get started with Bibleup.
 
 ## Contributing
 

@@ -4,6 +4,7 @@
     "lib": ["esnext", "dom", "dom.iterable"],
     "module": "esnext",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "declaration": true,
@@ -18,7 +19,7 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-  "include": ["bibleup/**/*"],
+  "include": ["bibleup"],
   "exclude": ["**/node_modules/**", "dist/**/*"]
 }
 

@@ -1,16 +1,18 @@
-// import BibleUp from '../dist/esm/bibleup.esm.js';
-import BibleUp from '../bibleup/js/bibleup.js'
+console.log('BibleUp Demo')
+//import BibleUp from '@bibleup/bibleup';
+import BibleUp from '../bibleup/bibleup.ts'
 
-const testPanel = document.querySelector('#test-panel')
-const body = document.querySelector('body')
-const addBtn = document.querySelector('#add')
-const removeBtn = document.querySelector('#remove')
-const refreshBtn = document.querySelector('#refresh')
+const test = document.querySelector('#test2') as HTMLElement
+const body = document.querySelector('body') as HTMLElement
+const addBtn = document.querySelector('#add') as HTMLElement
+const removeBtn = document.querySelector('#remove') as HTMLElement
+const refreshBtn = document.querySelector('#refresh') as HTMLElement
 
 const bibleup = new BibleUp(body, {
   version: 'kjv',
   popup: 'classic',
   darkTheme: false,
+  //bu_ignore: ['I'],
   styles: {
     primary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
     secondary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
@@ -30,7 +32,7 @@ const bibleup = new BibleUp(body, {
 bibleup.create()
 
 removeBtn.onclick = () => {
-  bibleup.destroy(true)
+  bibleup.destroy(false)
 }
 
 refreshBtn.onclick = () => {
@@ -46,5 +48,5 @@ addBtn.onclick = () => {
   const para = document.createElement('p')
   const textNode = document.createTextNode('Proverbs 6:6')
   para.appendChild(textNode)
-  testPanel?.appendChild(para)
+  //testPanel?.appendChild(para)
 }

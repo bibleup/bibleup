@@ -1,58 +1,58 @@
 //import popup styles
-@import "./_root.less";
-@import "./classic.less";
-@import "./wiki.less";
-@import "./inline.less";
+@import './_root.less';
+@import './classic.less';
+@import './wiki.less';
+@import './inline.less';
 
 [id^='bu-popup-'] {
-	font-family: var(--bu-font-family);
-	margin: 0;
-	font-size: var(--bu-font-size);
-	font-weight: var(--bu-font-weight);
-	line-height: var(--bu-line-height);
-	-webkit-text-size-adjust: 100%;
-	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-	z-index: 1070; //bootstrap default for popovers
+  font-family: var(--bu-font-family);
+  margin: 0;
+  font-size: var(--bu-font-size);
+  font-weight: var(--bu-font-weight);
+  line-height: var(--bu-line-height);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  z-index: 1070; //bootstrap default for popovers
 }
 
 .bu-popup-content ol li {
-	font-size: var(--bu-font-size);
+  font-size: var(--bu-font-size);
 }
 
 [id^='bu-popup-'] * {
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .bu-popup-hide {
-	visibility: hidden;
-	position: absolute;
-	top: -9999px;
-	left: -9999px;
+  visibility: hidden;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
 }
 
 .bu-popup-header {
-	width: 100%;
+  width: 100%;
 }
 
 .bu-popup-footer {
-	width: 100%;
-	font-weight: bold;
-	text-align: right;
-	font-size: 13px;
-	padding: 7px 10px;
-	color: #8c8c8c;
+  width: 100%;
+  font-weight: bold;
+  text-align: right;
+  font-size: 13px;
+  padding: 7px 10px;
+  color: #8c8c8c;
 }
 
 .bu-link {
-	font-style: normal;
+  font-style: normal;
 }
 
 .bu-popup-content {
-	ol {
-		list-style-type: decimal;
-	}
+  ol {
+    list-style-type: decimal;
+  }
 
-	li {
-		display: list-item;
-	}
+  li {
+    display: list-item;
+  }
 }

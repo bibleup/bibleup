@@ -1,24 +1,31 @@
 {
   "name": "@bibleup/bibleup",
   "version": "1.0.1",
-  "description": "A tool for converting Bible references on a webpage to links with an accessible popup",
+  "description": "A tool for converting Bible references on a webpage to links with an accessible popover",
   "type": "module",
   "browser": "./dist/umd/bibleup.min.js",
-  "unpkg": "./dist/umd/bibleup.min.js",
   "module": "./dist/esm/bibleup.esm.js",
+  "unpkg": "./dist/umd/bibleup.min.js",
+  "types": "./dist/bibleup.d.ts",
+  "style": "./dist/css/bibleup.css",
   "exports": {
-    ".": "./bibleup/js/bibleup.js",
+    ".": {
+      "types": "./dist/bibleup.d.ts",
+      "import": "./dist/esm/bibleup.esm.js"
+    },
     "./css": "./dist/css/bibleup.css"
   },
   "files": [
-    "dist",
-    "bibleup"
+    "dist"
   ],
   "scripts": {
     "test": "echo \"No test specified\"",
-    "build": "npm run lint && npm run clean && rollup --config",
+    "build": "pnpm run format && pnpm run lint && pnpm run clean && rollup --config",
     "lint": "eslint --fix --ext .js,.ts ./bibleup",
-    "clean": "rimraf dist"
+    "format": "prettier bibleup/ --write",
+    "clean": "rimraf dist",
+    "dev": "pnpm --filter demo run dev",
+    "release": "pnpm run build && release-it"
   },
   "repository": {
     "type": "git",
@@ -42,18 +49,30 @@
   "publishConfig": {
     "access": "public"
   },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "none",
+    "printWidth": 80
+  },
   "release-it": {
     "git": {
-      "commitMessage": "chore: release v${version}",
-      "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs"
+      "commitMessage": "chore: release v${version}"
     },
     "github": {
       "release": true
+    },
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "header": "# Changelog",
+        "preset": "angular"
+      }
     }
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
+    "@release-it/conventional-changelog": "^5.1.1",
     "@rollup/plugin-babel": "^5.3.1",
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
@@ -63,12 +82,16 @@
     "@typescript-eslint/eslint-plugin": "^5.58.0",
     "@typescript-eslint/parser": "^5.58.0",
     "core-js": "^3.30.0",
+    "del": "^6.1.1",
     "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-config-standard-with-typescript": "^34.0.1",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.7.0",
     "eslint-plugin-promise": "^6.1.1",
+    "prettier": "2.8.8",
+    "release-it": "^15.11.0",
     "rimraf": "^4.4.1",
     "rollup": "^2.79.1",
     "rollup-plugin-dts": "^5.3.0",
