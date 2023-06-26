@@ -24,7 +24,8 @@
     "lint": "eslint --fix --ext .js,.ts ./bibleup",
     "format": "prettier bibleup/ --write",
     "clean": "rimraf dist",
-    "dev": "pnpm --filter demo run dev"
+    "dev": "pnpm --filter demo run dev",
+    "release": "pnpm run build && release-it"
   },
   "repository": {
     "type": "git",
@@ -60,7 +61,8 @@
       "changelog": "npx auto-changelog --stdout --commit-limit false -u --template https://raw.githubusercontent.com/release-it/release-it/master/templates/changelog-compact.hbs"
     },
     "github": {
-      "release": true
+      "release": true,
+      "autoGenerate": true
     }
   },
   "devDependencies": {
