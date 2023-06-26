@@ -64,6 +64,7 @@
     },
     "plugins": {
       "@release-it/conventional-changelog": {
+        "header": "# Changelog",
         "preset": "angular"
       }
     }
