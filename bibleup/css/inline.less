@@ -3,48 +3,47 @@
 */
 
 .bu-inline {
-	position: absolute;
-	width: var(--bu-inline-width);
-	max-width: var(--bu-inline-max-width);
-	height: auto;
-	max-height: 220px;
-	padding-top: 10px;
-	background: var(--bu-inline-bg);
-	color: var(--bu-inline-color);
-	//box-shadow: 0px 0px 3px 0.7px #cccccc;
-	box-shadow: var(--bu-inline-box-shadow);
-	border-radius: var(--bu-inline-border-radius);
-	overflow: hidden;
+  position: absolute;
+  width: var(--bu-inline-width);
+  max-width: var(--bu-inline-max-width);
+  height: auto;
+  max-height: 220px;
+  padding-top: 10px;
+  background: var(--bu-inline-bg);
+  color: var(--bu-inline-color);
+  //box-shadow: 0px 0px 3px 0.7px #cccccc;
+  box-shadow: var(--bu-inline-box-shadow);
+  border-radius: var(--bu-inline-border-radius);
+  overflow: hidden;
 
-	p {
-		margin: 0;
-	}
+  p {
+    margin: 0;
+  }
 
-	.bu-popup-content {
-		min-height: 50px;
-		max-height: 130px;
-		overflow-x: auto;
-		padding: 10px 15px;
-		padding-bottom: 0;
+  .bu-popup-content {
+    min-height: 50px;
+    max-height: 130px;
+    overflow-x: auto;
+    padding: 10px 15px;
+    padding-bottom: 0;
 
+    ol {
+      padding: 0 20px;
+      margin: 0;
+    }
 
-		ol {
-			padding: 0 20px;
-			margin: 0;
-		}
+    li {
+      padding: 0 5px;
+      margin: 0;
 
-		li {
-			padding: 0 5px;
-			margin: 0;
-
-			&:not(:last-child) {
-				padding-bottom: 10px;
-			}
-		}
-	}
+      &:not(:last-child) {
+        padding-bottom: 10px;
+      }
+    }
+  }
 }
 
 .bu-inline[data-bu-theme='dark'] {
-	background: var(--bu-inline-bg);
-	color: var(--bu-inline-color);
+  background: var(--bu-inline-bg);
+  color: var(--bu-inline-color);
 }

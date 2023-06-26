@@ -1,6 +1,12 @@
-import { Options } from './helper/interfaces'
+import { Options, Popup } from './helper/interfaces'
 
-export const build = (options: Options, buid: string) => {
+/**
+ * Constructs BibleUp popup according to options and append to Dom
+ * @param options BibleUp Option
+ * @param buid BibleUp ID
+ * @type Popup
+ */
+export const build = (options: Options, buid: string): Popup => {
   const popup = document.createElement('div')
   popup.id = `bu-popup-${buid}`
   popup.classList.add('bu-popup-hide', 'bu-ignore')
@@ -14,19 +20,19 @@ export const build = (options: Options, buid: string) => {
     'A non-modal popover showing the text of Bible reference'
   )
 
-  if (popupStyle === 'classic') {
-    popup.classList.add('bu-classic')
-    popup.innerHTML = classic()
-  }
-
-  if (popupStyle === 'inline') {
-    popup.classList.add('bu-inline')
-    popup.innerHTML = inline()
-  }
-
-  if (popupStyle === 'wiki') {
-    popup.classList.add('bu-wiki')
-    popup.innerHTML = wiki()
+  switch (popupStyle) {
+    case 'classic':
+      popup.classList.add('bu-classic')
+      popup.innerHTML = classic()
+      break
+    case 'inline':
+      popup.classList.add('bu-inline')
+      popup.innerHTML = inline()
+      break
+    case 'wiki':
+      popup.classList.add('bu-wiki')
+      popup.innerHTML = wiki()
+      break
   }
 
   if (darkTheme === true) {
@@ -34,6 +40,32 @@ export const build = (options: Options, buid: string) => {
   }
 
   document.body.appendChild(popup)
+  return referenceDOM(buid)
+}
+
+const referenceDOM = (buid: string) => {
+  return {
+    container: document.getElementById(`bu-popup-${buid}`) as HTMLElement,
+    header: document.querySelector(
+      `#bu-popup-${buid} .bu-popup-header`
+    ) as HTMLElement,
+    ref: document.querySelector(
+      `#bu-popup-${buid} .bu-popup-ref`
+    ) as HTMLElement,
+    version: document.querySelector(
+      `#bu-popup-${buid} .bu-popup-version`
+    ) as HTMLElement,
+    content: document.querySelector(
+      `#bu-popup-${buid} .bu-popup-content`
+    ) as HTMLElement,
+    text: document.querySelector(
+      `#bu-popup-${buid} .bu-popup-text`
+    ) as HTMLElement,
+    close:
+      (document.querySelector(
+        `#bu-popup-${buid} .bu-popup-close`
+      ) as HTMLElement) || null
+  }
 }
 
 const classic = (): string => {
