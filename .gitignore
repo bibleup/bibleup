@@ -1,6 +1,6 @@
 node_modules/
 dist/
 docs/
-**/config.js
+bibleup/**/config.js
 .vscode
 bibleup.code-workspace
