@@ -64,8 +64,7 @@ const getText = async (
       method: 'GET',
       headers: {
         'api-key': apiKey
-      },
-      cache: 'force-cache'
+      }
     })
 
     if (!res.ok) {
@@ -93,8 +92,7 @@ const getPassage = async (
       method: 'GET',
       headers: {
         'api-key': apiKey
-      },
-      cache: 'force-cache'
+      }
     })
 
     if (!res.ok) {
