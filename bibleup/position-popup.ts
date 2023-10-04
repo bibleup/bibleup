@@ -13,14 +13,16 @@ export const positionPopup = (
   if (popup === 'inline') {
     el.popWidth += 10
   }
-  adjustPopupToLeft(container, [el.width, el.rectLeft, el.popWidth])
-  adjustPopupToBottom(container, [
-    el.height,
-    el.rectBottom,
-    el.popHeight,
-    el.realTop,
-    el.rect.height
-  ])
+  if (popup !== 'wiki') {
+    adjustPopupToLeft(container, [el.width, el.rectLeft, el.popWidth])
+    adjustPopupToBottom(container, [
+      el.height,
+      el.rectBottom,
+      el.popHeight,
+      el.realTop,
+      el.rect.height
+    ])
+  }
 }
 
 /**
