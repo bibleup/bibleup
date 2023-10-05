@@ -29,7 +29,7 @@ export const getScripture = async (bible: BibleRef, version: string) => {
 
 const getVersionId = (version: string) => {
   let id
-  switch (version) {
+  switch (version.toUpperCase()) {
     case 'KJV':
       id = 'de4e12af7f28f599-01'
       break
