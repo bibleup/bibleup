@@ -23,6 +23,22 @@ export const allAbbreviations = () => {
 }
 
 /**
+ * @returns The book ID for a particular Bible book
+ * - accepts standard book - 'Psalm'
+ * - returns ID - 19
+ */
+export const getBookId = (book: string) => {
+  const bible = bibleData.find((bible) => bible.book === book)
+  return bible ? bible.id : undefined
+}
+
+/* export const supportedVersions = {
+  bolls: ['ESV'],
+  bibleApi: ['KJV', 'ASV', 'LSV', 'WEB'],
+  all: [...bolls, ...bibleApi]
+} */
+
+/**
  * @returns The abbreviated book name recognised by api.bible
  * - accepts standard book - 'Psalm'
  * - returns abbr book for API/URL - 'PSA'

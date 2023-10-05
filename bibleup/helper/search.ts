@@ -1,5 +1,11 @@
 import apiKey from './config.js'
-import { ApiResponse, BibleFetch, BibleRef } from './interfaces.js'
+import {
+  BibleApiResponse,
+  BollsApiResponse,
+  BibleFetch,
+  BibleRef
+} from './interfaces.js'
+import { getBookId } from './bible.js'
 
 /**
  * get scripture Text from bible reference
@@ -7,9 +13,15 @@ import { ApiResponse, BibleFetch, BibleRef } from './interfaces.js'
  * - if text returns null, there was problem fetching the Bible text, else text is an array with Bible texts
  */
 export const getScripture = async (bible: BibleRef, version: string) => {
+  let text: string[] | null
   const versionId = getVersionId(version)
   const isPassage = bible.verseEnd ? true : false
-  const text = await fetchText(isPassage, bible.apiBook, versionId)
+  if (versionId === version.toUpperCase()) {
+    //BOLLS VERSION
+    text = await fetchBolls(isPassage, bible, versionId)
+  } else {
+    text = await fetchBibleApi(isPassage, bible.apiBook, versionId)
+  }
 
   const result: BibleFetch = {
     ref: bible.ref,
@@ -29,6 +41,12 @@ export const getScripture = async (bible: BibleRef, version: string) => {
 
 const getVersionId = (version: string) => {
   let id
+  const BOLLS_VERSION = ['ESV']
+
+  if (BOLLS_VERSION.includes(version.toUpperCase())) {
+    return version.toUpperCase()
+  }
+
   switch (version.toUpperCase()) {
     case 'KJV':
       id = 'de4e12af7f28f599-01'
@@ -49,7 +67,7 @@ const getVersionId = (version: string) => {
   return id
 }
 
-const fetchText = async (
+const fetchBibleApi = async (
   isPassage: boolean,
   apiBook: string,
   versionId: string
@@ -72,8 +90,52 @@ const fetchText = async (
       throw new Error('A problem occured while fetching data')
     }
 
-    const content: ApiResponse = (await res.json()) as ApiResponse
+    const content = (await res.json()) as BibleApiResponse
     return processBibleText(content, type)
+  } catch (error) {
+    return null
+  }
+}
+
+const fetchBolls = async (
+  isPassage: boolean,
+  Bible: BibleRef,
+  versionId: string
+): Promise<string[] | null> => {
+  const url = 'https://bolls.life/get-verses/'
+  const verses = []
+
+  if (isPassage && Bible.verseEnd) {
+    for (let i = Bible.verse; i <= Bible.verseEnd; i++) {
+      verses.push(i)
+    }
+  } else {
+    verses.push(Bible.verse)
+  }
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      body: JSON.stringify([
+        {
+          translation: versionId,
+          book: getBookId(Bible.book),
+          chapter: Bible.chapter,
+          verses
+        }
+      ])
+    })
+
+    if (!res.ok) {
+      throw new Error('A problem occured while fetching data')
+    }
+
+    const content = (await res.json()) as BollsApiResponse
+    const text: string[] = []
+    for (const obj of content[0]) {
+      text.push(obj.text)
+    }
+    return text
   } catch (error) {
     return null
   }
@@ -86,7 +148,7 @@ const fetchText = async (
  * - if type is  `passages`, it returns array of values ['Jesus be Glorified', 'Forever']
  */
 const processBibleText = (
-  res: ApiResponse,
+  res: BibleApiResponse,
   type: 'verses' | 'passages'
 ): string[] => {
   const result: string[] = []

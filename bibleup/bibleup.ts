@@ -244,7 +244,7 @@ export default class BibleUp {
     trigger: Trigger = { version: true, popup: true, style: true }
   ) {
     if (trigger.version && options.version) {
-      const versions = ['KJV', 'ASV', 'LSV', 'WEB']
+      const versions = ['KJV', 'ASV', 'LSV', 'WEB', 'ESV']
       if (versions.includes(options.version.toUpperCase()) === false) {
         this.#error(
           'The version in BibleUp options is currently not supported. Try with other supported versions'

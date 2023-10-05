@@ -75,8 +75,16 @@ export type Trigger = Partial<{
   style: boolean
 }>
 
-export interface ApiResponse {
+export interface BibleApiResponse {
   data: {
     content: string
   }
 }
+
+export type BollsApiResponse = Array<Array<{ text: string }>>;
+
+/* export interface supportedVersions {
+  bolls: string[],
+  bibleApi: string[]
+  all: string[]
+} */
