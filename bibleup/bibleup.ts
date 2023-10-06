@@ -320,7 +320,7 @@ export default class BibleUp {
    * @returns Object of Type `Regex` containing main regex and standalone verse regex
    */
   #generateRegex(): Regex {
-    const versions = 'KJV|ASV|LSV|WEB'
+    const versions = Bible.supportedVersions.all.join('|')
     const bookNames = Bible.allAbbreviations()
 
     const main = `(?:(?:(${bookNames.all})(?:\\.?)\\s?(\\d{1,3})(?:\\:\\s?(\\d{1,3}(?:\\s?\\-\\s?\\d{1,3})?))?)(?:[a-zA-Z])?(?:\\s(${versions}))?)(?:\\s?(?:\\,|\\;|\\&)\\s?(?!\\s?(?:${bookNames.multipart})(?:\\.?)\\b)\\s?(?:\\d{1,3}\\s?\\-\\s?\\d{1,3}|\\d{1,3}\\:\\d{1,3}(?:\\-\\d{1,3})?|\\d{1,3})(?:[a-zA-Z](?![a-zA-Z]))?(?:\\s(${versions}))?)*`
