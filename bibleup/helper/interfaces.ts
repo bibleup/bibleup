@@ -1,6 +1,6 @@
 export interface Options {
-  version: string
-  popup: string
+  version: 'KJV' | 'ASV' | 'WEB' | 'LSV' | 'ESV'
+  popup: 'classic' | 'inline' | 'wiki'
   darkTheme: boolean
   bu_ignore: string[]
   bu_allow: string[]
@@ -81,7 +81,7 @@ export interface BibleApiResponse {
   }
 }
 
-export type BollsApiResponse = Array<Array<{ text: string }>>;
+export type BollsApiResponse = Array<Array<{ text: string }>>
 
 /* export interface supportedVersions {
   bolls: string[],

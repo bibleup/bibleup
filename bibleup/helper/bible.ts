@@ -32,11 +32,18 @@ export const getBookId = (book: string) => {
   return bible ? bible.id : undefined
 }
 
-/* export const supportedVersions = {
-  bolls: ['ESV'],
+/**
+ * Supported Bible versions
+ * @property bibleApi - Versions to be fetched through api.bible
+ * @property bolls - Versions to be fetched through Bolls
+ */
+export const supportedVersions = {
   bibleApi: ['KJV', 'ASV', 'LSV', 'WEB'],
-  all: [...bolls, ...bibleApi]
-} */
+  bolls: ['ESV'],
+  get all() {
+    return [...this.bolls, ...this.bibleApi]
+  }
+}
 
 /**
  * @returns The abbreviated book name recognised by api.bible
