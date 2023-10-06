@@ -5,7 +5,7 @@ import {
   BibleFetch,
   BibleRef
 } from './interfaces.js'
-import { getBookId } from './bible.js'
+import * as Bible from './bible.js'
 
 /**
  * get scripture Text from bible reference
@@ -41,7 +41,7 @@ export const getScripture = async (bible: BibleRef, version: string) => {
 
 const getVersionId = (version: string) => {
   let id
-  const BOLLS_VERSION = ['ESV']
+  const BOLLS_VERSION = Bible.supportedVersions.bolls as string[]
 
   if (BOLLS_VERSION.includes(version.toUpperCase())) {
     return version.toUpperCase()
@@ -99,18 +99,18 @@ const fetchBibleApi = async (
 
 const fetchBolls = async (
   isPassage: boolean,
-  Bible: BibleRef,
+  bible: BibleRef,
   versionId: string
 ): Promise<string[] | null> => {
   const url = 'https://bolls.life/get-verses/'
   const verses = []
 
-  if (isPassage && Bible.verseEnd) {
-    for (let i = Bible.verse; i <= Bible.verseEnd; i++) {
+  if (isPassage && bible.verseEnd) {
+    for (let i = bible.verse; i <= bible.verseEnd; i++) {
       verses.push(i)
     }
   } else {
-    verses.push(Bible.verse)
+    verses.push(bible.verse)
   }
 
   try {
@@ -119,8 +119,8 @@ const fetchBolls = async (
       body: JSON.stringify([
         {
           translation: versionId,
-          book: getBookId(Bible.book),
-          chapter: Bible.chapter,
+          book: Bible.getBookId(bible.book),
+          chapter: bible.chapter,
           verses
         }
       ])
