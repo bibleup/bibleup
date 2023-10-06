@@ -34,7 +34,7 @@ export default class BibleUp {
   constructor(element: HTMLElement, options: Partial<Options>) {
     this.#element = element
     this.#defaultOptions = {
-      version: 'KJV',
+      version: 'ASV',
       popup: 'classic',
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
@@ -244,7 +244,7 @@ export default class BibleUp {
     trigger: Trigger = { version: true, popup: true, style: true }
   ) {
     if (trigger.version && options.version) {
-      const versions = Bible.supportedVersions.all
+      const versions = Bible.supportedVersions.all as readonly string[]
       if (versions.includes(options.version.toUpperCase()) === false) {
         this.#error(
           'The version in BibleUp options is currently not supported. Try with other supported versions'

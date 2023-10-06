@@ -1,5 +1,5 @@
 export interface Options {
-  version: 'KJV' | 'ASV' | 'WEB' | 'LSV' | 'ESV'
+  version: Version
   popup: 'classic' | 'inline' | 'wiki'
   darkTheme: boolean
   bu_ignore: string[]
@@ -83,8 +83,12 @@ export interface BibleApiResponse {
 
 export type BollsApiResponse = Array<Array<{ text: string }>>
 
-/* export interface supportedVersions {
-  bolls: string[],
-  bibleApi: string[]
-  all: string[]
-} */
+export interface SupportedVersions {
+  bibleApi: BibleApi[]
+  bolls: Bolls[]
+  all: Version[]
+}
+
+type BibleApi = 'KJV' | 'ASV' | 'LSV' | 'WEB'
+type Bolls = 'ESV'
+type Version = BibleApi | Bolls

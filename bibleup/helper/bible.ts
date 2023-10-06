@@ -1,5 +1,5 @@
 import bibleData from './bible-data.js'
-import { BibleData, BibleRef } from './interfaces.js'
+import { BibleData, BibleRef, SupportedVersions } from './interfaces.js'
 
 /**
  * @return All book names and abbreviations separated by '|'
@@ -37,7 +37,7 @@ export const getBookId = (book: string) => {
  * @property bibleApi - Versions to be fetched through api.bible
  * @property bolls - Versions to be fetched through Bolls
  */
-export const supportedVersions = {
+export const supportedVersions: SupportedVersions = {
   bibleApi: ['KJV', 'ASV', 'LSV', 'WEB'],
   bolls: ['ESV'],
   get all() {

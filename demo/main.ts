@@ -8,7 +8,7 @@ const removeBtn = document.querySelector('#remove') as HTMLElement
 const refreshBtn = document.querySelector('#refresh') as HTMLElement
 
 const bibleup = new BibleUp(body, {
-  version: 'ASV',
+  version: 'ESV',
   popup: 'classic',
   darkTheme: false,
   //bu_ignore: ['I'],
