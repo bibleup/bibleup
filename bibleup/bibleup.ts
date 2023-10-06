@@ -34,7 +34,7 @@ export default class BibleUp {
   constructor(element: HTMLElement, options: Partial<Options>) {
     this.#element = element
     this.#defaultOptions = {
-      version: 'ASV',
+      version: 'KJV',
       popup: 'classic',
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
