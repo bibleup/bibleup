@@ -90,5 +90,5 @@ export interface SupportedVersions {
 }
 
 type BibleApi = 'KJV' | 'ASV' | 'LSV' | 'WEB'
-type Bolls = 'ESV'
+type Bolls = 'ESV' | 'NIV'
 type Version = BibleApi | Bolls
