@@ -7,7 +7,7 @@ const addBtn = document.querySelector('#add') as HTMLElement
 const removeBtn = document.querySelector('#remove') as HTMLElement
 const refreshBtn = document.querySelector('#refresh') as HTMLElement
 
-const bibleup = new BibleUp(body, {
+const page = new BibleUp(body, {
   version: 'NIV',
   popup: 'classic',
   darkTheme: false,
@@ -22,21 +22,15 @@ const bibleup = new BibleUp(body, {
   }
 })
 
-/* const bibleupp = new BibleUp(body, {
-  version: 'kjv',
-  popup: 'classic',
-  darkTheme: false
-}) */
-
-bibleup.create()
+page.create()
 
 removeBtn.onclick = () => {
-  bibleup.destroy(false)
+  page.destroy(false)
 }
 
 refreshBtn.onclick = () => {
-  bibleup.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
-  /* bibleup.refresh({
+  page.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
+  /* page.refresh({
     version: 'kjv',
     popup: 'wiki',
     darkTheme: true,
