@@ -33,7 +33,9 @@ export const getBookId = (book: string) => {
 }
 
 /**
- * Supported Bible versions
+ * An object of supported Bible versions.
+ * @description Each property is an array of versions named after the api service
+ * from which the versions are fetched
  * @property bibleApi - Versions to be fetched through api.bible
  * @property bolls - Versions to be fetched through Bolls
  */

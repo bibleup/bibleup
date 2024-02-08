@@ -45,10 +45,10 @@ export default class BibleUp {
     }
 
     if (typeof options === 'object' && options !== null) {
-      this.#options = this.#DEPRECATE_bu_id({
+      this.#options = {
         ...this.#defaultOptions,
         ...options
-      })
+      }
     } else {
       this.#options = this.#defaultOptions
     }
@@ -82,23 +82,6 @@ export default class BibleUp {
    */
   get #buid(): string {
     return this.#options.buid || this.#initKey
-  }
-
-  /**
-   * The method removes the `bu_id` property and replaces it with `buid` to match documentation.
-   * DEPRECATES `bu_id` and Enforces `buid`
-   * @param {*} options - BibleUp Options
-   * @returns 0bject
-   */
-  #DEPRECATE_bu_id(options: Options): Options {
-    if (
-      Object.prototype.hasOwnProperty.call(options, 'bu_id') &&
-      options.bu_id
-    ) {
-      options.buid = options.bu_id
-      delete options.bu_id
-    }
-    return options
   }
 
   /**
@@ -142,7 +125,7 @@ export default class BibleUp {
     new0ptions: Partial<Options>
   ) {
     if (force === true) {
-      return this.#DEPRECATE_bu_id({ ...defaultOptions, ...new0ptions })
+      return { ...defaultOptions, ...new0ptions }
     } else {
       const merge: Options = { ...this.#options, ...new0ptions }
       for (const [key, value] of Object.entries(new0ptions)) {
@@ -162,7 +145,7 @@ export default class BibleUp {
         }
       }
 
-      return this.#DEPRECATE_bu_id(merge)
+      return merge
     }
   }
 

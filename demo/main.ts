@@ -29,12 +29,20 @@ removeBtn.onclick = () => {
 }
 
 refreshBtn.onclick = () => {
-  page.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], bu_id: 'custom1'}, true)
-  /* page.refresh({
+  //page.refresh({popup: 'classic', bu_ignore: ['BLOCKQUOTE'], buid: 'custom1'}, true)
+  page.refresh({
     version: 'kjv',
     popup: 'wiki',
     darkTheme: true,
-  }, true) */
+    styles: {
+      primary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
+      secondary: 'linear-gradient(315deg, #f9d976 0%, #f39f86 74%)',
+      tertiary: '#f2f2f2',
+      headerColor: '#fff',
+      boxShadow: '0 0 0 1px #d0d7de, 0 8px 24px rgba(140,149,159,0.2)',
+      fontSize: '12px'
+    }
+  }, true)
 }
 
 addBtn.onclick = () => {
