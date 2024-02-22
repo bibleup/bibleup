@@ -43,8 +43,6 @@
 
 BibleUp makes Bible references on a webpage easily accessible without the need of leaving the page.<br>
 This tool converts Bible references found on a webpage into clickable links, and upon hovering over these links, a feature-rich and flexible popover appears, providing the relevant Bible text.
-<br><br>
-BibleUp is a blend of an internal API and a display interface.
 
 ## Features
 
@@ -77,12 +75,9 @@ page.create();
 
 ## Documentation
 
-Using BibleUp is as simple as it can get.<br> See the [docs](https://bibleup.netlify.app/docs) for guides on installation, usage and how to fully configure Bibleup.
+Using BibleUp is as simple as it can get.<br> See the [docs](https://bibleup.netlify.app/docs) for installation, usage and how to configure Bibleup.
 
 ## Plugin and Extension
-
-BibleUp is available as a plugin for WordPress sites and a browser extension that can be used on any website.
-
 -  [Wordpress plugin](https://github.com/bibleup/wordpress)
 -  [Browser Extension](https://github.com/bibleup/browser-extension)
 
@@ -103,6 +98,7 @@ Thank you for choosing to contribute!
 
 Special thanks to [API.Bible](https://scripture.api.bible) and [Bolls.life](https://bolls.life/) 🙏
 
+> [!IMPORTANT]
 > BibleUp does not store or process Bible versions or translations but rather relies on external API providers. For more information on quote permissions and compliance, please read our [copyright notice]()
 
 ## Licence
