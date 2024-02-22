@@ -41,7 +41,7 @@ export const getBookId = (book: string) => {
  */
 export const supportedVersions: SupportedVersions = {
   bibleApi: ['KJV', 'ASV', 'LSV', 'WEB'],
-  bolls: ['ESV', 'NIV', 'MSG', 'NLT', 'AMP'],
+  bolls: ['ESV', 'NIV', 'MSG', 'NLT', 'AMP', 'NASB'],
   get all() {
     return [...this.bolls, ...this.bibleApi]
   }

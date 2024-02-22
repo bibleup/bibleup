@@ -82,12 +82,12 @@ export interface BibleApiResponse {
 
 export type BollsApiResponse = Array<Array<{ text: string }>>
 
+type BibleApi = 'KJV' | 'ASV' | 'LSV' | 'WEB'
+type Bolls = 'ESV' | 'NIV' | 'MSG' | 'NLT' | 'AMP' | 'NASB'
+type Version = BibleApi | Bolls
+
 export interface SupportedVersions {
   bibleApi: BibleApi[]
   bolls: Bolls[]
   all: Version[]
 }
-
-type BibleApi = 'KJV' | 'ASV' | 'LSV' | 'WEB'
-type Bolls = 'ESV' | 'NIV' | 'MSG' | 'NLT' | 'AMP'
-type Version = BibleApi | Bolls
