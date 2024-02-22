@@ -43,18 +43,16 @@
 
 BibleUp makes Bible references on a webpage easily accessible without the need of leaving the page.<br>
 This tool converts Bible references found on a webpage into clickable links, and upon hovering over these links, a feature-rich and flexible popover appears, providing the relevant Bible text.
-<br><br>
-BibleUp is a blend of an internal API and a display interface.
 
 ## Features
 
 - **Easy integration** - simply install and configure.
-- **Powerful and smart tagging** - matches all valid references including abbreviated books, verse ranges and chapter-level references.
+- **Powerful and smart tagging** - supports abbreviated books, verse ranges, multiple references and version tagging.
 - **Highly customizable popover** - style according to your site theme.
-- **Robust Configuration** - configure behaviour as you want.
-- **Supports different Bible versions** - KJV, ASV, LSV and WEB with much more to come.
+- **Robust Configuration**
+- **Supports different Bible versions** - up to 10 versions
 - **Fast and performant** - no site bloats
-- **Extensive browsers support** - works on all your favourite browsers.
+- **Extensive browsers support**
 - **Follows WAI-ARAI accessibility guidelines** - for screen readers and keyboard navigation.
 - [**BibleUp Editor**](https://bibleup.netlify.app/demo/editor) - style popover in real-time and export options
 
@@ -77,32 +75,31 @@ page.create();
 
 ## Documentation
 
-Installing and configuring BibleUp is as simple as it can get.<br> See the [docs](https://bibleup.netlify.app/docs) for guides on installation, usage and how to get started with Bibleup.
+Using BibleUp is as simple as it can get.<br> See the [docs](https://bibleup.netlify.app/docs) for installation, usage and how to configure Bibleup.
 
 ## Plugin and Extension
-
-BibleUp is available as a plugin for WordPress sites and a browser extension that can be used on any website.
-
 -  [Wordpress plugin](https://github.com/bibleup/wordpress)
 -  [Browser Extension](https://github.com/bibleup/browser-extension)
-
-
-## Contributing
-
-You can contibute to this project in many, different ways: as a blogger, reviewer, organisation or even by developing with us. See how to contribute [here.](https://bibleup.netlify.app/docs/guide)<br><br>
-Feature requests and issues are always welcomed.<br>
-Kindly make sure you state the specifics in detail, whether a bug, feature request or a fix.<br>
-Thank you for choosing to contribute!
 
 ## Browsers support
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari-ios/safari-ios_48x48.png" alt="iOS Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>iOS Safari | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera/opera_48x48.png" alt="Opera" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/opera-mini/opera-mini_48x48.png" alt="Opera Mini" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)<br/>Opera Mini |
 | --------- | --------- | --------- | --------- | --------- | --------- | --------- |
-| IE11, Edge| last 3 versions| last 3 versions| last 5 versions| last 5 versions| last 3 versions| last 10 versions
+| ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅
+
+
+## Contributing
+Feature requests and issues are always welcomed.<br>
+Kindly make sure you state the specifics in detail, whether a bug, feature request or a fix.<br>
+You can also contibute to this project as a blogger, reviewer, or even as an organisation. See [how to contribute](https://bibleup.netlify.app/docs/guide)<br><br>
+Thank you for choosing to contribute!
 
 ## Credits
 
-Special thanks to [API.Bible](https://scripture.api.bible)!
+Special thanks to [API.Bible](https://scripture.api.bible) and [Bolls.life](https://bolls.life/) 🙏
+
+> [!IMPORTANT]
+> BibleUp does not store or process Bible versions or translations but rather relies on external API providers. For more information on quote permissions and compliance, please read our [copyright notice]()
 
 ## Licence
 
