@@ -81,6 +81,7 @@ const fetchBibleApi = async (
   try {
     const res = await fetch(url, {
       method: 'GET',
+      cache: 'force-cache',
       headers: {
         'api-key': apiKey
       }
@@ -116,6 +117,7 @@ const fetchBolls = async (
   try {
     const res = await fetch(url, {
       method: 'POST',
+      cache: 'force-cache',
       body: JSON.stringify([
         {
           translation: versionId,
