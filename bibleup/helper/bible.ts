@@ -1,5 +1,5 @@
 import bibleData from './bible-data.js'
-import { BibleData, BibleRef } from './interfaces.js'
+import { BibleData, BibleRef, SupportedVersions } from './interfaces.js'
 
 /**
  * @return All book names and abbreviations separated by '|'
@@ -19,6 +19,31 @@ export const allAbbreviations = () => {
   return {
     all: result.join('|'),
     multipart: multipart.join('|')
+  }
+}
+
+/**
+ * @returns The book ID for a particular Bible book
+ * - accepts standard book - 'Psalm'
+ * - returns ID - 19
+ */
+export const getBookId = (book: string) => {
+  const bible = bibleData.find((bible) => bible.book === book)
+  return bible ? bible.id : undefined
+}
+
+/**
+ * An object of supported Bible versions.
+ * @description Each property is an array of versions named after the api service
+ * from which the versions are fetched
+ * @property bibleApi - Versions to be fetched through api.bible
+ * @property bolls - Versions to be fetched through Bolls
+ */
+export const supportedVersions: SupportedVersions = {
+  bibleApi: ['KJV', 'ASV', 'LSV', 'WEB'],
+  bolls: ['ESV', 'NIV', 'MSG', 'NLT', 'AMP', 'NASB'],
+  get all() {
+    return [...this.bolls, ...this.bibleApi]
   }
 }
 

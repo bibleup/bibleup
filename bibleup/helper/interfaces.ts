@@ -1,11 +1,10 @@
 export interface Options {
-  version: string
-  popup: string
+  version: Version
+  popup: 'classic' | 'inline' | 'wiki'
   darkTheme: boolean
   bu_ignore: string[]
   bu_allow: string[]
   buid: string
-  bu_id?: string
   ignoreCase: boolean
   styles: Partial<Styles>
 }
@@ -75,8 +74,20 @@ export type Trigger = Partial<{
   style: boolean
 }>
 
-export interface ApiResponse {
+export interface BibleApiResponse {
   data: {
     content: string
   }
+}
+
+export type BollsApiResponse = Array<Array<{ text: string }>>
+
+type BibleApi = 'KJV' | 'ASV' | 'LSV' | 'WEB'
+type Bolls = 'ESV' | 'NIV' | 'MSG' | 'NLT' | 'AMP' | 'NASB'
+type Version = BibleApi | Bolls
+
+export interface SupportedVersions {
+  bibleApi: BibleApi[]
+  bolls: Bolls[]
+  all: Version[]
 }

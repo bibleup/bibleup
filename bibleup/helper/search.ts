@@ -1,5 +1,11 @@
 import apiKey from './config.js'
-import { ApiResponse, BibleFetch, BibleRef } from './interfaces.js'
+import {
+  BibleApiResponse,
+  BollsApiResponse,
+  BibleFetch,
+  BibleRef
+} from './interfaces.js'
+import * as Bible from './bible.js'
 
 /**
  * get scripture Text from bible reference
@@ -9,10 +15,12 @@ import { ApiResponse, BibleFetch, BibleRef } from './interfaces.js'
 export const getScripture = async (bible: BibleRef, version: string) => {
   let text: string[] | null
   const versionId = getVersionId(version)
-  if (bible.verseEnd) {
-    text = await getPassage(bible.apiBook, versionId)
+  const isPassage = bible.verseEnd ? true : false
+  if (versionId === version.toUpperCase()) {
+    //BOLLS VERSION
+    text = await fetchBolls(isPassage, bible, versionId)
   } else {
-    text = await getText(bible.apiBook, versionId)
+    text = await fetchBibleApi(isPassage, bible.apiBook, versionId)
   }
 
   const result: BibleFetch = {
@@ -33,7 +41,13 @@ export const getScripture = async (bible: BibleRef, version: string) => {
 
 const getVersionId = (version: string) => {
   let id
-  switch (version) {
+  const BOLLS_VERSION = Bible.supportedVersions.bolls as string[]
+
+  if (BOLLS_VERSION.includes(version.toUpperCase())) {
+    return version.toUpperCase()
+  }
+
+  switch (version.toUpperCase()) {
     case 'KJV':
       id = 'de4e12af7f28f599-01'
       break
@@ -53,11 +67,16 @@ const getVersionId = (version: string) => {
   return id
 }
 
-const getText = async (
-  ref: string,
+const fetchBibleApi = async (
+  isPassage: boolean,
+  apiBook: string,
   versionId: string
 ): Promise<string[] | null> => {
-  const url = `https://api.scripture.api.bible/v1/bibles/${versionId}/verses/${ref}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false&include-verse-spans=false&use-org-id=false`
+  const type = isPassage ? 'passages' : 'verses'
+  const typePayload = isPassage
+    ? 'include-verse-spans=true'
+    : 'include-verse-spans=false'
+  const url = `https://api.scripture.api.bible/v1/bibles/${versionId}/${type}/${apiBook}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false&${typePayload}&use-org-id=false`
 
   try {
     const res = await fetch(url, {
@@ -71,36 +90,52 @@ const getText = async (
       throw new Error('A problem occured while fetching data')
     }
 
-    const content: ApiResponse = (await res.json()) as ApiResponse
-    return processBibleText(content, 'text')
+    const content = (await res.json()) as BibleApiResponse
+    return processBibleText(content, type)
   } catch (error) {
     return null
   }
 }
 
-/**
- * Get range of verses - ACT.1.8-ACT.1.10
- **/
-const getPassage = async (
-  ref: string,
+const fetchBolls = async (
+  isPassage: boolean,
+  bible: BibleRef,
   versionId: string
 ): Promise<string[] | null> => {
-  const url = `https://api.scripture.api.bible/v1/bibles/${versionId}/passages/${ref}?content-type=html&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=false&include-verse-spans=true&use-org-id=false`
+  const url = 'https://bolls.life/get-verses/'
+  const verses = []
+
+  if (isPassage && bible.verseEnd) {
+    for (let i = bible.verse; i <= bible.verseEnd; i++) {
+      verses.push(i)
+    }
+  } else {
+    verses.push(bible.verse)
+  }
 
   try {
     const res = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'api-key': apiKey
-      }
+      method: 'POST',
+      body: JSON.stringify([
+        {
+          translation: versionId,
+          book: Bible.getBookId(bible.book),
+          chapter: bible.chapter,
+          verses
+        }
+      ])
     })
 
     if (!res.ok) {
       throw new Error('A problem occured while fetching data')
     }
 
-    const content: ApiResponse = (await res.json()) as ApiResponse
-    return processBibleText(content, 'passage')
+    const content = (await res.json()) as BollsApiResponse
+    const text: string[] = []
+    for (const obj of content[0]) {
+      text.push(obj.text)
+    }
+    return text
   } catch (error) {
     return null
   }
@@ -109,15 +144,16 @@ const getPassage = async (
 /**
  * parses HTML response from the fetch API and extract the verses.
  * - WARNING: The HTML responses are tricky and had to be parsed based on observations from manual testing
- * - returns array e.g ['Jesus be Glorified', 'Forever'] if type is 'passage'
+ * - if type is `verses`, it returns array with single value ['Jesus be Glorified']
+ * - if type is  `passages`, it returns array of values ['Jesus be Glorified', 'Forever']
  */
 const processBibleText = (
-  res: ApiResponse,
-  type: 'text' | 'passage'
+  res: BibleApiResponse,
+  type: 'verses' | 'passages'
 ): string[] => {
   const result: string[] = []
 
-  if (type === 'text') {
+  if (type === 'verses') {
     const parser = new DOMParser()
     const doc = parser.parseFromString(res.data.content, 'text/html')
     const p = doc.querySelectorAll('p')
@@ -126,7 +162,7 @@ const processBibleText = (
     )
   }
 
-  if (type === 'passage') {
+  if (type === 'passages') {
     const parser = new DOMParser()
     const doc = parser.parseFromString(res.data.content, 'text/html')
     const span = doc.getElementsByClassName('verse-span')
