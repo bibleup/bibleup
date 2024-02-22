@@ -1,3 +1,4 @@
+import { defineConfig } from 'rollup';
 import terser from '@rollup/plugin-terser'
 import less from 'rollup-plugin-less'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
@@ -6,8 +7,8 @@ import babel from '@rollup/plugin-babel'
 import license from 'rollup-plugin-license'
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
-import del from 'del'
-const pkg = require('./package.json');
+import { deleteAsync } from 'del'
+import pkg from './package.json' assert { type: "json" };
 
 const babelConfig = babel({
   presets: [
@@ -15,8 +16,6 @@ const babelConfig = babel({
       '@babel/preset-env',
       {
         targets: '>= 0.5%, not dead',
-        useBuiltIns: 'usage',
-        corejs: '3.30.0',
       },
     ],
   ],
@@ -43,15 +42,15 @@ const myDel = () => {
   return {
     name: 'types-delete',
     buildEnd: async () => {
-      const deletedFiles = await del(['dist/*/types']);
-      console.log(`Deleted ${deletedFiles.length} files`, pkg.exports['./css']);
+      const deletedFiles = await deleteAsync(['dist/*/types']);
+      console.log(`Deleted ${deletedFiles.length} files - ${deletedFiles}`);
     }
   }
 }
 
-export default [
+export default defineConfig([
 
-  // BibleUp UMD - Minified and CSS
+  /* BibleUp UMD - Minified and CSS */
   {
     input: './bibleup/main.ts',
     output: [
@@ -78,7 +77,7 @@ export default [
     ],
   },
 
-  // BibleUp ESM module - Without CSS
+  /* BibleUp ESM module - Without CSS */
   {
     input: './bibleup/bibleup.ts',
     output: [
@@ -92,7 +91,7 @@ export default [
     plugins: [typescript(), addLicense],
   },
 
-  //  BibleUp Core - Without CSS
+  /* BibleUp Core - Without CSS */
   {
     input: './bibleup/bibleup.ts',
     output: [
@@ -125,4 +124,4 @@ export default [
     output: [{ file: pkg.types, format: "es" }],
     plugins: [dts(), myDel()]
   }
-];
+]);
