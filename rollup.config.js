@@ -43,7 +43,7 @@ const myDel = () => {
     name: 'types-delete',
     buildEnd: async () => {
       const deletedFiles = await deleteAsync(['dist/*/types']);
-      console.log(`Deleted ${deletedFiles.length} files - ${deletedFiles}`);
+      //console.log(`Deleted ${deletedFiles.length} '/types' sub-folder`);
     }
   }
 }
