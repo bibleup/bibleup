@@ -480,9 +480,7 @@ export default class BibleUp {
       const buData = this.#validateBible(bibleData)
       return buData === false
         ? match
-        : `<a href='#' class='bu-link-${
-            this.#buid
-          }' bu-data='${buData}'>${match}</a>`
+        : `<a href='#' class='bu-link-${this.#buid}' bu-data='${buData}'>${match}</a>`
     })
 
     if (str === match) {
