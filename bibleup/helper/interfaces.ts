@@ -5,7 +5,6 @@ export interface Options {
   bu_ignore: string[]
   bu_allow: string[]
   buid: string
-  bu_id?: string
   ignoreCase: boolean
   styles: Partial<Styles>
 }
