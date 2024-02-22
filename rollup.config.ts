@@ -28,12 +28,17 @@ const babelConfig = babel({
 const addLicense = license({
   banner: `
   BibleUp v.<%= pkg.version %>
-  Copyright 2023 BibleUp and contributors
+  Copyright 2023-present BibleUp and contributors
   Repository URL: https://github.com/Bibleup/bibleup.ts.git
   Date: <%= moment().format('DD-MM-YYYY') %>
   `,
 });
 
+/**
+ * This deletes all '/type' sub-folder under each dist folder
+ * The typescript() plugin causes this to happen after which the '/type' folder under '/esm' will be read
+ * and bundled using the dts() plugin
+ */
 const myDel = () => {
   return {
     name: 'types-delete',
@@ -111,7 +116,10 @@ export default [
     ],
   },
 
-  // Bundle Types declaration
+  /**
+   * This bundles the typescript declaration file
+   * A single '.d.ts' declaration file will be exported and placed under dist root
+   */
   {
     input: "./dist/esm/types/bibleup.d.ts",
     output: [{ file: pkg.types, format: "es" }],
