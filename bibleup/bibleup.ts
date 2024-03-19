@@ -39,16 +39,13 @@ export default class BibleUp {
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
       bu_allow: [],
-      buid: '',
+      buid: false,
       ignoreCase: false,
       styles: {}
     }
 
     if (typeof options === 'object' && options !== null) {
-      this.#options = {
-        ...this.#defaultOptions,
-        ...options
-      }
+      this.#options = this.#mergeOptions(false, this.#defaultOptions, options)
     } else {
       this.#options = this.#defaultOptions
     }
@@ -113,40 +110,35 @@ export default class BibleUp {
   }
 
   /**
-   * Returns a new merged BibleUp Options
-   * @param {*} force - If force is true, it merges defaultOptions and newOptions to form a new BibleUp.options Object,
+   * Merges defaultOptions and newOptions to form a new BibleUp.options Object if force is true,
    * else it updates BibleUp.options with any changes in newOptions.
-   * @param {*} defaultOptions
-   * @param {*} new0ptions
+   * @param force If true, merges defaultOptions and newOptions; otherwise, updates BibleUp.options.
+   * @param defaultOptions Default options to merge.
+   * @param newOptions Partial options to merge.
+   * @returns Merged options object.
    */
   #mergeOptions(
     force: boolean,
-    defaultOptions: Options,
+    oldOptions: Options,
     new0ptions: Partial<Options>
-  ) {
-    if (force === true) {
-      return { ...defaultOptions, ...new0ptions }
-    } else {
-      const merge: Options = { ...this.#options, ...new0ptions }
-      for (const [key, value] of Object.entries(new0ptions)) {
-        const k = key as keyof Options
-        if (Array.isArray(value)) {
-          ;(merge[k] as string[]) = [
-            ...(this.#options[k] as string[]),
-            ...value
-          ]
-        } else if (value && typeof value === 'object') {
-          ;(merge[k] as Partial<Styles>) = {
-            ...(this.#options[k] as Partial<Styles>),
-            ...value
-          }
-        } else {
-          ;(merge[k] as string | boolean) = value
-        }
-      }
-
-      return merge
+  ): Options {
+    if (force) {
+      //return { ...this.#defaultOptions, ...new0ptions }
+      return this.#mergeOptions(false, this.#defaultOptions, new0ptions)
     }
+
+    const mergedOptions: Options = {
+      ...oldOptions, // Start with a copy of the old options
+      ...new0ptions, // Overwrite with properties from the new options
+      styles: {
+        ...oldOptions.styles, // Merge the styles separately
+        ...new0ptions.styles // Overwrite with new styles
+      },
+      bu_ignore: [...oldOptions.bu_ignore, ...(new0ptions.bu_ignore || [])], // Merge bu_ignore arrays
+      bu_allow: [...oldOptions.bu_allow, ...(new0ptions.bu_allow || [])] // Merge bu_allow arrays
+    };
+
+    return mergedOptions
   }
 
   /**
@@ -170,7 +162,8 @@ export default class BibleUp {
 
     const old = this.#options
     const trigger = { version: false, popup: false, style: false }
-    this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
+    //this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
+    this.#options = this.#mergeOptions(force, old, options)
 
     // trigger version
     if (old.version !== this.#options.version) {
