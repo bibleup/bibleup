@@ -27,7 +27,7 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname
   },
-  ignorePatterns: ['rollup.config.ts', '/dist/**/*', '/demo/**/*', '.eslintrc.cjs'],
+  ignorePatterns: ['rollup.config.js', '/dist/**/*', '/demo/**/*', '.eslintrc.cjs'],
   plugins: [
     '@typescript-eslint'
   ]
