@@ -136,7 +136,7 @@ export default class BibleUp {
       },
       bu_ignore: [...oldOptions.bu_ignore, ...(new0ptions.bu_ignore || [])], // Merge bu_ignore arrays
       bu_allow: [...oldOptions.bu_allow, ...(new0ptions.bu_allow || [])] // Merge bu_allow arrays
-    };
+    }
 
     return mergedOptions
   }

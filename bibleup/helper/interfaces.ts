@@ -4,7 +4,7 @@ export interface Options {
   darkTheme: boolean
   bu_ignore: string[]
   bu_allow: string[]
-  buid: string|false
+  buid: string | false
   ignoreCase: boolean
   styles: Partial<Styles>
 }
