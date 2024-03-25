@@ -39,16 +39,13 @@ export default class BibleUp {
       darkTheme: false,
       bu_ignore: ['H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'A'],
       bu_allow: [],
-      buid: '',
+      buid: false,
       ignoreCase: false,
       styles: {}
     }
 
     if (typeof options === 'object' && options !== null) {
-      this.#options = {
-        ...this.#defaultOptions,
-        ...options
-      }
+      this.#options = this.#mergeOptions(false, this.#defaultOptions, options)
     } else {
       this.#options = this.#defaultOptions
     }
@@ -113,40 +110,35 @@ export default class BibleUp {
   }
 
   /**
-   * Returns a new merged BibleUp Options
-   * @param {*} force - If force is true, it merges defaultOptions and newOptions to form a new BibleUp.options Object,
+   * Merges defaultOptions and newOptions to form a new BibleUp.options Object if force is true,
    * else it updates BibleUp.options with any changes in newOptions.
-   * @param {*} defaultOptions
-   * @param {*} new0ptions
+   * @param force If true, merges defaultOptions and newOptions; otherwise, updates BibleUp.options.
+   * @param defaultOptions Default options to merge.
+   * @param newOptions Partial options to merge.
+   * @returns Merged options object.
    */
   #mergeOptions(
     force: boolean,
-    defaultOptions: Options,
+    oldOptions: Options,
     new0ptions: Partial<Options>
-  ) {
-    if (force === true) {
-      return { ...defaultOptions, ...new0ptions }
-    } else {
-      const merge: Options = { ...this.#options, ...new0ptions }
-      for (const [key, value] of Object.entries(new0ptions)) {
-        const k = key as keyof Options
-        if (Array.isArray(value)) {
-          ;(merge[k] as string[]) = [
-            ...(this.#options[k] as string[]),
-            ...value
-          ]
-        } else if (value && typeof value === 'object') {
-          ;(merge[k] as Partial<Styles>) = {
-            ...(this.#options[k] as Partial<Styles>),
-            ...value
-          }
-        } else {
-          ;(merge[k] as string | boolean) = value
-        }
-      }
-
-      return merge
+  ): Options {
+    if (force) {
+      //return { ...this.#defaultOptions, ...new0ptions }
+      return this.#mergeOptions(false, this.#defaultOptions, new0ptions)
     }
+
+    const mergedOptions: Options = {
+      ...oldOptions, // Start with a copy of the old options
+      ...new0ptions, // Overwrite with properties from the new options
+      styles: {
+        ...oldOptions.styles, // Merge the styles separately
+        ...new0ptions.styles // Overwrite with new styles
+      },
+      bu_ignore: [...oldOptions.bu_ignore, ...(new0ptions.bu_ignore || [])], // Merge bu_ignore arrays
+      bu_allow: [...oldOptions.bu_allow, ...(new0ptions.bu_allow || [])] // Merge bu_allow arrays
+    }
+
+    return mergedOptions
   }
 
   /**
@@ -170,7 +162,7 @@ export default class BibleUp {
 
     const old = this.#options
     const trigger = { version: false, popup: false, style: false }
-    this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
+    this.#options = this.#mergeOptions(force, old, options)
 
     // trigger version
     if (old.version !== this.#options.version) {
@@ -300,6 +292,7 @@ export default class BibleUp {
   }
 
   /**
+   * This generates the BibleUp regex. The regex test can be tested here:
    * @returns Object of Type `Regex` containing main regex and standalone verse regex
    */
   #generateRegex(): Regex {
@@ -319,7 +312,7 @@ export default class BibleUp {
   /**
    * This function traverse all nodes and child nodes in the `e` parameter
    * - It calls `#createLink()` on all text nodes descendants that matches the Bible regex
-   * - The function performs a self call on element child nodes until all matches are found
+   * - The function performs a self call on element child nodes until all text matches are found
    */
   #searchNode(e: Element, regex: RegExp) {
     if (!e) {
@@ -345,7 +338,7 @@ export default class BibleUp {
 
   /**
    * This function validates elements node.
-   * Returns true after successful validation else returns false
+   * @returns true after successful validation else returns false
    */
   #validateNode(e: HTMLElement): boolean {
     const { bu_ignore: buIgnore, bu_allow: allowedTags } = this.#options
@@ -470,7 +463,7 @@ export default class BibleUp {
     }
 
     /**
-     * @desc This breaks the entire string and matches the main reference and every verse, ranges and parts separately.
+     * @desc This breaks the entire string and matches the main reference and every verse ranges and parts separately.
      * Each match is wrapped with an anchor element. The match regex is `this.#regex.verse`
      * Invalid chapter/verse is returned as is.
      * Example: Jn 3:16,17 to <a>Jn 3:16</a>,<a>17</a>
@@ -491,9 +484,9 @@ export default class BibleUp {
   }
 
   /**
-   * Returns stringified object Type BibleRef, if reference is valid else returns false
+   * This will check whether a Bible reference has valid bible verses.
+   * @eturns stringified object Type BibleRef if reference is valid, else returns false
    * @param bible - bible is an object {book, chapter, verse, version}
-   * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
   #validateBible(bible: BibleData): string | false {
     const bibleRef = Bible.extractPassage(bible)
