@@ -31,14 +31,14 @@ removeBtn.onclick = () => {
 }
 
 refreshBtn.onclick = () => {
-  page.refresh({popup: 'classic', bu_ignore: [], bu_allow: false, buid: 'custom1'}, true)
-  /* page.refresh({
+  // page.refresh({popup: 'classic', bu_ignore: [], bu_allow: false, buid: 'custom1'}, true)
+  page.refresh({
     version: 'KJV',
     popup: 'wiki',
     styles: {
       fontSize: '12px'
     }
-  }, true) */
+  })
 }
 
 addBtn.onclick = () => {

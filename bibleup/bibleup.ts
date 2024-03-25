@@ -162,7 +162,6 @@ export default class BibleUp {
 
     const old = this.#options
     const trigger = { version: false, popup: false, style: false }
-    //this.#options = this.#mergeOptions(force, this.#defaultOptions, options)
     this.#options = this.#mergeOptions(force, old, options)
 
     // trigger version
@@ -293,6 +292,7 @@ export default class BibleUp {
   }
 
   /**
+   * This generates the BibleUp regex. The regex test can be tested here:
    * @returns Object of Type `Regex` containing main regex and standalone verse regex
    */
   #generateRegex(): Regex {
@@ -312,7 +312,7 @@ export default class BibleUp {
   /**
    * This function traverse all nodes and child nodes in the `e` parameter
    * - It calls `#createLink()` on all text nodes descendants that matches the Bible regex
-   * - The function performs a self call on element child nodes until all matches are found
+   * - The function performs a self call on element child nodes until all text matches are found
    */
   #searchNode(e: Element, regex: RegExp) {
     if (!e) {
@@ -338,7 +338,7 @@ export default class BibleUp {
 
   /**
    * This function validates elements node.
-   * Returns true after successful validation else returns false
+   * @returns true after successful validation else returns false
    */
   #validateNode(e: HTMLElement): boolean {
     const { bu_ignore: buIgnore, bu_allow: allowedTags } = this.#options
@@ -463,7 +463,7 @@ export default class BibleUp {
     }
 
     /**
-     * @desc This breaks the entire string and matches the main reference and every verse, ranges and parts separately.
+     * @desc This breaks the entire string and matches the main reference and every verse ranges and parts separately.
      * Each match is wrapped with an anchor element. The match regex is `this.#regex.verse`
      * Invalid chapter/verse is returned as is.
      * Example: Jn 3:16,17 to <a>Jn 3:16</a>,<a>17</a>
@@ -484,9 +484,9 @@ export default class BibleUp {
   }
 
   /**
-   * Returns stringified object Type BibleRef, if reference is valid else returns false
+   * This will check whether a Bible reference has valid bible verses.
+   * @eturns stringified object Type BibleRef if reference is valid, else returns false
    * @param bible - bible is an object {book, chapter, verse, version}
-   * The object is in the form - {ref,book,chapter,verse,apiBook}
    */
   #validateBible(bible: BibleData): string | false {
     const bibleRef = Bible.extractPassage(bible)
