@@ -101,6 +101,6 @@ Special thanks to [API.Bible](https://scripture.api.bible) and [Bolls.life](http
 > [!IMPORTANT]
 > BibleUp does not store or process Bible versions or translations but rather relies on external API providers. For more information on quote permissions and compliance, please read our [copyright notice]()
 
-## Licence
+## License
 
-BibleUp core is available under the [MIT Licence.](https://github.com/Bibleup/bibleup/blob/main/LICENSE)<br>Other derivative projects may carry a different licence.
+BibleUp core is available under the [MIT License.](https://github.com/Bibleup/bibleup/blob/main/LICENSE)<br>Other derivative projects may carry a different license.
