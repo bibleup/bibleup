@@ -80,7 +80,7 @@ export interface BibleApiResponse {
   }
 }
 
-export type BollsApiResponse = Array<Array<{ text: string }>>
+export type BollsApiResponse = { text: string }[][]
 
 type BibleApi = 'KJV' | 'ASV' | 'LSV' | 'WEB'
 type Bolls = 'ESV' | 'NIV' | 'MSG' | 'NLT' | 'AMP' | 'NASB'
