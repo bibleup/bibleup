@@ -34,7 +34,7 @@ const adjustPopupToLeft = (el: HTMLElement, pos: number[]) => {
 
   if (remainingSpace > popWidth) {
     if (rectLeft < 0) {
-      el.style.left = `${0}px`
+      el.style.left = `0px`
     } else {
       el.style.left = `${rectLeft}px`
     }

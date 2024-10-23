@@ -35,7 +35,7 @@ export const build = (options: Options, buid: string): Popup => {
       break
   }
 
-  if (darkTheme === true) {
+  if (darkTheme) {
     popup.setAttribute('data-bu-theme', 'dark')
   }
 

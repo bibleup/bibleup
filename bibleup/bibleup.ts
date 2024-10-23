@@ -103,7 +103,7 @@ export default class BibleUp {
       }
     }
 
-    if (force === true && this.#popup.container) {
+    if (force && this.#popup.container) {
       this.#popup.container.remove()
       this.#initKey = ''
     }
@@ -175,7 +175,7 @@ export default class BibleUp {
       old.darkTheme !== this.#options.darkTheme ||
       old.buid !== this.#options.buid
     ) {
-      this.#popup.container?.remove()
+      this.#popup.container.remove()
       trigger.popup = true
       trigger.style = true
     }
@@ -202,7 +202,7 @@ export default class BibleUp {
     this.#searchNode(element, this.#regex.main)
     // call init() for changes
     if (force) {
-      this.#popup.container?.remove()
+      this.#popup.container.remove()
       this.#init(this.#options)
     } else if (trigger.version || trigger.popup || trigger.style) {
       this.#init(this.#options, trigger)
@@ -220,7 +220,7 @@ export default class BibleUp {
   ) {
     if (trigger.version && options.version) {
       const versions = Bible.supportedVersions.all as readonly string[]
-      if (versions.includes(options.version.toUpperCase()) === false) {
+      if (!versions.includes(options.version.toUpperCase())) {
         this.#error(
           'The version in BibleUp options is currently not supported. Try with other supported versions'
         )
@@ -415,7 +415,7 @@ export default class BibleUp {
      * @param verse verse number of main reference
      */
     const vesreContext = (verse: string) => {
-      const result: { [key: string]: string } = {}
+      const result: Record<string, string> = {}
 
       if ((verse.includes(':') && verse.includes('-')) || verse.includes(':')) {
         // (in-line chapter with range) or (in-line chapter only)
@@ -580,10 +580,7 @@ export default class BibleUp {
     }
 
     // only update popup if popup is already hidden or different link is clicked than the one active
-    if (
-      this.#ispopupOpen === false ||
-      this.#activeLink !== getPosition(currentTarget)
-    ) {
+    if (!this.#ispopupOpen || this.#activeLink !== getPosition(currentTarget)) {
       this.#activeLink = getPosition(currentTarget)
       const linkData = currentTarget.getAttribute('bu-data') as string
       const bibleRef: BibleRef = JSON.parse(linkData) as BibleRef
@@ -636,7 +633,7 @@ export default class BibleUp {
       if (this.#popup.ref) {
         this.#popup.ref.textContent = res.ref
         // REF Accessibility
-        this.#popup.container.setAttribute('aria-label', `${res.ref}`)
+        this.#popup.container.setAttribute('aria-label', res.ref)
       }
 
       if (this.#popup.version) {
@@ -675,7 +672,7 @@ export default class BibleUp {
           const mouseFrom = e.relatedTarget as Element
           if (
             !mouseFrom ||
-            mouseFrom?.classList.contains(`bu-link-${this.#buid}`) === false
+            !mouseFrom.classList.contains(`bu-link-${this.#buid}`)
           ) {
             this.#exitPopup()
           }

@@ -93,7 +93,7 @@ const fetchBibleApi = async (
 
     const content = (await res.json()) as BibleApiResponse
     return processBibleText(content, type)
-  } catch (error) {
+  } catch {
     return null
   }
 }
@@ -138,7 +138,7 @@ const fetchBolls = async (
       text.push(obj.text)
     }
     return text
-  } catch (error) {
+  } catch {
     return null
   }
 }
