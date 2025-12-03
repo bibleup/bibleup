@@ -2,7 +2,7 @@
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import standardts from 'eslint-config-love'
+import love from 'eslint-config-love'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default tseslint.config(
@@ -11,13 +11,12 @@ export default tseslint.config(
   ...tseslint.configs.stylistic,
   eslintConfigPrettier,
   {
-    ...standardts,
+    ...love,
     languageOptions: {
       globals: globals.browser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
         projectService: true,
         tsconfigRootDir: import.meta.dirname
       }

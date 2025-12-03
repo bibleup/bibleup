@@ -3,14 +3,13 @@
     "target": "esnext",
     "lib": ["esnext", "dom", "dom.iterable"],
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "declarationDir": "dist/types",
-    "baseUrl": ".",
     /* JavaScript Support */
     "allowJs": true,
     "checkJs": true,
@@ -19,7 +18,7 @@
     "noImplicitAny": true,
     "skipLibCheck": true
   },
-  "include": ["bibleup"],
+  "include": ["bibleup", "./eslint.config.js"],
   "exclude": ["**/node_modules/**", "dist/**/*"]
 }
 
