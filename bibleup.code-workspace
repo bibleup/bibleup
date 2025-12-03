@@ -5,15 +5,21 @@
 			"path": "."
 		},
 		{
-			"name": "BibleUp Core",
+			"name": "BibleUp Core 🧰",
 			"path": "bibleup"
 		},
 		{
-			"name": "BibleUp Demo",
+			"name": "BibleUp Demo 📱",
 			"path": "demo"
 		}
 	],
 	"settings": {
+		"files.exclude": {
+			"**/node_modules": true,
+			"**/.github": true,
+			"**/demo": true, // hide demo folder in root
+			"**/bibleup": true // hide bibleup folder in root
+		},
 		"editor.codeActionsOnSave": {
 			"source.fixAll.eslint": "explicit"
 		},
