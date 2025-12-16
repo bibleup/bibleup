@@ -2,37 +2,41 @@
 import globals from 'globals'
 import eslint from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import love from 'eslint-config-love'
-import eslintConfigPrettier from 'eslint-config-prettier'
+import { defineConfig } from 'eslint/config'
+import eslintConfigPrettier from 'eslint-config-prettier/flat'
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  ...tseslint.configs.strict,
-  ...tseslint.configs.stylistic,
-  eslintConfigPrettier,
-  {
-    ...love,
-    languageOptions: {
-      globals: globals.browser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname
-      }
-    },
-    rules: {
-      '@typescript-eslint/no-misused-promises': [
-        'error',
-        {
-          checksVoidReturn: {
-            arguments: false
-          }
+export default defineConfig({
+  plugins: {
+    '@typescript-eslint': tseslint.plugin,
+  },
+  extends: [
+    eslint.configs.recommended,
+    tseslint.configs.strict,
+    tseslint.configs.stylistic,
+    eslintConfigPrettier,
+  ],
+  languageOptions: {
+    parser: tseslint.parser,
+    globals: globals.browser,
+    parserOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      projectService: true,
+      tsconfigRootDir: import.meta.dirname
+    }
+  },
+  rules: {
+    '@typescript-eslint/no-misused-promises': [
+      'error',
+      { 
+        checksVoidReturn: {
+          arguments: false
         }
-      ]
-      //'semi-spacing': ['error', {'before': false, 'after': true}]
-    },
-    files: ["**/*.js", "**/*.ts"],
-    ignores: ['rollup.config.js', '/dist/**/*', '/demo/**/*', '.eslintrc.cjs']
-  }
-)
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/consistent-type-imports": "error"
+  },
+  files: ['**/*.js', '**/*.ts'],
+  ignores: ['/dist/**/*', '/demo/**/*', '.eslintrc.cjs']
+})

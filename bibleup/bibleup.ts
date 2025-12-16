@@ -3,7 +3,7 @@ import * as Bible from './helper/bible'
 import * as constructPopup from './construct-popup'
 import { positionPopup } from './position-popup'
 import * as Search from './helper/search'
-import {
+import type {
   BibleData,
   BibleFetch,
   BibleRef,
