@@ -21,4 +21,3 @@
   "include": ["bibleup", "./eslint.config.js"],
   "exclude": ["**/node_modules/**", "dist/**/*"]
 }
-

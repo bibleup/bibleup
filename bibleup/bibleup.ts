@@ -19,10 +19,10 @@ export default class BibleUp {
   #element: HTMLElement
   #options: Options
   #defaultOptions: Options
-  #regex
+  #regex: Regex
   #mouseOnPopup // if mouse is on popup
-  #popupTimer: NodeJS.Timeout | undefined
-  #loadingTimer: NodeJS.Timeout | undefined
+  #popupTimer: ReturnType<typeof setTimeout> | undefined
+  #loadingTimer: ReturnType<typeof setTimeout> | undefined
   #currentRef: string | undefined // currently loading bible ref
   #activeLink: number | undefined // unique identifier of last clicked link
   #popup!: Popup
