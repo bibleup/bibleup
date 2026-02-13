@@ -22,7 +22,6 @@ export default defineConfig({
       ecmaVersion: 'latest',
       sourceType: 'module',
       projectService: true,
-      tsconfigRootDir: import.meta.dirname
     }
   },
   rules: {
@@ -34,9 +33,8 @@ export default defineConfig({
         }
       }
     ],
-    "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/consistent-type-imports": "error"
   },
   files: ['**/*.js', '**/*.ts'],
-  ignores: ['/dist/**/*', '/demo/**/*', '.eslintrc.cjs']
+  ignores: ['/dist/**/*', '/demo/**/*', '.eslintrc.cjs', 'rollup.config.js']
 })
