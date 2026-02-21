@@ -4,14 +4,14 @@
   "description": "A tool for converting Bible references on a webpage to links with an accessible popover",
   "type": "module",
   "browser": "./dist/umd/bibleup.min.js",
-  "module": "./dist/esm/bibleup.esm.js",
+  "module": "./dist/bibleup.esm.js",
   "unpkg": "./dist/umd/bibleup.min.js",
   "types": "./dist/bibleup.d.ts",
   "style": "./dist/css/bibleup.css",
   "exports": {
     ".": {
       "types": "./dist/bibleup.d.ts",
-      "import": "./dist/esm/bibleup.esm.js"
+      "import": "./dist/bibleup.esm.js"
     },
     "./css": "./dist/css/bibleup.css"
   },

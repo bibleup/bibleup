@@ -33,7 +33,8 @@ export default defineConfig({
         }
       }
     ],
-    "@typescript-eslint/consistent-type-imports": "error"
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/consistent-generic-constructors": "off"
   },
   files: ['**/*.js', '**/*.ts'],
   ignores: ['/dist/**/*', '/demo/**/*', '.eslintrc.cjs', 'rollup.config.js']

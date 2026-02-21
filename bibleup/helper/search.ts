@@ -1,5 +1,5 @@
 import apiKey from './config.js'
-import {
+import type {
   BibleApiResponse,
   BollsApiResponse,
   BibleFetch,

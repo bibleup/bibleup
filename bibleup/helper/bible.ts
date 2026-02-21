@@ -1,5 +1,5 @@
 import bibleData from './bible-data.js'
-import { BibleData, BibleRef, SupportedVersions } from './interfaces.js'
+import type { BibleData, BibleRef, SupportedVersions } from './interfaces.js'
 
 /**
  * @return All book names and abbreviations separated by '|'

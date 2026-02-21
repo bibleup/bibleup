@@ -41,14 +41,14 @@ const myDel = () => {
   return {
     name: 'types-delete',
     buildEnd: async () => {
-      await deleteAsync(['dist/*/types'])
+      await deleteAsync(['dist/types'])
       //console.log(`Deleted ${deletedFiles.length} '/types' sub-folder`);
     }
   }
 }
 
 export default [
-  /* BibleUp UMD - Minified and CSS */
+  // BibleUp UMD - Minified and CSS
   {
     input: './bibleup/main.ts',
     output: [
@@ -60,7 +60,7 @@ export default [
       }
     ],
     plugins: [
-      typescript(),
+      typescript({ declaration: false, outDir: 'dist/umd'}),
       less({
         insert: true,
         output: pkg.exports['./css']
@@ -75,7 +75,7 @@ export default [
     ]
   },
 
-  /* BibleUp ESM module - Without CSS */
+  // BibleUp ESM module - Without CSS
   {
     input: './bibleup/bibleup.ts',
     output: [
@@ -86,23 +86,31 @@ export default [
         sourcemap: true
       }
     ],
-    plugins: [typescript(), addLicense]
+    plugins: [
+      typescript({
+        declaration: true,
+        declarationDir: 'dist/types',
+        rootDir: 'bibleup',
+        outDir: 'dist'
+      }),
+      addLicense
+    ]
   },
 
-  /* BibleUp Core - Without CSS */
+  // BibleUp Core - Without CSS
   {
     input: './bibleup/bibleup.ts',
     output: [
       {
-        file: './dist/umd/bibleup-core.min.js', // ./dist/umd/bibleup-core.min.js
+        file: './dist/umd/bibleup-core.min.js',
         format: 'umd',
-        name: 'BibleUp', // name of the global object
+        name: 'BibleUp',
         sourcemap: true
       }
     ],
     plugins: [
       // minified but no css
-      typescript(),
+      typescript({ declaration: false, outDir: 'dist/umd'}),
       nodeResolve(),
       commonjs({
         include: 'node_modules/**'
@@ -118,7 +126,7 @@ export default [
    * A single '.d.ts' declaration file will be exported and placed under dist root
    */
   {
-    input: './dist/esm/types/bibleup.d.ts',
+    input: './dist/types/bibleup.d.ts',
     output: [{ file: pkg.types, format: 'es' }],
     plugins: [dts(), myDel()]
   }
