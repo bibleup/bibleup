@@ -63,7 +63,7 @@ export default [
       typescript({ declaration: false, outDir: 'dist/umd'}),
       less({
         insert: true,
-        output: pkg.exports['./css']
+        output: pkg.exports['./css'].default
       }),
       nodeResolve(),
       commonjs({

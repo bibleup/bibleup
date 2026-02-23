@@ -13,7 +13,10 @@
       "types": "./dist/bibleup.d.ts",
       "import": "./dist/bibleup.esm.js"
     },
-    "./css": "./dist/css/bibleup.css"
+    "./css": {
+      "types": "./dist/bibleup.d.ts",
+      "default": "./dist/css/bibleup.css"
+    }
   },
   "files": [
     "dist"
