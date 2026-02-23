@@ -440,7 +440,7 @@ export default [
     id: 32,
     testament: 'OT',
     multipart: false,
-    chapters: [16, 11, 10, 11]
+    chapters: [17, 10, 10, 11]
   },
   {
     book: 'Micah',

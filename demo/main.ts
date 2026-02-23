@@ -1,6 +1,7 @@
 console.log('BibleUp Demo')
-//import BibleUp from '@bibleup/bibleup';
-import BibleUp from '../bibleup/bibleup.ts'
+import BibleUp from '@bibleup/bibleup';
+import "@bibleup/bibleup/css"
+//import BibleUp from '../bibleup/main.ts'
 
 const body = document.querySelector('body') as HTMLElement
 const addBtn = document.querySelector('#add') as HTMLElement

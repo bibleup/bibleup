@@ -1,4 +1,4 @@
-import { Options, Popup } from './helper/interfaces'
+import type { Options, Popup } from './helper/interfaces'
 
 /**
  * Constructs BibleUp popup according to options and append to Dom
@@ -35,7 +35,7 @@ export const build = (options: Options, buid: string): Popup => {
       break
   }
 
-  if (darkTheme === true) {
+  if (darkTheme) {
     popup.setAttribute('data-bu-theme', 'dark')
   }
 

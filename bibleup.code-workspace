@@ -1,12 +1,27 @@
 {
 	"folders": [
 		{
+			"name": "Root",
 			"path": "."
+		},
+		{
+			"name": "BibleUp Core 🧰",
+			"path": "bibleup"
+		},
+		{
+			"name": "BibleUp Demo 📱",
+			"path": "demo"
 		}
 	],
 	"settings": {
+		"files.exclude": {
+			"**/node_modules": true,
+			"**/.github": true,
+			"**/demo": true, // hide demo folder in root
+			"**/bibleup": true // hide bibleup folder in root
+		},
 		"editor.codeActionsOnSave": {
-			"source.fixAll.eslint": true
+			"source.fixAll.eslint": "explicit"
 		},
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnSave": true,

@@ -1,4 +1,3 @@
-import { defineConfig } from 'rollup';
 import terser from '@rollup/plugin-terser'
 import less from 'rollup-plugin-less'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
@@ -8,21 +7,21 @@ import license from 'rollup-plugin-license'
 import typescript from '@rollup/plugin-typescript'
 import dts from 'rollup-plugin-dts'
 import { deleteAsync } from 'del'
-import pkg from './package.json' assert { type: "json" };
+import pkg from './package.json' with { type: 'json' }
 
 const babelConfig = babel({
   presets: [
     [
       '@babel/preset-env',
       {
-        targets: '>= 0.5%, not dead',
-      },
-    ],
+        targets: '>= 0.5%, not dead'
+      }
+    ]
   ],
   plugins: ['@babel/plugin-transform-runtime'],
   exclude: '/node_modules/**',
-  babelHelpers: 'runtime',
-});
+  babelHelpers: 'runtime'
+})
 
 const addLicense = license({
   banner: `
@@ -30,8 +29,8 @@ const addLicense = license({
   Copyright 2023-present BibleUp and contributors
   Repository URL: https://github.com/Bibleup/bibleup.ts.git
   Date: <%= moment().format('DD-MM-YYYY') %>
-  `,
-});
+  `
+})
 
 /**
  * This deletes all '/type' sub-folder under each dist folder
@@ -42,15 +41,14 @@ const myDel = () => {
   return {
     name: 'types-delete',
     buildEnd: async () => {
-      const deletedFiles = await deleteAsync(['dist/*/types']);
+      await deleteAsync(['dist/types'])
       //console.log(`Deleted ${deletedFiles.length} '/types' sub-folder`);
     }
   }
 }
 
-export default defineConfig([
-
-  /* BibleUp UMD - Minified and CSS */
+export default [
+  // BibleUp UMD - Minified and CSS
   {
     input: './bibleup/main.ts',
     output: [
@@ -58,26 +56,26 @@ export default defineConfig([
         file: pkg.browser,
         format: 'umd',
         name: 'BibleUp', // name of the global object
-        sourcemap: true,
-      },
+        sourcemap: true
+      }
     ],
     plugins: [
-      typescript(),
+      typescript({ declaration: false, outDir: 'dist/umd'}),
       less({
         insert: true,
-        output: pkg.exports['./css'],
+        output: pkg.exports['./css'].default
       }),
       nodeResolve(),
       commonjs({
-        include: 'node_modules/**',
+        include: 'node_modules/**'
       }),
       babelConfig,
       terser(),
-      addLicense,
-    ],
+      addLicense
+    ]
   },
 
-  /* BibleUp ESM module - Without CSS */
+  // BibleUp ESM module - Without CSS
   {
     input: './bibleup/bibleup.ts',
     output: [
@@ -85,34 +83,42 @@ export default defineConfig([
         file: pkg.module,
         format: 'es',
         name: 'BibleUp',
-        sourcemap: true,
+        sourcemap: true
       }
     ],
-    plugins: [typescript(), addLicense],
+    plugins: [
+      typescript({
+        declaration: true,
+        declarationDir: 'dist/types',
+        rootDir: 'bibleup',
+        outDir: 'dist'
+      }),
+      addLicense
+    ]
   },
 
-  /* BibleUp Core - Without CSS */
+  // BibleUp Core - Without CSS
   {
     input: './bibleup/bibleup.ts',
     output: [
       {
-        file: './dist/umd/bibleup-core.min.js', // ./dist/umd/bibleup-core.min.js
+        file: './dist/umd/bibleup-core.min.js',
         format: 'umd',
-        name: 'BibleUp', // name of the global object
-        sourcemap: true,
-      },
+        name: 'BibleUp',
+        sourcemap: true
+      }
     ],
     plugins: [
       // minified but no css
-      typescript(),
+      typescript({ declaration: false, outDir: 'dist/umd'}),
       nodeResolve(),
       commonjs({
-        include: 'node_modules/**',
+        include: 'node_modules/**'
       }),
       babelConfig,
       terser(),
-      addLicense,
-    ],
+      addLicense
+    ]
   },
 
   /**
@@ -120,8 +126,8 @@ export default defineConfig([
    * A single '.d.ts' declaration file will be exported and placed under dist root
    */
   {
-    input: "./dist/esm/types/bibleup.d.ts",
-    output: [{ file: pkg.types, format: "es" }],
+    input: './dist/types/bibleup.d.ts',
+    output: [{ file: pkg.types, format: 'es' }],
     plugins: [dts(), myDel()]
   }
-]);
+]
